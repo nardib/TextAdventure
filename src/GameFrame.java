@@ -101,6 +101,7 @@ public class GameFrame
 
         frame.setVisible(true);
 
+		/*
 		while(true){
             PointerInfo a = MouseInfo.getPointerInfo();
             Point b = a.getLocation();
@@ -110,5 +111,8 @@ public class GameFrame
             System.out.println(x);
             System.out.println(y);
         }
+		*/
+
+		//ciao test
 	}
 }
