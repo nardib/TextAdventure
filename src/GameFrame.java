@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.*;
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
+import java.awt.Point;
 
 public class GameFrame
 {
@@ -97,5 +100,15 @@ public class GameFrame
         });
 
         frame.setVisible(true);
+
+		while(true){
+            PointerInfo a = MouseInfo.getPointerInfo();
+            Point b = a.getLocation();
+            int x = (int) b.getX();
+            int y = (int) b.getY();
+
+            System.out.println(x);
+            System.out.println(y);
+        }
 	}
 }
