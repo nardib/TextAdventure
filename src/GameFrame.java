@@ -57,8 +57,22 @@ public class GameFrame
 		bottom.add(pauseButton);
 		bottom.add(resetButton);
 
+		//left panel with it's own buttons
+		JPanel left = new JPanel();
+		left.setPreferredSize(new Dimension(100, 100));
+		JButton attackButton = new JButton("Attack");
+		attackButton.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		attackButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				graphic.setText("Attack done");
+			}
+		});
+		left.add(attackButton);
+
 		frame.add(center, BorderLayout.CENTER);
 		frame.add(bottom, BorderLayout.SOUTH);
+		frame.add(left, BorderLayout.WEST);
 		frame.setVisible(true);
 	}
 }
