@@ -65,7 +65,7 @@ public class GameFrame
 		attackButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
-				graphic.setText("Attack done");
+				graphic.setText(frame.getHeight() + " " + frame.getWidth());
 			}
 		});
 		left.add(attackButton);
@@ -74,5 +74,13 @@ public class GameFrame
 		frame.add(bottom, BorderLayout.SOUTH);
 		frame.add(left, BorderLayout.WEST);
 		frame.setVisible(true);
+
+		while(true)
+		{
+			int h = frame.getHeight();
+			int w = frame.getWidth();
+			double fontSize = h*w*0.000128;
+			graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int)fontSize));
+		}
 	}
 }
