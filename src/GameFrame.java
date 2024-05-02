@@ -73,14 +73,18 @@ public class GameFrame
 		frame.add(center, BorderLayout.CENTER);
 		frame.add(bottom, BorderLayout.SOUTH);
 		frame.add(left, BorderLayout.WEST);
-		frame.setVisible(true);
 
-		while(true)
+		frame.addComponentListener(new ComponentAdapter() 
 		{
-			int h = frame.getHeight();
-			int w = frame.getWidth();
-			double fontSize = h*w*0.000128;
-			graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int)fontSize));
-		}
+            public void componentResized(ComponentEvent componentEvent) 
+			{
+                int h = frame.getHeight();
+				int w = frame.getWidth();
+				double fontSize = h*w*0.000128;
+				graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int)fontSize));
+            }
+        });
+
+        frame.setVisible(true);
 	}
 }
