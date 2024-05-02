@@ -28,7 +28,7 @@ public class GameFrame
 		//creating a panel and two buttons for the bottom 
 		JPanel bottom = new JPanel();
 		bottom.setBackground(new Color(105, 147, 180));
-		bottom.setPreferredSize(new Dimension(100, 55));
+		bottom.setPreferredSize(new Dimension(55, 55));
 		JButton startButton = new JButton("Start");
 		startButton.setFont(new Font("Times New Roman", Font.PLAIN, 32));
 		startButton.addActionListener(new ActionListener(){
@@ -80,8 +80,19 @@ public class GameFrame
 			{
                 int h = frame.getHeight();
 				int w = frame.getWidth();
-				double fontSize = h*w*0.000128;
-				graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int)fontSize));
+				double grapSize = w/25;
+				graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int)grapSize));
+
+				double butSize = w/25;
+				startButton.setFont(new Font("Times New Roman", Font.PLAIN, (int)butSize));
+				pauseButton.setFont(new Font("Times New Roman", Font.PLAIN, (int)butSize));
+				resetButton.setFont(new Font("Times New Roman", Font.PLAIN, (int)butSize));
+				attackButton.setFont(new Font("Times New Roman", Font.PLAIN, (int)butSize));
+
+				double leftPaneSize = w/5;
+				double bottomPaneSize = h/5;
+				left.setPreferredSize(new Dimension((int)leftPaneSize, (int)leftPaneSize));
+				bottom.setPreferredSize(new Dimension((int)bottomPaneSize, (int)bottomPaneSize));
             }
         });
 
