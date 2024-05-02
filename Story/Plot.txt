@@ -1,0 +1,7 @@
+Player: M/F/Other 25something y/o just living life
+
+Kidnapped by some sketchy guys in a van, dropped in a room and has to somehow escape
+Room is 4 walls, potentially more rooms, WASD to move between walls
+4 or more rooms
+Solved rooms still contain clues/puzzles for further rooms
+...
