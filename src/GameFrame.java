@@ -1,25 +1,21 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
-import java.awt.MouseInfo;
-import java.awt.PointerInfo;
-import java.awt.Point;
 
-public class GameFrame
+public class GameFrame implements MouseMotionListener, MouseListener
 {
+	int x=0;
+	int y=0;
 	public GameFrame()
 	{
 		//creating frame
 		JFrame frame = new JFrame("TextAdventure");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
+		frame.setLocationRelativeTo(null);
 		frame.setSize(500, 500);
+		frame.addMouseMotionListener(this);
+		frame.addMouseListener(this);
 
 		//creating panel and label for the game graphic
 		JPanel center = new JPanel();
@@ -101,18 +97,44 @@ public class GameFrame
 
         frame.setVisible(true);
 
-		/*
-		while(true){
-            PointerInfo a = MouseInfo.getPointerInfo();
-            Point b = a.getLocation();
-            int x = (int) b.getX();
-            int y = (int) b.getY();
+        
+	}
+	public void mouseDragged(MouseEvent e) 
+	{
+		//System.out.println("You have DRAGGED the mouse");
+	}
+	 
+	public void mouseMoved(MouseEvent e) 
+	{
+		//System.out.println("You have MOVED the mouse");
+		PointerInfo a = MouseInfo.getPointerInfo();
+    	Point b = a.getLocation();
+    	x = (int) b.getX();
+    	y = (int) b.getY();
+	}
 
-            System.out.println(x);
-            System.out.println(y);
-        }
-		*/
+	public void mouseClicked(MouseEvent e)
+	{
+		System.out.println("You have CLICKED the frame");
+	}
 
-		//ciao test
+	public void mouseEntered(MouseEvent e)
+	{
+		System.out.println("The mouse has ENTERED the frame");
+	}
+
+	public void mouseExited(MouseEvent e)
+	{
+		System.out.println("The mouse has EXITED the frame");
+	}
+
+	public void mousePressed(MouseEvent e)
+	{
+		System.out.println("You have PRESSED the mouse");
+	}
+
+	public void mouseReleased(MouseEvent e)
+	{
+		System.out.println("You have RELEASED the mouse");
 	}
 }
