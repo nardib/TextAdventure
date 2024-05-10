@@ -4,4 +4,19 @@ Kidnapped by some sketchy guys in a van, dropped in a room and has to somehow es
 Room is 4 walls, potentially more rooms, WASD to move between walls
 4 or more rooms
 Solved rooms still contain clues/puzzles for further rooms
-...
+
+Room 1
+North Side
+Door on the left, clock in the top middle (07:35) Small table on the right with a house phone on top (will require a number to be called)
+East Side
+Paintings on the wall, family members. They each have a specific item in the background which will be required to open a box
+There is a large storage chest on the ground that can be used to hide from the pursuer.
+South Side
+There is a camera on the top left corner. There is a desk with drawers and doors. Inside will be 1 or 2 objects which will be used later
+On the desk there is a PC, running MacOS, which needs a password
+There is also a window, looking outside of this one reveals nothing
+West Side
+There is an open door here at the center. On the left of the door is a safe hidden behind a painting, code for said safe will be found later
+On the right is a pinboard with a key and some notes hanging, which will obviously be clues.
+
+Room 2
