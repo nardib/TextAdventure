@@ -96,22 +96,6 @@ public class GameFrame implements MouseMotionListener, MouseListener
         });
 
         frame.setVisible(true);
-
-<<<<<<< HEAD
-		/*
-		while(true){
-            PointerInfo a = MouseInfo.getPointerInfo();
-            Point b = a.getLocation();
-            int x = (int) b.getX();
-            int y = (int) b.getY();
-
-            System.out.println(x);
-            System.out.println(y);
-        }
-		*/
-
-=======
-        
 	}
 	public void mouseDragged(MouseEvent e) 
 	{
@@ -150,6 +134,5 @@ public class GameFrame implements MouseMotionListener, MouseListener
 	public void mouseReleased(MouseEvent e)
 	{
 		System.out.println("You have RELEASED the mouse");
->>>>>>> Cursor-tracking
 	}
 }
