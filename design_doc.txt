@@ -5,7 +5,7 @@ There are # rooms in a map, one player and one enemy moving and interacting in t
 There are objects divided in # main categories: 
 - view only
 - storable (e.g. memos, sheets, etc.)
-- storable and usable (e.g. keys, etc.)
+- storable and usable (e.g. keys, painkillers and bendages to restore health etc.)
 - usable but not storable (e.g. doors, drawers, chests, cabinet, locks, etc.)
 
 There should be a class for processing text inputs through a text field.
