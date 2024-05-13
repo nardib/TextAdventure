@@ -13,6 +13,7 @@ public class Player {
      */
     private String name;
     private Gender gender;
+    private int health = 5, score;
 
     /*
      * method to set the name of the player
@@ -51,5 +52,33 @@ public class Player {
     public Gender getGender()
     {
         return gender;
+    }
+
+    /*
+     * decrease the health of the player
+     */
+    public void decreaseHealth()
+    {
+        if (health - 1 < 0)
+            throw new IllegalStateException("the player can't have an health score of less than zero");
+        health--;
+    }
+
+    /*
+     * increase the health of the player
+     */
+    public void increaseHealth()
+    {
+        if (health + 1 > 5)
+            throw new IllegalStateException("Player's health can't be more than 5");
+        health++;
+    }
+
+    /*
+     * Return the health of the player
+     */
+    public int getHealth()
+    {
+        return health;
     }
 }
