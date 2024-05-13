@@ -1,0 +1,11 @@
+The game must be in a graphic environment.
+
+There are # rooms in a map, one player and one enemy moving and interacting in the map
+
+There are objects divided in # main categories: 
+- view only
+- storable (e.g. memos, sheets, etc.)
+- storable and usable (e.g. keys, etc.)
+- usable but not storable (e.g. doors, drawers, chests, cabinet, locks, etc.)
+
+There should be a class for processing text inputs through a text field.
