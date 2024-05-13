@@ -4,6 +4,7 @@ import java.awt.event.*;
 
 public class GameFrame implements MouseMotionListener, MouseListener
 {
+	//we should define a specific visibility for these two variables
 	int x=0;
 	int y=0;
 	public GameFrame()

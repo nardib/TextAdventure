@@ -1,0 +1,22 @@
+@startuml
+
+    object Player{
+        name
+        gender
+        health
+        score
+    }
+
+    object Map
+    object Rooms
+    object Enemy
+    object Objects
+
+    Player "1" -- "1" Enemy : attacks < 
+    Rooms "20" -- "1" Map : are part of >
+    Objects "0..*" -- "1" Player : uses <
+    Enemy "1" -- "1" Map : is part of >
+    Player "1" -- "1" Map : is part of >
+    Objects "0..*" -- "1" Rooms : are in >
+
+@enduml

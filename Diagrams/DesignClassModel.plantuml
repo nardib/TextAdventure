@@ -1,0 +1,40 @@
+@startuml DesignClassModel
+
+    class Player {
+        -name : String
+        -gender : Gender
+        -health : int
+        -score : int    
+        +getName()
+        +setName()
+        +getGender()
+        +setGender()
+        +decreaseHealth()
+        +increaseHealth()
+        +getHealth()
+    }
+
+    enum Gender {
+        MALE
+        FEMALE
+        NEUTRAL
+    }
+    class Enemy
+    class GameFrame {
+        x : int
+        y : int
+        GameFrame()
+    }
+    class Game
+    class Main {
+        main()
+    }
+    class Object
+    class Map
+    class Room
+
+    Player ..|> Gender
+    Map ..|> Room
+
+
+@enduml
