@@ -13,7 +13,8 @@ public class Player {
      */
     private String name;
     private Gender gender;
-    private int health = 5, score;
+    private int health = 5, score, maxArrayIndexCount = 0;
+    private Item[] inventory = new Item[10];
 
     /*
      * method to set the name of the player
@@ -80,5 +81,38 @@ public class Player {
     public int getHealth()
     {
         return health;
+    }
+
+    /*
+     * Insert an Item in the inventory
+     */
+    public void insertItem(Item i)
+    {
+        if (maxArrayIndexCount == 9)
+            throw new IllegalStateException("The inventory is already full, you can't add other elements");
+        inventory[maxArrayIndexCount++] = i;
+    }
+
+    /*
+     * removes and returns the Item at index i
+     */
+    public Item removeItem(int i)
+    {
+        if (i < 0 || i > maxArrayIndexCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-maxIndex");
+        maxArrayIndexCount--;
+        Item out = inventory[i];
+        //i swap all the elemnts in i-maxIndex one position below
+        for (int j = i; j <= maxArrayIndexCount; j++)
+            inventory[j] = inventory[j+1];
+        return out;
+    }
+
+    /*
+     * returns the inventory as an array
+     */
+    public Item[] getInventory()
+    {
+        return inventory;
     }
 }

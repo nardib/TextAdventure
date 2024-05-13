@@ -4,7 +4,8 @@
         -name : String
         -gender : Gender
         -health : int
-        -score : int    
+        -score : int
+        -inventory : Item[]
         +getName()
         +setName()
         +getGender()
@@ -12,6 +13,9 @@
         +decreaseHealth()
         +increaseHealth()
         +getHealth()
+        +getInventory()
+        +insertItem()
+        +removeItem()
     }
 
     enum Gender {
@@ -29,12 +33,13 @@
     class Main {
         main()
     }
-    class Object
+    class Item
     class Map
     class Room
 
     Player ..|> Gender
     Map ..|> Room
+    Player ..|> Item
 
 
 @enduml

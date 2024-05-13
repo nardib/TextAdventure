@@ -1,22 +1,23 @@
-@startuml
+@startuml DomainModel
 
     object Player{
         name
         gender
         health
         score
+        inventory
     }
 
     object Map
     object Rooms
     object Enemy
-    object Objects
+    object Items
 
     Player "1" -- "1" Enemy : attacks < 
     Rooms "20" -- "1" Map : are part of >
-    Objects "0..*" -- "1" Player : uses <
-    Enemy "1" -- "1" Map : is part of >
-    Player "1" -- "1" Map : is part of >
-    Objects "0..*" -- "1" Rooms : are in >
+    Items "0..10" -- "1" Player : collect <
+    Enemy "1" -- "1" Map : acts in >
+    Player "1" -- "1" Map : plays in >
+    Items "0..*" -- "1" Rooms : are in >
 
 @enduml

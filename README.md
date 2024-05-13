@@ -1,0 +1,3 @@
+This software was created as exam of "Elementi di Ingegneria del Software" at the University of Padua, A.A. 2023/24.
+
+It is a text adventure ...
