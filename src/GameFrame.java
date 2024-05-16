@@ -71,7 +71,7 @@ public class GameFrame implements MouseMotionListener, MouseListener
 		left.add(attackButton);
 
 		//top panel with inventory
-		Item item1 = new Item();
+		Key item1 = new Key();
 		JLabel firstItem = new JLabel();
 		firstItem.setIcon(item1.icon);
 		JPanel top = new JPanel();
