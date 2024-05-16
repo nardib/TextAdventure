@@ -1,3 +1,5 @@
+import java.awt.image.*;
+
 public class Room 
 {
     /*
@@ -5,17 +7,28 @@ public class Room
      */
     private int roomNumber;
     private String name;
+    private int doors;
+    private BufferedImage NWall;
+    private BufferedImage SWall;
+    private BufferedImage EWall;
+    private BufferedImage WWall;
     boolean crossableNorth;
     boolean crossableSouth;
     boolean crossableEast;
     boolean crossableWest;
+
     /*
      * Room class constructor
      */
-    public Room(int roomNumber, String name) 
+    public Room(int n, int d, String nam) 
     {
-        this.roomNumber = roomNumber;
-        this.name = name;
+        this.roomNumber = n;
+        this.name = nam;
+        this.doors = d;
+        //this.NWall = image;
+        //this.SWall = image;
+        //this.EWall = image;
+        //this.WWall = image;
     }
     /*
      * Room class methods
@@ -47,5 +60,39 @@ public class Room
         {
             crossableNorth = true;
         }
+    }
+
+    public BufferedImage getNWall()
+    {
+        return NWall;
+    }
+    public BufferedImage getSWall()
+    {
+        return SWall;
+    }
+    public BufferedImage getEWall()
+    {
+        return EWall;
+    }
+    public BufferedImage getWWall()
+    {
+        return WWall;
+    }
+
+    public void setNWall(BufferedImage image)
+    {
+        NWall = image;
+    }
+    public void setSWall(BufferedImage image)
+    {
+        SWall = image;
+    }
+    public void setEWall(BufferedImage image)
+    {
+        EWall = image;
+    }
+    public void setWWall(BufferedImage image)
+    {
+        WWall = image;
     }
 }
