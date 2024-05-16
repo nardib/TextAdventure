@@ -8,9 +8,18 @@
         inventory
     }
 
-    object Map
-    object Rooms
-    object Enemy
+    object Map{
+        number of rooms
+    }
+    object Rooms{
+        walls
+        number
+        name
+    }
+    object Enemy{
+        name
+        gender
+    }
     object Items{
         weight
     }

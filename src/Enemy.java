@@ -1,4 +1,4 @@
-import java.language.Math;
+import java.lang.Math;
 
 public class Enemy {
     /*
@@ -11,14 +11,14 @@ public class Enemy {
     private boolean presence; //is the enemy in the map?
     private boolean[] aveilable = new boolean[4];
 
-    aveilable[0] = currentRoom.crossableNorth;
-    aveilable[1] = currentRoom.crossableNorth;
-    aveilable[2] = currentRoom.crossableNorth;
-    aveilable[3] = currentRoom.crossableNorth;
-    public void move() 
+    //aveilable[0] = currentRoom.crossableNorth;
+    //aveilable[1] = currentRoom.crossableNorth;
+    //aveilable[2] = currentRoom.crossableNorth;
+    //aveilable[3] = currentRoom.crossableNorth;
+    /*public void move() 
     {
-        int i = 4%(Integer.parseInt(Math.random()*4));
-        if(aveilable[i]==true)
+        int i = 4%(int)(Math.random()*4);
+        //if(aveilable[i]==true)
             
-    }
+    }*/
 }

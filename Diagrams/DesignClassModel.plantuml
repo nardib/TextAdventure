@@ -6,6 +6,8 @@
         -health : int
         -score : int
         -inventory : Item[]
+        -currentuDirection : Direction
+        +Player()
         +getName()
         +setName()
         +getGender()
@@ -22,6 +24,12 @@
         MALE
         FEMALE
         NEUTRAL
+    }
+    enum Direction {
+        NORTH
+        SOUTH
+        EAST
+        WEST
     }
     class Enemy
     class GameFrame {
@@ -40,6 +48,6 @@
     Player ..|> Gender
     Map ..|> Room
     Player ..|> Item
-
+    Player ..|> Direction
 
 @enduml

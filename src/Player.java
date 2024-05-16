@@ -7,16 +7,46 @@ enum Gender{
     NEUTRAL
 }
 
+enum Direction{
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
+}
+
 public class Player {
     /*
      * state variables
      */
     private String name;
     private Gender gender;
-    private int health = 5, score, ArrayIndexCount = 0, WeightCount = 0;
-    private Item[] inventory = new Item[10];
+    private int health, score, ArrayIndexCount, WeightCount;
+    private Item[] inventory;
     private int currentRoomNumber; 
     private Direction currentDirection;
+
+    /*
+     * Constructor for the player
+     */
+    public Player(String n, String g)
+    {
+        name = n;
+        if(g.toLowerCase().compareTo("m") == 0 || g.toLowerCase().compareTo("male") == 0)
+            gender = Gender.MALE;
+        else if (g.toLowerCase().compareTo("f") == 0 || g.toLowerCase().compareTo("female") == 0)
+            gender = Gender.FEMALE;
+        else if (g.toLowerCase().compareTo("n") == 0 || g.toLowerCase().compareTo("neutral") == 0)
+            gender = Gender.NEUTRAL;
+        else
+            throw new IllegalArgumentException("Invalid Gender");
+        health = 5;
+        score = 0;
+        ArrayIndexCount = 0;
+        WeightCount = 0;
+        inventory = new Item[10];
+        currentRoomNumber = 1;
+        currentDirection = Direction.NORTH;
+    }
 
     /*
      * method to set the name of the player
@@ -90,9 +120,9 @@ public class Player {
      */
     public void insertItem(Item i)
     {
-        if (/*maxArrayIndexCount == 9 ||*/ WeightCount + i.getWeigth() > 10)
+        if (/*maxArrayIndexCount == 9 ||*/ WeightCount + i.getWeight() > 10)
             throw new IllegalStateException("The item weigth exiding the max carriable weigth");
-        WeightCount += i.getWeigth();
+        WeightCount += i.getWeight();
         ArrayIndexCount++;
     }
 
@@ -103,7 +133,7 @@ public class Player {
     {
         if (i < 0 || i > ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
-        WeightCount -= inventory[i].getWeigth();
+        WeightCount -= inventory[i].getWeight();
         ArrayIndexCount--;
         Item out = inventory[i];
         //i swap all the elemnts in i-maxIndex one position below
@@ -123,14 +153,14 @@ public class Player {
     /*
      * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
      */
-    public crossDoor(int newRoomNumber) {
+    public void crossDoor(int newRoomNumber) {
         currentRoomNumber = newRoomNumber;
     }
 
     /*
      * function to change the wall. The parameter is the number of the door the player will end in.
      */
-    public changeDirection(Direction newDirection) {
+    public void changeDirection(Direction newDirection) {
         currentDirection = newDirection;
     }
 }
