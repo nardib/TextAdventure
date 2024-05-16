@@ -1,15 +1,39 @@
+import java.awt.image.*;
+
 public class Map 
 {
     final int MapSize = 9;
     final int[] passageWays = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11};
     final String[] roomNames = {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"};
+    final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
     Room[] rooms= new Room[MapSize];
-    public Map(int MapSize, int[] passageWays, String[] roomNames)
+    public Map(int MapSize, int[] passageWays, int[] roomDoors, String[] roomNames)
     {
         for (int i = 0; i < MapSize; i++)
         {
-            Room room = new Room(i, roomNames[i]);
+            Room room = new Room(i, roomDoors[i], roomNames[i]);
             rooms[i] = room;
+            BufferedImage[] DoorWalls = new BufferedImage[roomDoors[i]];
+            for(int j=0; j < roomDoors[i]; j++)
+            {
+                if(j == 0)
+                {
+                    DoorWalls[j] = room.getNWall();
+                }
+                else if(j == 1)
+                {
+                    DoorWalls[j] = room.getSWall();
+                }
+                else if(j == 2)
+                {
+                    DoorWalls[j] = room.getEWall();
+                }
+            }
+            for(int j=0; j < roomDoors[i]; j++)
+            {
+                
+            }
+
         }
         for (int i=0; i < passageWays.length; i++)
         {
