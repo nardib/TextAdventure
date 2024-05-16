@@ -1,0 +1,9 @@
+@startuml System Sequence Diagram
+
+actor Player
+participant Game
+
+Game --> Player : Shows the start page
+
+
+@enduml
