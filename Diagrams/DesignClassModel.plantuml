@@ -5,6 +5,8 @@
         -gender : Gender
         -health : int
         -score : int
+        -arrayIndexCount : int
+        -weightCount : int
         -inventory : Item[]
         -currentuDirection : Direction
         +Player()
@@ -18,6 +20,8 @@
         +getInventory()
         +insertItem()
         +removeItem()
+        +crossDoor()
+        +changeDirection()
     }
 
     enum Gender {
@@ -31,23 +35,72 @@
         EAST
         WEST
     }
-    class Enemy
+    class Enemy{
+        -name : String
+        -gender : Gender
+        -currentRoom : Room
+        -damage : int
+        -presence : boolean
+        -available : boolean[];
+    }
     class GameFrame {
         x : int
         y : int
-        GameFrame()
+        +GameFrame()
     }
     class Game
     class Main {
-        main()
+        +main()
     }
-    class Item
-    class Map
-    class Room
+    class Item{
+        #icon : ImageIcon
+        #weight : int
+        +getIcon()
+        +getWeight()
+    }
+    class Key {
+        +Key()
+    }
+    class Map {
+        MapSize : int
+        passageWays : int[]
+        roomNames : String[]
+        roomDoors : int[]
+        rooms : Room[]
+        +Map()
+
+    }
+    class Room {
+        -roomNumber : int
+        -name : String
+        -NWall :BufferedImage
+        -SWall :BufferedImage
+        -EWall :BufferedImage
+        -WWall :BufferedImage
+        crossableNorth : boolean
+        crossableSouth : boolean
+        crossableEast : boolean
+        crossableWest : boolean
+        +Room()
+        +getName()
+        +getRoomNumber()
+        +addPassageWay()
+        +getNWall()
+        +getSWall()
+        +getEWall()
+        +getWWall()
+        +setNwall()
+        +setSWall()
+        +setEWall()
+        +setWWall()
+    }
 
     Player ..|> Gender
     Map ..|> Room
     Player ..|> Item
     Player ..|> Direction
+    Key --|> Item
+    Enemy ..|> Gender
+
 
 @enduml
