@@ -16,6 +16,7 @@ public class Player {
     private int health = 5, score, ArrayIndexCount = 0, WeightCount = 0;
     private Item[] inventory = new Item[10];
     private int currentRoomNumber; 
+    private Direction currentDirection;
 
     /*
      * method to set the name of the player
