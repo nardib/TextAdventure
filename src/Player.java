@@ -13,8 +13,9 @@ public class Player {
      */
     private String name;
     private Gender gender;
-    private int health = 5, score, maxArrayIndexCount = 0;
+    private int health = 5, score, ArrayIndexCount = 0, WeightCount = 0;
     private Item[] inventory = new Item[10];
+    private int currentRoomNumber; 
 
     /*
      * method to set the name of the player
@@ -88,9 +89,10 @@ public class Player {
      */
     public void insertItem(Item i)
     {
-        if (maxArrayIndexCount == 9)
-            throw new IllegalStateException("The inventory is already full, you can't add other elements");
-        inventory[maxArrayIndexCount++] = i;
+        if (/*maxArrayIndexCount == 9 ||*/ WeightCount + i.getWeigth() > 10)
+            throw new IllegalStateException("The item weigth exiding the max carriable weigth");
+        WeightCount += i.getWeigth();
+        ArrayIndexCount++;
     }
 
     /*
@@ -98,12 +100,13 @@ public class Player {
      */
     public Item removeItem(int i)
     {
-        if (i < 0 || i > maxArrayIndexCount)
-            throw new IllegalArgumentException("invalid index, it must be in the range of 0-maxIndex");
-        maxArrayIndexCount--;
+        if (i < 0 || i > ArrayIndexCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+        WeightCount -= inventory[i].getWeigth();
+        ArrayIndexCount--;
         Item out = inventory[i];
         //i swap all the elemnts in i-maxIndex one position below
-        for (int j = i; j <= maxArrayIndexCount; j++)
+        for (int j = i; j <= ArrayIndexCount; j++) 
             inventory[j] = inventory[j+1];
         return out;
     }
@@ -114,5 +117,19 @@ public class Player {
     public Item[] getInventory()
     {
         return inventory;
+    }
+
+    /*
+     * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
+     */
+    public crossDoor(int newRoomNumber) {
+        currentRoomNumber = newRoomNumber;
+    }
+
+    /*
+     * function to change the wall. The parameter is the number of the door the player will end in.
+     */
+    public changeDirection(Direction newDirection) {
+        currentDirection = newDirection;
     }
 }
