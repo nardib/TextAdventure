@@ -1,0 +1,9 @@
+Use Case                        Start
+Brief Descriprion : User starts the game
+Actor : User
+Basic Flow : User select "new game button" in the main screen
+Alternative Flow : in the final screen (both if user wins or not) user selects "new game" button
+Precondition : Game was installed correctly
+Postcondition : Game is started showing the game interface
+Extenctions Points : -
+
