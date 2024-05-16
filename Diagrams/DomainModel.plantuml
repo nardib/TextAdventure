@@ -11,7 +11,9 @@
     object Map
     object Rooms
     object Enemy
-    object Items
+    object Items{
+        weight
+    }
 
     Player "1" -- "1" Enemy : attacks < 
     Rooms "20" -- "1" Map : are part of >
