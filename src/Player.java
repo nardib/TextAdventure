@@ -22,7 +22,7 @@ public class Player {
     private Gender gender;
     private int health, score, ArrayIndexCount, WeightCount;
     private Item[] inventory;
-    private int currentRoomNumber; 
+    private Room currentRoomNumber; 
     private Direction currentDirection;
 
     /*
@@ -153,7 +153,7 @@ public class Player {
     /*
      * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
      */
-    public void crossDoor(int newRoomNumber) {
+    public void crossDoor(Room newRoomNumber) {
         currentRoomNumber = newRoomNumber;
     }
 
