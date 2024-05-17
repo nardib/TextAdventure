@@ -1,4 +1,5 @@
 Use Case                        Start
+
 Brief Descriprion : User starts the game
 Actor : User
 Basic Flow : User select "new game button" in the main screen
