@@ -10,7 +10,6 @@ enum Gender{
 /*
  * enum for all the accepted directions
  */
-
 enum Direction{
     NORTH,
     SOUTH,
@@ -43,21 +42,21 @@ public class Player extends Character{
     /*
      * decrease the health of the player
      */
-    public void decreaseHealth()
+    public int decreaseHealth()
     {
         if (health - 1 < 0)
             throw new IllegalStateException("the player can't have an health score of less than zero");
-        health--;
+        return health--;
     }
 
     /*
      * increase the health of the player
      */
-    public void increaseHealth()
+    public int increaseHealth()
     {
         if (health + 1 > 5)
             throw new IllegalStateException("Player's health can't be more than 5");
-        health++;
+        return health++;
     }
 
     /*

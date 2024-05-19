@@ -66,4 +66,20 @@ public class Character {
     {
         return gender;
     }
+
+    /*
+     * Method to set the current room of the player
+     */
+    public void setCurrentRoom(Room r)
+    {
+        currentRoom = r;
+    }
+
+    /*
+     * Method to get the current room of the player
+     */
+    public Room getCurrentRoom()
+    {
+        return currentRoom;
+    }
 }
