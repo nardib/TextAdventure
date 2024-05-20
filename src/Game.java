@@ -50,7 +50,7 @@ public class Game {
     /*
      * Method to generate the actions of a move
      */
-    public void nextTurn(String input) {
+    public void nextMove(String input) {
             // player turn
             playerTurn(input);
             // enemy turn
