@@ -4,7 +4,7 @@ public class Character {
      */
     protected String name;
     protected Gender gender;
-    protected Room currentRoom;
+    protected int currentRoom;
 
     /*
      * method to move the character
@@ -25,7 +25,7 @@ public class Character {
             gender = Gender.NEUTRAL;
         else
             throw new IllegalArgumentException("Invalid Gender");
-        currentRoom = null;
+        currentRoom = 0;
     }
 
     /*

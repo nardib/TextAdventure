@@ -107,7 +107,7 @@ public class Player extends Character{
      * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
      */
     public void crossDoor(Room newRoom) {
-        currentRoom = newRoom;
+        currentRoom = newRoom.getRoomNumber();
     }
 
     /*
