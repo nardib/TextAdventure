@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public class Enemy extends Character{
+public class Enemy extends Character{ //AKA ER CATTIVONE
     /*
      * state variables
      */

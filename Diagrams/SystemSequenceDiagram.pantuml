@@ -5,5 +5,40 @@ participant Game
 
 Game --> Player : Shows the start page
 
+alt click on "New Game"
+    Player -> Game : New Game
+else click on "Resume Game"
+    Player -> Game : Resume Game
+end
+
+Game --> Player : Shows game interface
+
+alt insert an input in the TextField
+    Player -> Game : submit a command
+    Game --> Player : shows the effects of the action made by the player
+else clicks on "Intruction" button
+    Player -> Game : clicks on instruction Button
+    Game --> Player : shows the instruction page with all the instructions
+else clicks on "Pause" button
+    Player -> Game : Clicks "Pause" button
+    Game --> Player : Shows pause menu
+    alt clicks on "Resume"
+        Player -> Game : Resume
+        Game --> Player : Returns to game interface
+    else clicks on "Save and Exit"
+        Player -> Game : Save and Exit
+        Game --> Player : Save the game and returns to home page
+    else clicks on "Exit"
+        Player -> Game : Exit
+        Game --> Player : Returns to the home page without saving
+    else clicks on "new game"
+        Player -> Game : New Game
+        Game --> Player : Start a new game without saving the previous one
+    end
+else click on "Settings"
+    Game --> Player : Shows settings page 
+    Player -> Game : Changes settings and click "apply"
+    Game --> Player : Applies new setting to the game
+end
 
 @enduml

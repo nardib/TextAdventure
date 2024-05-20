@@ -15,6 +15,7 @@ public class GameFrame implements MouseMotionListener, MouseListener
 		frame.setLayout(new BorderLayout());
 		frame.setLocationRelativeTo(null);
 		frame.setSize(500, 500);
+
 		frame.addMouseMotionListener(this);
 		frame.addMouseListener(this);
 
@@ -54,8 +55,8 @@ public class GameFrame implements MouseMotionListener, MouseListener
 			}
 		});
 		bottom.add(startButton);
-		bottom.add(pauseButton);
 		bottom.add(resetButton);
+		bottom.add(pauseButton);
 
 		//left panel with it's own buttons
 		JPanel left = new JPanel();

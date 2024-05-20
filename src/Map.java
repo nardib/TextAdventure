@@ -2,38 +2,21 @@ import java.awt.image.*;
 
 public class Map 
 {
-    final int MapSize = 9;
+    final int MAPSIZE = 9;
     final int[] passageWays = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11};
+    //array of passable walls
     final String[] roomNames = {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"};
     final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
-    Room[] rooms= new Room[MapSize];
-    public Map(int MapSize, int[] passageWays, int[] roomDoors, String[] roomNames)
+    //array containing Walls with doors
+    BufferedImage[] DoorWall= new BufferedImage[4];
+    BufferedImage[] PlainWall= new BufferedImage[3];
+    Room[] rooms= new Room[MAPSIZE];
+    public Map(int MAPSIZE, int[] passageWays, int[] roomDoors, String[] roomNames)
     {
-        for (int i = 0; i < MapSize; i++)
+        for (int i = 0; i < MAPSIZE; i++)
         {
-            Room room = new Room(i, roomDoors[i], roomNames[i]);
+            Room room = new Room(i+1, roomDoors[i], roomNames[i]);
             rooms[i] = room;
-            BufferedImage[] DoorWalls = new BufferedImage[roomDoors[i]];
-            for(int j=0; j < roomDoors[i]; j++)
-            {
-                if(j == 0)
-                {
-                    DoorWalls[j] = room.getNWall();
-                }
-                else if(j == 1)
-                {
-                    DoorWalls[j] = room.getSWall();
-                }
-                else if(j == 2)
-                {
-                    DoorWalls[j] = room.getEWall();
-                }
-            }
-            for(int j=0; j < roomDoors[i]; j++)
-            {
-                
-            }
-
         }
         for (int i=0; i < passageWays.length; i++)
         {
@@ -100,6 +83,52 @@ public class Map
                     rooms[8].addPassageWay(rooms[7]);
                     break;
             }
+        }
+        for (int i = 0; i < MAPSIZE; i++)
+        {
+            for(int j=0; j<rooms[i].getDoors(); j++)
+            {
+                if(j==0)
+                    DoorWall[j] = rooms[i].getNWall();
+                else if(j==1)
+                    DoorWall[j] = rooms[i].getEWall();
+                else if(j==2)
+                    DoorWall[j] = rooms[i].getSWall();
+                else if(j==3)
+                    DoorWall[j] = rooms[i].getWWall();
+                if(j==rooms[i].getDoors()-1)
+                {
+                    switch(j)
+                    {
+                        case 0:
+                            PlainWall[0]=rooms[i].getEWall();
+                            PlainWall[1]=rooms[i].getSWall();
+                            PlainWall[2]=rooms[i].getWWall();
+                        case 1:
+                            PlainWall[0]=rooms[i].getSWall();
+                            PlainWall[1]=rooms[i].getWWall();
+                        case 2:
+                            PlainWall[0]=rooms[i].getWWall();
+                    }
+                }
+            }
+            //place walls based on crossable/non-crossable            
+            if(rooms[i].crossableNorth==false)
+                rooms[i].setNWall(PlainWall[0]);
+            else
+                rooms[i].setNWall(DoorWall[0]);
+            if(rooms[i].crossableEast==false)
+                rooms[i].setEWall(PlainWall[1]);
+            else
+                rooms[i].setEWall(DoorWall[1]);
+            if(rooms[i].crossableSouth==false)
+                rooms[i].setSWall(PlainWall[2]);
+            else
+                rooms[i].setSWall(DoorWall[2]);
+            if(rooms[i].crossableWest==false)
+                rooms[i].setWWall(DoorWall[3]);
+            else
+                rooms[i].setWWall(DoorWall[3]);
         }
     }
 }

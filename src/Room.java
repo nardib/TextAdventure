@@ -9,12 +9,12 @@ public class Room
     private String name;
     private int doors;
     private BufferedImage NWall;
-    private BufferedImage SWall;
     private BufferedImage EWall;
+    private BufferedImage SWall;
     private BufferedImage WWall;
     boolean crossableNorth;
-    boolean crossableSouth;
     boolean crossableEast;
+    boolean crossableSouth;
     boolean crossableWest;
 
     /*
@@ -26,8 +26,8 @@ public class Room
         this.name = nam;
         this.doors = d;
         //this.NWall = image;
-        //this.SWall = image;
         //this.EWall = image;
+        //this.SWall = image;
         //this.WWall = image;
     }
     /*
@@ -40,6 +40,10 @@ public class Room
     public int getRoomNumber() 
     {
         return roomNumber;
+    }
+    public int getDoors() 
+    {
+        return doors;
     }
     public void addPassageWay(Room room) 
     {
