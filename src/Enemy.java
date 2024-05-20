@@ -28,7 +28,7 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
                 }
             }
             return currentRoom; //interrompe il ciclo e ritorna l'oggetto stanza in cui finirà. Tale risultato sarà usato per modificare i valore delle stanze in cui era e in cui si trova ora il nemico
-        } 
+        }
     }
 
     public Enemy(String n, String g) {
