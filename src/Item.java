@@ -6,6 +6,7 @@ public class Item {
      */
     protected ImageIcon icon;
     protected int weight;
+    private int currentRoom;
 
     /*
      * retrurns the icon of the image
@@ -21,5 +22,13 @@ public class Item {
     public int getWeight()
     {
         return weight;
+    }
+
+    /*
+     * returns the roomt of the object
+     */
+    public int getRoom()
+    {
+        return currentRoom;
     }
 }

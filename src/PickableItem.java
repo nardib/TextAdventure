@@ -1,10 +1,10 @@
 import javax.swing.ImageIcon;
 
-public class Key extends Item {
+public class PickableItem extends Item {
     /*
      * constructor
      */
-    public Key()
+    public PickableItem()
     {
         icon = new ImageIcon(getClass().getResource("Key.jpeg"));
         weight = 1;
