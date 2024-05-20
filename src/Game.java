@@ -43,7 +43,7 @@ public class Game {
             player.decreaseHealth();
         }
         else {
-            enemy.move(map.rooms[1]);
+            enemy.move(map.getRoom(1));
         }
     }
 

@@ -9,10 +9,10 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
 
     public int move(Room n/*, Room s, Room e, Room w*/) //quali sono le stanze adiacenti?
     {
-        rooms[0] = n.crossableNorth; //le stanze adiacenti sono accessibili?
-        rooms[1] = n.crossableSouth; //
-        rooms[2] = n.crossableEast;  //
-        rooms[3] = n.crossableWest;  //
+        rooms[0] = n.getCrossableNorth(); //le stanze adiacenti sono accessibili?
+        rooms[1] = n.getCrossableSouth(); //
+        rooms[2] = n.getCrossableEast();  //
+        rooms[3] = n.getCrossableWest();  //
         while(true) {
             int i = (int) Math.round(Math.random()*3);  //genera un intero da 0 a 3 che sarà usato per vedere se la facciata è attraversabile o meno. Se non lo è riprova. L'ordine delle facciate è 0=N, 1=S, 2=E e 3=W;
             if(rooms[i]==true) {
