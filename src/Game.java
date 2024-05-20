@@ -12,9 +12,7 @@ public class Game {
      */
     public Game(String pn, String pg, String en, String eg) {
         player = new Player(pn, pg);
-        map = new Map(9, new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9},
-                      new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9},
-                      new String[] {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"});
+        map = new Map();
         enemy = new Enemy(en, eg);
         boolean gameIsOn = true;
     }

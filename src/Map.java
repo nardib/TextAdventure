@@ -11,7 +11,7 @@ public class Map
     BufferedImage[] DoorWall= new BufferedImage[4];
     BufferedImage[] PlainWall= new BufferedImage[3];
     Room[] rooms= new Room[MAPSIZE];
-    public Map(int MAPSIZE, int[] passageWays, int[] roomDoors, String[] roomNames)
+    public Map()
     {
         for (int i = 0; i < MAPSIZE; i++)
         {
@@ -130,5 +130,13 @@ public class Map
             else
                 rooms[i].setWWall(DoorWall[3]);
         }
+    }
+
+    public Room getRoom(int n)
+    {
+        if(0<=n || n<9)
+            return rooms[n];
+        else
+            throw new IllegalArgumentException("Room index out of bounds.");
     }
 }
