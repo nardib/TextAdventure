@@ -72,13 +72,13 @@ public class Character {
      */
     public void setCurrentRoom(Room r)
     {
-        currentRoom = r;
+        currentRoom = r.getRoomNumber();
     }
 
     /*
      * Method to get the current room of the player
      */
-    public Room getCurrentRoom()
+    public int getCurrentRoom()
     {
         return currentRoom;
     }
