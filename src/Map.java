@@ -8,9 +8,9 @@ public class Map
     final String[] roomNames = {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"};
     final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
     //array containing Walls with doors
-    BufferedImage[] DoorWall= new BufferedImage[4];
-    BufferedImage[] PlainWall= new BufferedImage[3];
-    Room[] rooms= new Room[MAPSIZE];
+    private BufferedImage[] DoorWall= new BufferedImage[4];
+    private BufferedImage[] PlainWall= new BufferedImage[3];
+    private Room[] rooms= new Room[MAPSIZE];
     public Map()
     {
         for (int i = 0; i < MAPSIZE; i++)
@@ -113,20 +113,20 @@ public class Map
                 }
             }
             //place walls based on crossable/non-crossable            
-            if(rooms[i].crossableNorth==false)
+            if(!rooms[i].getCrossableNorth())
                 rooms[i].setNWall(PlainWall[0]);
             else
                 rooms[i].setNWall(DoorWall[0]);
-            if(rooms[i].crossableEast==false)
+            if(!rooms[i].getCrossableEast())
                 rooms[i].setEWall(PlainWall[1]);
             else
                 rooms[i].setEWall(DoorWall[1]);
-            if(rooms[i].crossableSouth==false)
+            if(!rooms[i].getCrossableSouth())
                 rooms[i].setSWall(PlainWall[2]);
             else
                 rooms[i].setSWall(DoorWall[2]);
-            if(rooms[i].crossableWest==false)
-                rooms[i].setWWall(DoorWall[3]);
+            if(!rooms[i].getCrossableWest())
+                rooms[i].setWWall(PlainWall[3]);
             else
                 rooms[i].setWWall(DoorWall[3]);
         }

@@ -12,10 +12,11 @@ public class Room
     private BufferedImage EWall;
     private BufferedImage SWall;
     private BufferedImage WWall;
-    boolean crossableNorth;
-    boolean crossableEast;
-    boolean crossableSouth;
-    boolean crossableWest;
+    private boolean crossableNorth;
+    private boolean crossableEast;
+    private boolean crossableSouth;
+    private boolean crossableWest;
+    private BufferedImage[] Walls= new BufferedImage[36];
 
     /*
      * Room class constructor
@@ -25,10 +26,63 @@ public class Room
         this.roomNumber = n;
         this.name = nam;
         this.doors = d;
-        //this.NWall = image;
-        //this.EWall = image;
-        //this.SWall = image;
-        //this.WWall = image;
+        switch(n)
+        {
+            case 0:
+                this.NWall=Walls[0];
+                this.EWall=Walls[1];
+                this.SWall=Walls[2];
+                this.WWall=Walls[3];
+                break;
+            case 1:
+                this.NWall=Walls[4];
+                this.EWall=Walls[5];
+                this.SWall=Walls[6];
+                this.WWall=Walls[7];
+                break;
+            case 2:
+                this.NWall=Walls[8];
+                this.EWall=Walls[9];
+                this.SWall=Walls[10];
+                this.WWall=Walls[11];
+                break;
+            case 3:
+                this.NWall=Walls[12];
+                this.EWall=Walls[13];
+                this.SWall=Walls[14];
+                this.WWall=Walls[15];
+                break;
+            case 4:
+                this.NWall=Walls[16];
+                this.EWall=Walls[17];
+                this.SWall=Walls[18];
+                this.WWall=Walls[19];
+                break;
+            case 5:
+                this.NWall=Walls[20];
+                this.EWall=Walls[21];
+                this.SWall=Walls[22];
+                this.WWall=Walls[23];
+                break;
+            case 6:
+                this.NWall=Walls[24];
+                this.EWall=Walls[25];
+                this.SWall=Walls[26];
+                this.WWall=Walls[27];
+                break;
+            case 7:
+                this.NWall=Walls[28];
+                this.EWall=Walls[29];
+                this.SWall=Walls[30];
+                this.WWall=Walls[31];
+                break;
+            case 8:
+                this.NWall=Walls[32];
+                this.EWall=Walls[33];
+                this.SWall=Walls[34];
+                this.WWall=Walls[35];
+                break;
+        }
     }
     /*
      * Room class methods
@@ -98,5 +152,22 @@ public class Room
     public void setWWall(BufferedImage image)
     {
         WWall = image;
+    }
+
+    public boolean getCrossableNorth()
+    {
+        return crossableNorth;
+    }
+    public boolean getCrossableEast()
+    {
+        return crossableEast;
+    }
+    public boolean getCrossableSouth()
+    {
+        return crossableSouth;
+    }
+    public boolean getCrossableWest()
+    {
+        return crossableWest;
     }
 }
