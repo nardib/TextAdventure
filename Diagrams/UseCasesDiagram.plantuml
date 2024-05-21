@@ -1,0 +1,19 @@
+@startuml 
+
+(Start: starts the game) as (start)
+(Play: player submit text commands) as (play)
+(Player wins the game) as (win)
+(revert the last move) as (undo)
+(starts a new game) as (reset)
+(saves the actual state) as (save)
+(loads an already started game) as (load)
+
+Player -up-> (start)
+Player -up-> (play)
+Player -up-> (win)
+Player -down-> (undo)
+Player -down-> (reset)
+Player -down-> (save)
+Player -down-> (load)
+
+@enduml
