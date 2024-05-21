@@ -15,7 +15,32 @@ Game --> Player : Shows game interface
 
 alt insert an input in the TextField
     Player -> Game : submit a command
-    Game --> Player : shows the effects of the action made by the player
+    alt command is  "<direction>"
+        Game --> Player : Shows the wall n, e, w, s of the current room
+    else command is "cross <direction>"
+        alt no door in the specified direction in current room
+            Game --> Player : returns an error message
+        else 
+            Game --> Player : moves player in the desired room
+        end
+    else command is "look"
+        Game --> Player : Returns a list of the items in the room
+    else command is "take <item>"
+        alt the item is in the room and can fit the inventory
+            Game --> Player : Add the item to player inventory
+        else the item can't be taken
+            Game --> Player : Return an error message
+        end
+    else command is "use <item>"
+        alt the item is in the inventory
+            Game --> Player : Let the player use the object
+        else the object is not in the inventory
+            Game --> Player : Return an error message
+        end
+    end
+else clicks on "Back" button
+    Player --> Game : triggers "back" button
+    Game --> Player : returns back of a move
 else clicks on "Intruction" button
     Player -> Game : clicks on instruction Button
     Game --> Player : shows the instruction page with all the instructions
