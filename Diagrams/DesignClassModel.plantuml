@@ -1,8 +1,6 @@
 @startuml DesignClassModel
 
     class Player {
-        -name : String
-        -gender : Gender
         -health : int
         -score : int
         -arrayIndexCount : int
@@ -10,10 +8,6 @@
         -inventory : Item[]
         -currentuDirection : Direction
         +Player()
-        +getName()
-        +setName()
-        +getGender()
-        +setGender()
         +decreaseHealth()
         +increaseHealth()
         +getHealth()
@@ -41,22 +35,35 @@
         -currentRoom : Room
         -damage : int
         -presence : boolean
-        -available : boolean[];
+        -rooms : boolean[];
+        + DAMAGE : int
+        +move()
+        +Enemy()
     }
     class GameFrame {
         x : int
         y : int
         +GameFrame()
     }
-    class Game
+    class Game {
+        -player : Player
+        -map : Map
+        -enemy : Enemy
+        +Game()
+        -playerTurn()
+        -enemyTurn()
+        +nextmove()
+    }
     class Main {
         +main()
     }
     class Item{
         #icon : ImageIcon
         #weight : int
+        -currentRoom : int
         +getIcon()
         +getWeight()
+        +getRoom()
     }
     class Key {
         +Key()
@@ -77,13 +84,15 @@
         -SWall :BufferedImage
         -EWall :BufferedImage
         -WWall :BufferedImage
-        crossableNorth : boolean
-        crossableSouth : boolean
-        crossableEast : boolean
-        crossableWest : boolean
+        -crossableNorth : boolean
+        -crossableSouth : boolean
+        -crossableEast : boolean
+        -crossableWest : boolean
+        -Walls : BufferedImage[]
         +Room()
         +getName()
         +getRoomNumber()
+        +getDoors()
         +addPassageWay()
         +getNWall()
         +getSWall()
@@ -93,6 +102,23 @@
         +setSWall()
         +setEWall()
         +setWWall()
+        +getCrossableNorth()
+        +getCrossableSouth()
+        +getCrossableEast()
+        +getCrossableWest()
+    }
+    
+    class Character {
+        #name : String
+        #gender : Gender
+        #currentRoom : int
+        +Character()
+        +getName()
+        +getGender()
+        +getCurrentRoom()
+        +setCurrentRoom()
+        +setName()
+        +setGender()
     }
 
     Player ..|> Gender
@@ -101,6 +127,7 @@
     Player ..|> Direction
     Key --|> Item
     Enemy ..|> Gender
-
+    Character <|-- Player
+    Character <|-- Enemy
 
 @enduml

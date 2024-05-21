@@ -20,7 +20,7 @@ public class Game {
     /*
      * Method to manage the player moves
      */
-    public void playerTurn(String input) {
+    private void playerTurn(String input) {
         if (input.equalsIgnoreCase("north")){
             player.changeDirection(Direction.NORTH);
         }
@@ -38,7 +38,7 @@ public class Game {
     /*
      * Method to manage the enemy moves
      */
-    public void enemyTurn() {
+    private void enemyTurn() {
         if (enemy.getCurrentRoom() == player.getCurrentRoom()) {
             player.decreaseHealth();
         }
