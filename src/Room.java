@@ -105,18 +105,22 @@ public class Room
         if(room.getRoomNumber() == roomNumber + 1)
         {
             crossableEast = true;
+            this.getEWall().setDoor();
         }
         else if(room.getRoomNumber() == roomNumber - 1)
         {
             crossableWest = true;
+            this.getWWall().setDoor();
         }
         else if(room.getRoomNumber() == roomNumber + 3)
         {
             crossableSouth = true;
+            this.getSWall().setDoor();
         }
         else if(room.getRoomNumber() == roomNumber - 3)
         {
             crossableNorth = true;
+            this.getNWall().setDoor();
         }
     }
 

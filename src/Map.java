@@ -1,3 +1,5 @@
+import java.awt.image.*;
+
 public class Map 
 {
     final int MAPSIZE = 9;
@@ -5,6 +7,8 @@ public class Map
     //array of passable walls
     final String[] roomNames = {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"};
     final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
+    //array of all walls images
+    private BufferedImage[] walls = new BufferedImage[36];
     //array containing Walls with doors
     private Wall[] DoorWall= new Wall[4];
     private Wall[] PlainWall= new Wall[3];
@@ -15,6 +19,11 @@ public class Map
         {
             Room room = new Room(i+1, roomDoors[i], roomNames[i]);
             rooms[i] = room;
+            rooms[i].setNWall(walls[i*4], false);
+            rooms[i].setEWall(walls[i*4+1], false);
+            rooms[i].setSWall(walls[i*4+2], false);
+            rooms[i].setWWall(walls[i*4+3], false);
+            
         }
         for (int i=0; i < passageWays.length; i++)
         {

@@ -60,6 +60,12 @@ public class Wall {
         g.dispose();
     }
 
+    //Set door wall
+    public void setDoor()
+    {
+        hasDoor = true;
+    }
+
     // Create a copy of a BufferedImage
     private static BufferedImage deepCopy(BufferedImage bi) 
     {
