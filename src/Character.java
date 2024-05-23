@@ -7,6 +7,14 @@ public class Character {
     protected int currentRoom;
 
     /*
+     * constants values to change the room with int
+     */
+    final static int CROSS_NORTH = -3; 
+    final static int CROSS_SOUTH = 3;
+    final static int CROSS_EAST = 1;
+    final static int CROSS_WEST = -1;
+
+    /*
      * method to move the character
      */
     //public void move() {}
@@ -70,9 +78,11 @@ public class Character {
     /*
      * Method to set the current room of the player
      */
-    public void setCurrentRoom(Room r)
+    public void setCurrentRoom(int n)
     {
-        currentRoom = r.getRoomNumber();
+        if (currentRoom + n <= 0 || currentRoom + n >= 9)
+            throw new IllegalArgumentException("Invalid Room");
+        currentRoom += n;
     }
 
     /*
