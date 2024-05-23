@@ -23,15 +23,54 @@ public class Game {
     private void playerTurn(String input) {
         if (input.equalsIgnoreCase("north")){
             player.changeDirection(Direction.NORTH);
+            return;
         }
         else if (input.equalsIgnoreCase("south")){
             player.changeDirection(Direction.SOUTH);
+            return;
         }
         else if (input.equalsIgnoreCase("east")){
             player.changeDirection(Direction.EAST);
+            return;
         }
         else if (input.equalsIgnoreCase("west")){
             player.changeDirection(Direction.WEST);
+            return;
+        }
+        else if(input.substring(0, 5).equalsIgnoreCase("cross"))
+        {
+            if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
+                player.setCurrentRoom(Player.CROSS_NORTH);
+                return;
+            }
+            else if (input.substring(6).equalsIgnoreCase("south") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
+                player.setCurrentRoom(Player.CROSS_SOUTH);
+                return;
+            }
+            else if (input.substring(6).equalsIgnoreCase("east") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
+                player.setCurrentRoom(Player.CROSS_EAST);
+                return;
+            }
+            else if (input.substring(6).equalsIgnoreCase("west") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
+                player.setCurrentRoom(Player.CROSS_WEST);
+                return;
+            }
+            throw new IllegalArgumentException("You can't cross in that direction");
+        }
+        /*
+        else if (input.equalsIgnoreCase("look"))
+        {
+            Map.getRoom(player.getCurrentRoom()).);
+        }*/
+        /*
+        else if (input.substring(0, 4).equalsIgnoreCase("take"))
+        {
+            if (input.substring(5).equalsIgnoreCase()
+        }
+        */
+        else if(input.substring(0, 3).equalsIgnoreCase("use"))
+        {
+            return;
         }
      }
 
@@ -43,7 +82,7 @@ public class Game {
             player.decreaseHealth();
         }
         else {
-            enemy.move(map.getRoom(1));
+            enemy.move(map.getRoom(enemy.getCurrentRoom()));
         }
     }
 

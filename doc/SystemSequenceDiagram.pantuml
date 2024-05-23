@@ -8,7 +8,7 @@ Game --> Player : Shows the start page
 alt click on "New Game"
     Player -> Game : New Game
 else click on "Resume Game"
-    Player -> Game : Resume Game
+    Player -> Game : Load Game
 end
 
 Game --> Player : Shows game interface
