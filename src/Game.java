@@ -8,7 +8,7 @@ public class Game {
     private Player player;
     private Map map;
     private Enemy enemy;
-    private boolean gameIsOn;
+    private boolean gameIsOn, isGameRunning;
     private List<GameMemento> mementos = new ArrayList<>();
 
     /*
@@ -18,7 +18,8 @@ public class Game {
         player = new Player(pn, pg);
         map = new Map();
         enemy = new Enemy(en, eg);
-        boolean gameIsOn = true;
+        gameIsOn = true;
+        isGameRunning = true;
     }
 
     /*
@@ -64,12 +65,25 @@ public class Game {
         /*
         else if (input.equalsIgnoreCase("look"))
         {
-            Map.getRoom(player.getCurrentRoom()).);
+            Item[] roomItems = map.getRoom(player.getCurrentRoom()).getItems());
+            String items = "In this room there are these items:\n";
+            for (i = 0; i < roomItems.length; i++)
+            {
+                items += (i+1) + ") " + roomItems[i].getName() + "\n";
+            }
+            return items;
         }*/
         /*
         else if (input.substring(0, 4).equalsIgnoreCase("take"))
         {
-            if (input.substring(5).equalsIgnoreCase()
+            if (map.getRoom(player.getCurrentRoom()).getItems().length == 0)
+            {
+                return "There are no items in this room";
+            }
+            else
+            {
+                //chech if item is in the room and then add it to the player inventory
+            }
         }
         */
         else if(input.substring(0, 3).equalsIgnoreCase("use"))
@@ -82,36 +96,56 @@ public class Game {
     /*
      * Method to manage the enemy moves
      */
-    private void enemyTurn() {
+    private String enemyTurn() {
         if (enemy.getCurrentRoom() == player.getCurrentRoom()) {
             player.decreaseHealth();
+            return "The enemy attacked you";
         }
         else {
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
+            return "The enemy moved to another room";
         }
     }
 
     /*
      * Method to generate the actions of a move
      */
-    public void nextMove(String input) {
+    public String nextMove(String input) {
         if (!gameIsOn) {
             throw new IllegalArgumentException("Game is over");
         }
-        else if (input.equalsIgnoreCase("undo")) {
+        else if (!isGameRunning) {
+            if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
+                gameIsOn = false;
+                return "Game over";
+            }
+            if (input.equalsIgnoreCase("save"))
+            {
+                //save the game
+                return "Game saved";
+            }
+            if (input.equalsIgnoreCase("resume"))
+            {
+                isGameRunning = true;
+                return "Game resumed";
+            }
+        }
+        if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             undo();
-            return;
+            return "Undo successful";
         }
-        else if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-            gameIsOn = false;
-            return;
-        }
+        String out = "";
         // player turn
-        playerTurn(input);
+        try {
+            out += playerTurn(input);
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
         // enemy turn
-        enemyTurn();
+        out += enemyTurn();
         //i save the state of the game after each move
         saveCurrentState();
+        return out;
     }
 
     /*
