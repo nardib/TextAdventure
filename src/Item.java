@@ -11,6 +11,18 @@ public class Item {
     protected boolean pikable; 
 
     /*
+     * constructor
+     */
+    public Item(String name, String image, int weight, int currentRoom, boolean pikable)
+    {
+        icon = new ImageIcon(getClass().getResource(image));
+        this.weight = weight;
+        this.name = name;
+        this.currentRoom = currentRoom;
+        this.pikable = pikable;
+    }
+
+    /*
      * retrurns the icon of the image
      */
     public ImageIcon getIcon()
