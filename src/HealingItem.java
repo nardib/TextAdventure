@@ -4,13 +4,21 @@ public class HealingItem extends Item {
     /*
      * constructor
      */
-    public HealingItem(String name, String image, int weight, int currentRoom, boolean pickable, int healthPoints)
+    public HealingItem(String name, String image, int weight, int currentRoom, int healthPoints)
     {
-        super(name, image, weight, currentRoom, pickable);
+        super(name, image, weight, currentRoom, true);
         if (healthPoints < 0)
         {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
         }
         this.healthPoints = healthPoints;
+    }
+
+    /*
+     * getter for healthPoints
+     */
+    public int getHealthPoints()
+    {
+        return healthPoints;
     }
 }

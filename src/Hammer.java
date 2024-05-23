@@ -2,8 +2,8 @@ public class Hammer extends Item {
     /*
      * constructor
      */
-    public Hammer(String name, String image, int weight, int currentRoom, boolean pickable)
+    public Hammer(String name, String image, int weight, int currentRoom)
     {
-        super(name, image, weight, currentRoom, pickable);
+        super(name, image, weight, currentRoom, true);
     }    
 }

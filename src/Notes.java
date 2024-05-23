@@ -9,9 +9,9 @@ public class Notes extends Item {
     /*
      * constructor
      */
-    public Notes(String name, String image, int weight, int currentRoom, boolean pickable, String message)
+    public Notes(String name, String image, int weight, int currentRoom, String message)
     {
-        super(name, image, weight, currentRoom, pickable);
+        super(name, image, weight, currentRoom, true);
         this.message = message;
     }    
 }

@@ -12,9 +12,9 @@ public class Key extends Item {
     /*
      * constructor
      */
-    public Key(String name, int id, String image, int weight, int currentRoom, boolean pickable)
+    public Key(String name, int id, String image, int weight, int currentRoom)
     {
-        super(name, image, weight, currentRoom, pickable);
+        super(name, image, weight, currentRoom, true);
         this.id = id;
     }    
 }
