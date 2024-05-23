@@ -115,4 +115,11 @@ public class Player extends Character{
     public void changeDirection(Direction newDirection) {
         currentDirection = newDirection;
     }
+
+    /* 
+     * returns the current direction of the player
+     */
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
 }
