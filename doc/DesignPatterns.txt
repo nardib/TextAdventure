@@ -1,0 +1,1 @@
+Information expert : game class has the responsability to manage the information about player, enemy and map class (?)

@@ -56,4 +56,15 @@ public class Game {
             // enemy turn
             enemyTurn();
     }
+
+    /*
+     * Method to check if the game is over
+     */
+    public boolean isGameOver() {
+        if (player.getHealth() == 0) {
+            gameIsOn = false;
+        }
+        //i should probably add a win condition here
+        return gameIsOn;
+    }
 }
