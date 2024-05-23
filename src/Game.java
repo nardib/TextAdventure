@@ -40,19 +40,19 @@ public class Game {
         else if(input.substring(0, 5).equalsIgnoreCase("cross"))
         {
             if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
-                player.setCurrentRoom(Player.CROSS_NORTH);
+                player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 return;
             }
             else if (input.substring(6).equalsIgnoreCase("south") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
-                player.setCurrentRoom(Player.CROSS_SOUTH);
+                player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 return;
             }
             else if (input.substring(6).equalsIgnoreCase("east") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
-                player.setCurrentRoom(Player.CROSS_EAST);
+                player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 return;
             }
             else if (input.substring(6).equalsIgnoreCase("west") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
-                player.setCurrentRoom(Player.CROSS_WEST);
+                player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 return;
             }
             throw new IllegalArgumentException("You can't cross in that direction");
