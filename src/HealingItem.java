@@ -4,9 +4,9 @@ public class HealingItem extends Item {
     /*
      * constructor
      */
-    public HealingItem(String name, String image, int weight, int currentRoom, boolean pikable, int healthPoints)
+    public HealingItem(String name, String image, int weight, int currentRoom, boolean pickable, int healthPoints)
     {
-        super(name, image, weight, currentRoom, pikable);
+        super(name, image, weight, currentRoom, pickable);
         if (healthPoints < 0)
         {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");

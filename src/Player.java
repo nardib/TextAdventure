@@ -26,16 +26,22 @@ public class Player extends Character{
     private Direction currentDirection;
 
     /*
+     * constants
+     */
+    final int MAX_HEALTH = 5;
+    final int MAX_WEIGHT = 10;
+
+    /*
      * Constructor for the player
      */
     public Player(String n, String g)
     {
         super(n, g);
-        health = 5;
+        health = MAX_HEALTH;
         score = 0;
         ArrayIndexCount = 0;
         WeightCount = 0;
-        inventory = new Item[10];
+        inventory = new Item[MAX_WEIGHT]; 
         currentDirection = Direction.NORTH;
     }
 
@@ -72,8 +78,10 @@ public class Player extends Character{
      */
     public void insertItem(Item i)
     {
-        if (/*maxArrayIndexCount == 9 ||*/ WeightCount + i.getWeight() > 10)
+        if (WeightCount + i.getWeight() > 10)
             throw new IllegalStateException("The item weigth exiding the max carriable weigth");
+        if (!i.isPickable())
+            throw new IllegalArgumentException("The item is not pickable");
         WeightCount += i.getWeight();
         ArrayIndexCount++;
     }

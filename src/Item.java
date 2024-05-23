@@ -8,18 +8,18 @@ public class Item {
     protected ImageIcon icon;
     protected int weight;
     protected int currentRoom;
-    protected boolean pikable; 
+    protected boolean pickable; 
 
     /*
      * constructor
      */
-    public Item(String name, String image, int weight, int currentRoom, boolean pikable)
+    public Item(String name, String image, int weight, int currentRoom, boolean pickable)
     {
         icon = new ImageIcon(getClass().getResource(image));
         this.weight = weight;
         this.name = name;
         this.currentRoom = currentRoom;
-        this.pikable = pikable;
+        this.pickable = pickable;
     }
 
     /*
@@ -57,8 +57,8 @@ public class Item {
     /*
      * is held?
      */
-    public boolean isPikable()
+    public boolean isPickable()
     {
-        return pikable;
+        return pickable;
     }
 }
