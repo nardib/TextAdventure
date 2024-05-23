@@ -1,5 +1,3 @@
-import java.awt.image.*;
-
 public class Map 
 {
     final int MAPSIZE = 9;
