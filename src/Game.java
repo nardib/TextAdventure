@@ -106,4 +106,8 @@ public class Game {
         //i should probably add a win condition here
         return gameIsOn;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
