@@ -14,7 +14,7 @@ There should be a class for processing text inputs through a text field.
 Items:
 - key
 - hammer
-- bendages (2 health point restored)
+- bandages (2 health point restored)
 - painkillers (1 health point restored)
 - notes
 - lock

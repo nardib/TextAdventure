@@ -4,9 +4,11 @@ public class Item {
     /*
      * state variable
      */
+    protected String name;
     protected ImageIcon icon;
     protected int weight;
-    private int currentRoom;
+    protected int currentRoom;
+    protected boolean pikable; 
 
     /*
      * retrurns the icon of the image
@@ -30,5 +32,21 @@ public class Item {
     public int getRoom()
     {
         return currentRoom;
+    }
+    
+    /*
+     * used to get the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    /*
+     * is held?
+     */
+    public boolean isPikable()
+    {
+        return pikable;
     }
 }

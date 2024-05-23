@@ -7,7 +7,7 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
     public final int DAMAGE = 1; //number of HP decreased to the player every 1.5 seconds
     private boolean[] rooms = new boolean[4]; //contiene i boleani N, S, E, W per sapere se la facciata ha la porta o meno
 
-    public int move(Room n/*, Room s, Room e, Room w*/) //quali sono le stanze adiacenti?
+    public int move(Room n/*, Room s, Room e, Room w*/) //oggetto stanza in cui mi trovo. non uso currentRoom perchè è solo un numero e non l'oggetto con le proprietà
     {
         rooms[0] = n.getCrossableNorth(); //le stanze adiacenti sono accessibili?
         rooms[1] = n.getCrossableSouth(); //
