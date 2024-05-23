@@ -8,15 +8,15 @@ public class Room
     private int roomNumber;
     private String name;
     private int doors;
-    private BufferedImage NWall;
-    private BufferedImage EWall;
-    private BufferedImage SWall;
-    private BufferedImage WWall;
+    private Wall NWall;
+    private Wall EWall;
+    private Wall SWall;
+    private Wall WWall;
     private boolean crossableNorth;
     private boolean crossableEast;
     private boolean crossableSouth;
     private boolean crossableWest;
-    private BufferedImage[] Walls= new BufferedImage[36];
+    private Wall[] Walls= new Wall[36];
 
     /*
      * Room class constructor
@@ -120,38 +120,38 @@ public class Room
         }
     }
 
-    public BufferedImage getNWall()
+    public Wall getNWall()
     {
         return NWall;
     }
-    public BufferedImage getSWall()
+    public Wall getSWall()
     {
         return SWall;
     }
-    public BufferedImage getEWall()
+    public Wall getEWall()
     {
         return EWall;
     }
-    public BufferedImage getWWall()
+    public Wall getWWall()
     {
         return WWall;
     }
 
-    public void setNWall(BufferedImage image)
+    public void setNWall(BufferedImage image, boolean door)
     {
-        NWall = image;
+        NWall = new Wall(image, door);
     }
-    public void setSWall(BufferedImage image)
+    public void setSWall(BufferedImage image, boolean door)
     {
-        SWall = image;
+        SWall = new Wall(image, door);
     }
-    public void setEWall(BufferedImage image)
+    public void setEWall(BufferedImage image, boolean door)
     {
-        EWall = image;
+        EWall = new Wall(image, door);
     }
-    public void setWWall(BufferedImage image)
+    public void setWWall(BufferedImage image, boolean door)
     {
-        WWall = image;
+        WWall = new Wall(image, door);
     }
 
     public boolean getCrossableNorth()
