@@ -4,6 +4,10 @@ import java.awt.event.*;
 
 public class GameFrame implements MouseMotionListener, MouseListener
 {
+	/*
+	 * state variables
+	 */
+	Game game = new Game("Player", "m", "Enemy", "f");
 	//we should define a specific visibility for these two variables
 	int x=0;
 	int y=0;
