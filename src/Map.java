@@ -5,7 +5,7 @@ public class Map
     final int MAPSIZE = 9;
     final int[] passageWays = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11};
     //array of passable walls
-    final String[] roomNames = {"Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9"};
+    final String[] roomNames = {"Home Office", "Game Room", "Kitchen", "Garage", "Central Room", "Living Room", "Room 7", "Room 8", "Room 9"};
     final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
     //array of all walls images
     private BufferedImage[] walls = new BufferedImage[36];

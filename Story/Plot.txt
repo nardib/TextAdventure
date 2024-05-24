@@ -8,27 +8,94 @@ Solved rooms still contain clues/puzzles for further rooms
 comandi
 use inventoryObject targetObject
 
-Room 1
+Room 1 Home Office
+
 North Side
-Door on the left, clock in the top middle (07:35) Small table on the right with a house phone on top (will require a number to be called)
+There is a desk with drawers and doors. Inside will be 1 or 2 objects which will be used later
+
 East Side
-Paintings on the wall, family members. They each have a specific item in the background which will be required to open a box
-There is a large storage chest on the ground that can be used to hide from the pursuer.
-South Side
-There is a camera on the top left corner. There is a desk with drawers and doors. Inside will be 1 or 2 objects which will be used later
-On the desk there is a PC, running MacOS, which needs a password
-There is also a window, looking outside of this one reveals nothing
-West Side
 There is an open door here at the center. On the left of the door is a safe hidden behind a painting, code for said safe will be found later
 On the right is a pinboard with a key and some notes hanging, which will obviously be clues.
 
-Room 2
+South Side
+Door. Clock in the top left (07:35) Small table on the right with a house phone on top (will require a number to be called)
+
+West Side
+Paintings on the wall, family members. They each have a specific item in the background which will be required to open a box
+There is a large storage chest on the ground that can be used to hide from the pursuer.
+
+Room 2 Game room
+
 N
+Chest with a keyhole
+Paintings to fill up space, might have some clues
+
+E
+Door in the middle
 D6 on 6 face, buttons need to be pressed in a certain order
 Case with board and card games
-Door in the middle
-E
 
 S
+Table with chairs, chess game on top, layout of pawns is a clue
 
 W
+door
+Posters of some games with clues (?)
+
+Room 3 Kitchen
+
+N
+Fridge, locked with a lock, inside is bandages and some hints
+Countertop painkillers
+E
+Countertop key on the wall
+
+S
+DOOR
+Cabinet for hiding, paintings
+Table on the right corner with a chair
+
+W
+DOOR
+Table on the left corner with a chair
+On the right cuckoo clock
+
+Room 4 Garage
+
+N
+DOOR
+Tools rack with an hammer on the left, Tools rack with ... on the right
+
+E
+DOOR
+Rack on the left with bandages
+Cabinet on the right
+
+S
+DOOR
+Bikes on the wall, Some more tools for garage use
+
+W
+CLOSED GARAGE DOOR
+switch on the side (not working)
+
+Room 5 Central Room
+
+N
+
+E
+DOOR
+
+S
+DOOR
+
+W
+DOOR
+
+Room 6 Living Room
+
+Room 7 ?
+
+Room 8 Bedroom
+
+Room 9 Bathroom
