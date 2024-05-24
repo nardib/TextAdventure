@@ -25,7 +25,7 @@
     }
 
     Player "1" -- "1" Enemy : attacks < 
-    Rooms "20" -- "1" Map : are part of >
+    Rooms "9" -- "1" Map : are part of >
     Items "0..10" -- "1" Player : collect <
     Enemy "1" -- "1" Map : acts in >
     Player "1" -- "1" Map : plays in >

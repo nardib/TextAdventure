@@ -1,4 +1,4 @@
-@startuml 
+@startuml Use Case Diagram
 
 (Start: starts the game) as (start)
 (Play: player submit text commands) as (play)

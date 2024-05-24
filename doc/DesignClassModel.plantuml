@@ -7,6 +7,7 @@
         -weightCount : int
         -inventory : Item[]
         -currentuDirection : Direction
+
         +Player()
         +decreaseHealth()
         +increaseHealth()
@@ -16,6 +17,15 @@
         +removeItem()
         +crossDoor()
         +changeDirection()
+        +getCurrentDirection()
+    }
+
+    class GameMemento{
+        GameMemento()
+        +getPlayer()
+        +getMap()
+        +getEnemy()
+        +getGameIsOn()
     }
 
     enum Gender {
@@ -30,13 +40,8 @@
         WEST
     }
     class Enemy{
-        -name : String
-        -gender : Gender
-        -currentRoom : Room
-        -damage : int
-        -presence : boolean
         -rooms : boolean[];
-        + DAMAGE : int
+
         +move()
         +Enemy()
     }
@@ -49,10 +54,20 @@
         -player : Player
         -map : Map
         -enemy : Enemy
+        -gameIsOn : boolean
+        -mementos : ArrayList
+
         +Game()
+       
+        +nextmove()
+        +isGameOver()
+        +getPlayer()
+        +getMap()
+        +getEnemy()
+        +undo()
+        -saveCurrentState()
         -playerTurn()
         -enemyTurn()
-        +nextmove()
     }
     class Main {
         +main()
@@ -60,35 +75,79 @@
     class Item{
         #icon : ImageIcon
         #weight : int
-        -currentRoom : int
+        #weight : int
+        #pickable : boolean
+        #currentRoom : int
+
+        +Item()
         +getIcon()
         +getWeight()
         +getRoom()
+        +getName()
+        +isPickable()
     }
-    class Key {
-        +Key()
-    }
-    class Map {
-        MapSize : int
-        passageWays : int[]
-        roomNames : String[]
-        roomDoors : int[]
-        rooms : Room[]
-        +Map()
 
+    class Hammer{
+        +Hammer()
+    }
+
+    class HidingItem{
+        +HidingItem()
+    }
+
+    class HealingItem{
+        -healthPoints : int
+
+        +getHealthPoints()
+        +HealingItem()
+    }
+
+    class Notes {
+        -message : String
+
+        +Notes()
+        +getMessage()
+    }
+
+    class Key {
+        -id : int
+
+        +Key()
+        +getId()
+    }
+
+    class Lock{
+        -id : int
+        -locked : boolean
+
+        +Lock()
+        +getId()
+        +isLocked()
+        +unlock()
+    }
+
+    class Map {
+        -walls : BufferedImage[]
+        -DoorWall : Wall[]
+        -PlainWall : Wall[]
+        -rooms : Room[]
+
+        +Map()
+        +getRoom()
     }
     class Room {
         -roomNumber : int
         -name : String
-        -NWall :BufferedImage
-        -SWall :BufferedImage
-        -EWall :BufferedImage
-        -WWall :BufferedImage
+        -NWall : Wall
+        -SWall : Wall
+        -EWall : Wall
+        -WWall : Wall
         -crossableNorth : boolean
         -crossableSouth : boolean
         -crossableEast : boolean
         -crossableWest : boolean
-        -Walls : BufferedImage[]
+        -Walls : Wall[]
+
         +Room()
         +getName()
         +getRoomNumber()
@@ -112,6 +171,7 @@
         #name : String
         #gender : Gender
         #currentRoom : int
+
         +Character()
         +getName()
         +getGender()
@@ -121,13 +181,42 @@
         +setGender()
     }
 
+    class Wall
+    {
+        -wall : BufferedImage
+        -hasDoor : boolean
+        -items : HashMap
+        -combined : BufferedImage
+        
+        +Wall()
+        +addItem()
+        +hasDoor()
+        +removeItem()
+        +getCombinedImage()
+        +setDoor()
+        -deepCopy()
+        -drawItems()
+    }
+
     Player ..|> Gender
-    Map ..|> Room
+    Map ..o Room
+    Room ..o Wall
     Player ..|> Item
     Player ..|> Direction
     Key --|> Item
+    Lock --|> Item
+    HealingItem --|> Item
+    Hammer --|> Item
+    HidingItem --|> Item
+    Notes --|> Item
     Enemy ..|> Gender
     Character <|-- Player
     Character <|-- Enemy
+    Player --o Game
+    Map --o Game
+    Enemy --o Game
+    GameMemento --* Game
+    Game --o GameFrame
+    GameFrame <|-- Main
 
 @enduml

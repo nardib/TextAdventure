@@ -8,7 +8,7 @@ public class Game {
     private Player player;
     private Map map;
     private Enemy enemy;
-    private boolean gameIsOn, isGameRunning;
+    private boolean isGameOn;
     private List<GameMemento> mementos = new ArrayList<>();
 
     /*
@@ -18,8 +18,7 @@ public class Game {
         player = new Player(pn, pg);
         map = new Map();
         enemy = new Enemy(en, eg);
-        gameIsOn = true;
-        isGameRunning = true;
+        isGameOn = true;
     }
 
     /*
@@ -111,12 +110,12 @@ public class Game {
      * Method to generate the actions of a move
      */
     public String nextMove(String input) {
-        if (!gameIsOn) {
+        if (!isGameOn) {
             throw new IllegalArgumentException("Game is over");
         }
-        else if (!isGameRunning) {
+        else if (!isGameOn) {
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-                gameIsOn = false;
+                isGameOn = false;
                 return "Game over";
             }
             if (input.equalsIgnoreCase("save"))
@@ -126,7 +125,7 @@ public class Game {
             }
             if (input.equalsIgnoreCase("resume"))
             {
-                isGameRunning = true;
+                isGameOn = true;
                 return "Game resumed";
             }
         }
@@ -153,10 +152,10 @@ public class Game {
      */
     public boolean isGameOver() {
         if (player.getHealth() == 0) {
-            gameIsOn = false;
+            isGameOn = false;
         }
         //i should probably add a win condition here
-        return gameIsOn;
+        return !isGameOn;
     }
 
     public Player getPlayer() {
@@ -178,13 +177,13 @@ public class Game {
         private final Player player;
         private final Enemy enemy;
         private final Map map;
-        private final boolean gameIsOn;
+        private final boolean isGameOn;
 
-        public GameMemento(Player player, Enemy enemy, Map map, boolean gameIsOn) {
+        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn) {
             this.player = player;
             this.enemy = enemy;
             this.map = map;
-            this.gameIsOn = gameIsOn;
+            this.isGameOn = isGameOn;
         }
 
         public Player getPlayer() {
@@ -199,8 +198,8 @@ public class Game {
             return map;
         }
 
-        public boolean getGameIsOn() {
-            return gameIsOn;
+        public boolean getisGameOn() {
+            return isGameOn;
         }
     }
 
@@ -208,7 +207,7 @@ public class Game {
      * Method to save the current state of the game
      */
     private void saveCurrentState() {
-        mementos.add(new GameMemento(player, enemy, map, gameIsOn));
+        mementos.add(new GameMemento(player, enemy, map, isGameOn));
     }
 
     /*
@@ -220,7 +219,7 @@ public class Game {
             player = memento.getPlayer();
             enemy = memento.getEnemy();
             map = memento.getMap();
-            gameIsOn = memento.getGameIsOn();
+            isGameOn = memento.getisGameOn();
             mementos.remove(mementos.size() - 1);
         }
     }
