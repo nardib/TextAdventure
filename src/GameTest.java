@@ -29,4 +29,32 @@ public class GameTest {
         g.nextMove("cross west");
         Assert.assertEquals(0, g.getPlayer().getCurrentRoom());
     }
+
+    //i verify that the game returns to a previous state after calling the undo method
+    @Test
+    public void undoTest() {
+        var g = new Game("Player", "f", "Enemy", "m");
+        var p = g.getPlayer();
+        var e = g.getEnemy();
+        var m = g.getMap();
+        var b = g.isGameOver();
+
+        //i do some random moves to change the state of the game
+        g.nextMove("south");
+        g.nextMove("cross east");
+        g.nextMove("look");
+
+        //i go back three states and i check if the state is the same as the initial one
+        g.nextMove("undo");
+        g.nextMove("undo");
+        g.nextMove("undo");
+
+        Assert.assertEquals(p, g.getPlayer());
+        Assert.assertEquals(e, g.getEnemy());
+        Assert.assertEquals(m, g.getMap());
+        Assert.assertEquals(b, g.isGameOver());
+    }
+
+    
+
 }

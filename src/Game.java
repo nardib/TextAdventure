@@ -163,6 +163,14 @@ public class Game {
         return player;
     }
 
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
     /*
      * class for memento pattern to implement undo function
      */
@@ -199,7 +207,7 @@ public class Game {
     /*
      * Method to save the current state of the game
      */
-    public void saveCurrentState() {
+    private void saveCurrentState() {
         mementos.add(new GameMemento(player, enemy, map, gameIsOn));
     }
 
