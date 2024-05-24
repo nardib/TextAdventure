@@ -24,12 +24,9 @@ public class Lock extends Item {
     public boolean unlock(Key k)
     {
         if(k.getId() == this.id)
-        {
             this.locked = false;
-        } 
         return this.locked;
     }
-
 
     /*
      * constructor
