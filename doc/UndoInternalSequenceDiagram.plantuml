@@ -1,0 +1,28 @@
+@startuml Undo
+
+title Undo Command - Intenal Sequence Diagram
+
+actor User
+participant GameFrame
+participant Game
+
+activate GameFrame
+User -> GameFrame : insert "undo" as a command
+
+activate Game
+GameFrame -> Game : "undo" or "back"
+
+Game -> Game : undo()
+
+alt "game has no previous moves" 
+    Game -> GameFrame : notify "No previous moves to undo"
+else "game has previous moves"
+    Game -> GameFrame : notify "Undo successful"
+deactivate Game
+end
+
+GameFrame -> User : display updated game state
+
+deactivate GameFrame
+
+@enduml

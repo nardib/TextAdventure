@@ -130,8 +130,10 @@ public class Game {
             }
         }
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
-            undo();
-            return "Undo successful";
+            if (undo()) {
+                return "Undo successful";
+            }
+            return "No previous moves to undo";
         }
         String out = "";
         // player turn
@@ -212,8 +214,10 @@ public class Game {
 
     /*
      * Method to undo the last move
+     * 
+     * @return true if undo is successful, false otherwise
      */
-    public void undo() {
+    public boolean undo() {
         if (mementos.size() > 0) {
             GameMemento memento = mementos.get(mementos.size() - 1);
             player = memento.getPlayer();
@@ -221,6 +225,8 @@ public class Game {
             map = memento.getMap();
             isGameOn = memento.getisGameOn();
             mementos.remove(mementos.size() - 1);
+            return true;
         }
+        return false;
     }
 }
