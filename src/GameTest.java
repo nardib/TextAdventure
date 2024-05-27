@@ -54,7 +54,4 @@ public class GameTest {
         Assert.assertEquals(m, g.getMap());
         Assert.assertEquals(b, g.isGameOver());
     }
-
-    
-
 }

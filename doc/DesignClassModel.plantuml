@@ -48,6 +48,7 @@
     class GameFrame {
         x : int
         y : int
+        game : Game
         +GameFrame()
     }
     class Game {
