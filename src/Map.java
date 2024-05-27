@@ -1,5 +1,3 @@
-import java.awt.image.*;
-
 public class Map 
 {
     final int MAPSIZE = 9;
@@ -7,90 +5,85 @@ public class Map
     //array of passable walls
     final String[] roomNames = {"Home Office", "Game Room", "Kitchen", "Garage", "Central Room", "Living Room", "Room 7", "Room 8", "Room 9"};
     final int[] roomDoors = {2, 2, 2, 3, 3, 3, 2, 2, 1};
-    //array of all walls images
-    private BufferedImage[] walls = new BufferedImage[36];
     //array containing Walls with doors
     private Wall[] DoorWall= new Wall[4];
     private Wall[] PlainWall= new Wall[3];
     private Room[] rooms= new Room[MAPSIZE];
     public Map()
     {
+        Room.loadImages();
         for (int i = 0; i < MAPSIZE; i++)
         {
             Room room = new Room(i+1, roomDoors[i], roomNames[i]);
             rooms[i] = room;
-            rooms[i].setNWall(walls[i*4], false);
-            rooms[i].setEWall(walls[i*4+1], false);
-            rooms[i].setSWall(walls[i*4+2], false);
-            rooms[i].setWWall(walls[i*4+3], false);
-            
         }
         for (int i=0; i < passageWays.length; i++)
         {
             switch(passageWays[i])
             {
-                case 1:
+                case 0:
                     // Add passage way room1 to room2
                     rooms[0].addPassageWay(rooms[1]);
                     rooms[1].addPassageWay(rooms[0]);
                     break;
-                case 2:
+                case 1:
                     // Add passage way room2 to room3
                     rooms[1].addPassageWay(rooms[2]);
                     rooms[2].addPassageWay(rooms[1]);
                     break;
-                case 3:
+                case 2:
                     // Add passage way room1 to room4
                     rooms[0].addPassageWay(rooms[3]);
                     rooms[3].addPassageWay(rooms[0]);
                     break;
-                case 4:
+                case 3:
                     // Add passage way room2 to room5
                     rooms[1].addPassageWay(rooms[4]);
                     rooms[4].addPassageWay(rooms[1]);
                     break;
-                case 5:
+                case 4:
                     // Add passage way room3 to room6
                     rooms[2].addPassageWay(rooms[5]);
                     rooms[5].addPassageWay(rooms[2]);
                     break;
-                case 6:
+                case 5:
                     // Add passage way room4 to room5
                     rooms[3].addPassageWay(rooms[4]);
                     rooms[4].addPassageWay(rooms[3]);
                     break;
-                case 7:
+                case 6:
                     // Add passage way room5 to room6
                     rooms[4].addPassageWay(rooms[5]);
                     rooms[5].addPassageWay(rooms[4]);
                     break;
-                case 8:
+                case 7:
                     // Add passage way room4 to room7
                     rooms[3].addPassageWay(rooms[6]);
                     rooms[6].addPassageWay(rooms[3]);
                     break;
-                case 9:
+                case 8:
                     // Add passage way room5 to room8
                     rooms[4].addPassageWay(rooms[7]);
                     rooms[7].addPassageWay(rooms[4]);
                     break;
-                case 10:
+                case 9:
                     // Add passage way room6 to room9
                     rooms[5].addPassageWay(rooms[8]);
                     rooms[8].addPassageWay(rooms[5]);
                     break;
-                case 11:
+                case 10:
                     // Add passage way room7 to room8
                     rooms[6].addPassageWay(rooms[7]);
                     rooms[7].addPassageWay(rooms[6]);
                     break;
-                case 12:
+                case 11:
                     // Add passage way room8 to room9
                     rooms[7].addPassageWay(rooms[8]);
                     rooms[8].addPassageWay(rooms[7]);
                     break;
             }
         }
+        /*
         for (int i = 0; i < MAPSIZE; i++)
         {
             for(int j=0; j<rooms[i].getDoors(); j++)
@@ -137,6 +130,7 @@ public class Map
             else
                 rooms[i].setWWall(DoorWall[3].getCombinedImage(), true);
         }
+        */
     }
 
     public Room getRoom(int n)

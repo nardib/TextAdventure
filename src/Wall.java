@@ -67,7 +67,7 @@ public class Wall {
     }
 
     // Create a copy of a BufferedImage
-    private static BufferedImage deepCopy(BufferedImage bi) 
+    private static BufferedImage deepCopy(BufferedImage bi)
     {
         return new BufferedImage(bi.getColorModel(),
                 bi.copyData(null),
