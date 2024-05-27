@@ -11,6 +11,8 @@ public class GameFrame implements MouseMotionListener, MouseListener
 	//we should define a specific visibility for these two variables
 	int x=0;
 	int y=0;
+	int wallcount=0;
+	Image[] Images= new Image[36];
 	public GameFrame()
 	{
 		//creating frame
@@ -22,6 +24,12 @@ public class GameFrame implements MouseMotionListener, MouseListener
 
 		frame.addMouseMotionListener(this);
 		frame.addMouseListener(this);
+
+		for(int i=0; i<36; i++)
+		{
+			Images[i] = (Image) Room.Walls[i].getCombinedImage();	
+		}
+
 
 		//creating panel and label for the game graphic
 		JPanel center = new JPanel();
@@ -58,9 +66,20 @@ public class GameFrame implements MouseMotionListener, MouseListener
 				graphic.setText("");
 			}
 		});
+		JButton nextWallButton = new JButton("Turn Right");
+		nextWallButton.setFont(new Font("Times New Roman", Font.PLAIN, 32));
+		nextWallButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				//load image of walls in N E S W order
+				graphic.setIcon(new ImageIcon(Images[wallcount]));
+				wallcount++;
+			}
+		});
 		bottom.add(startButton);
 		bottom.add(resetButton);
 		bottom.add(pauseButton);
+		bottom.add(nextWallButton);
 
 		//left panel with it's own buttons
 		JPanel left = new JPanel();
