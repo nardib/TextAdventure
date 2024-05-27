@@ -15,6 +15,28 @@ The game is a text adventure with a easy and clean graphic user interface (GUI).
 - picking up items (only the pickable ones)
 - using items
 
+### **Map & Rooms**
+The game is played in a 9 rooms map of fixed design and each room has a variable number of objects (up to 8 items) and doors (from 0 to 4),always enabled, connecting to other rooms.
+The main room from witch the game begins is also the final room where the game ends after having solved all the riddles and quiz consisting of varius challenges, from finding the right item to using logic and memory.
+
+Each item has its own weight (expressed in Kg) and the player can carry a maximum ammount of weight (10 Kg).
+Some items, like the hammer, can occupy almost all the carrable weight, forcing the player to carfully manage the storage.
+Also, once used, the item dissapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage.
+
+### **Player**
+At the beginning of the game, the user can choose the name and the gender of the player. 
+In orther to interract with the game, the player as to use the command line implemented in the GUI executing specific commands:
+
+- north (command used to change the facing direction to north wall of the room)
+- south (command used to change the facing direction to south wall of the room)
+- east (command used to change the facing direction to east wall of the room)
+- west (command used to change the facing direction to west wall of the room)
+
+- croos DIRECTION (command used to change the room so that you cross the door to go to the relative north room. Only aveilable if door is present in the direction wall. Instead of DIRECTION the player will write the direction north, south, east or west)
+
+- use ITEM (command used to interract with a specific item in your inventory. After using the item, it will dissapear freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
+
+- get ITEM (command used to interract with a specific item in the room. After keeping the item, it will appear in your inventory freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
 ## Project
 
 
