@@ -1,6 +1,8 @@
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.PrintStream;
 
 public class GameFrame implements MouseMotionListener, MouseListener {
     Game game = new Game("Player", "m", "Enemy", "f");
@@ -11,8 +13,8 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     boolean isFullscreen = false;
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     JFrame frame;
-    JTextArea terminal;
-    JPanel topPanel;
+    JTextPane terminal; // Cambiato da JTextArea a JTextPane
+    JPanel buttonPanel;
     JLabel gameStatusLabel;
 
     public GameFrame() {
@@ -27,7 +29,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         }
 
         JPanel center = new JPanel();
-        center.setBackground(new Color(245, 243, 200));
+        center.setBackground(new Color(0, 0, 0));
         center.setLayout(new BorderLayout());
 
         JLabel graphic = new JLabel();
@@ -36,22 +38,22 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         graphic.setVerticalAlignment(SwingConstants.CENTER);
         center.add(graphic, BorderLayout.CENTER);
 
-        terminal = new JTextArea();
+        JTextPane terminal = new JTextPane(); // Cambiato da JTextArea a JTextPane
         terminal.setEditable(true);
-        terminal.setLineWrap(true);
-        terminal.setWrapStyleWord(true);
-        terminal.setFont(new Font("Monospaced", Font.PLAIN, 12));
-
+        terminal.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        terminal.setBackground(new Color(28, 28, 28));
+        terminal.setForeground(Color.WHITE);
         JScrollPane terminalScrollPane = new JScrollPane(terminal);
         terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 150));
         center.add(terminalScrollPane, BorderLayout.SOUTH);
+        
 
         frame.add(center, BorderLayout.CENTER);
 
-        topPanel = new JPanel();
-        topPanel.setBackground(new Color(0, 0, 0));
-        topPanel.setLayout(new GridBagLayout());
-        topPanel.setPreferredSize(new Dimension(0, 45));
+        buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(28, 28, 28));
+        buttonPanel.setLayout(new GridBagLayout());
+        buttonPanel.setPreferredSize(new Dimension(0, 45));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -64,11 +66,14 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.EAST;
-        topPanel.add(gameStatusLabel, gbc);
+        buttonPanel.add(gameStatusLabel, gbc);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(0, 0, 0));
-        buttonPanel.setLayout(new FlowLayout());
+        JPanel buttonPanelCenter = new JPanel();
+        buttonPanelCenter.setBackground(new Color(0, 0, 0));
+        buttonPanelCenter.setLayout(new FlowLayout());
+
+        Color buttonBackgroundColor = new Color(70, 70, 70);
+        Color buttonTextColor = Color.WHITE;
 
         JButton startButton = new JButton("Start");
         startButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -77,7 +82,9 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("GIOCO INIZIATO");
             }
         });
-        buttonPanel.add(startButton);
+        startButton.setBackground(new Color(54, 54 ,54));
+        startButton.setForeground(Color.WHITE);
+        buttonPanelCenter.add(startButton);
 
         JButton pauseButton = new JButton("Pause");
         pauseButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -86,7 +93,9 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("GIOCO IN PAUSA");
             }
         });
-        buttonPanel.add(pauseButton);
+        pauseButton.setBackground(new Color(54, 54 ,54));
+        pauseButton.setForeground(Color.WHITE);
+        buttonPanelCenter.add(pauseButton);
 
         JButton resetButton = new JButton("Reset");
         resetButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -98,18 +107,22 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 wallcount = 0;
             }
         });
-        buttonPanel.add(resetButton);
+        resetButton.setBackground(new Color(54, 54 ,54));
+        resetButton.setForeground(Color.WHITE);
+        buttonPanelCenter.add(resetButton);
 
         JButton nextWallButton = new JButton("Turn Right");
         nextWallButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         nextWallButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 graphic.setIcon(new ImageIcon(Images[wallcount]));
-				gameStatusLabel.setText("");
+                gameStatusLabel.setText("");
                 wallcount++;
             }
         });
-        buttonPanel.add(nextWallButton);
+        nextWallButton.setBackground(new Color(54, 54 ,54));
+        nextWallButton.setForeground(Color.WHITE);
+        buttonPanelCenter.add(nextWallButton);
 
         JButton attackButton = new JButton("Attack");
         attackButton.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -118,15 +131,17 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 terminal.setText(frame.getHeight() + " " + frame.getWidth());
             }
         });
-        buttonPanel.add(attackButton);
+        attackButton.setBackground(new Color(54, 54 ,54));
+        attackButton.setForeground(Color.WHITE);
+        buttonPanelCenter.add(attackButton);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.CENTER;
-        topPanel.add(buttonPanel, gbc);
+        buttonPanel.add(buttonPanelCenter, gbc);
 
-        frame.add(topPanel, BorderLayout.PAGE_START);
+        frame.add(buttonPanel, BorderLayout.PAGE_START);
 
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
@@ -148,6 +163,11 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("F11");
             }
         });
+
+        // Reindirizza System.out e System.err alla JTextArea
+        PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
+        System.setOut(printStream);
+        System.setErr(printStream);
 
         frame.setVisible(true);
         toggleFullscreen();
