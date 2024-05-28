@@ -3,7 +3,7 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintStream;
-
+    
 public class GameFrame implements MouseMotionListener, MouseListener {
     Game game = new Game("Player", "m", "Enemy", "f");
     int x = 0;
@@ -192,9 +192,18 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     }
 
     private void writeToTerminal(String message) {
-        terminal.append(message + "\n");
-        terminal.setCaretPosition(terminal.getDocument().getLength());
+        StyledDocument doc = terminal.getStyledDocument(); // Ottieni il documento stile associato al JTextPane
+        SimpleAttributeSet paraSet = new SimpleAttributeSet();
+        StyleConstants.setLineSpacing(paraSet, -0.3f); // Imposta l'interlinea a un valore negativo per ridurre lo spazio tra le righe
+    
+        try {
+            doc.insertString(doc.getLength(), message, null); // Inserisci il messaggio seguito da un salto di riga nel documento
+            terminal.setCaretPosition(doc.getLength()); // Imposta la posizione del cursore alla fine del documento
+        } catch (BadLocationException e) {
+            e.printStackTrace(); // Gestione dell'eccezione BadLocationException
+        }
     }
+    
 
     public void mouseDragged(MouseEvent e) {
     }
