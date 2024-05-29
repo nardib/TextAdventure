@@ -44,12 +44,13 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         terminal.setFont(new Font("Monospaced", Font.PLAIN, 14));
         terminal.setBackground(new Color(28, 28, 28));
         terminal.setForeground(Color.WHITE);
-        
-        JPanel downPanel =new JPanel();
-        downPanel.setBackground(new Color(0, 0, 0));
-        //utilizzo BoxLayout per ordinare inputField e il terminale uno sopra all'altro, mettendoli in fondo al pannello center
-        downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.Y_AXIS));
-        center.add(downPanel, BorderLayout.PAGE_END);
+        JScrollPane terminalScrollPane = new JScrollPane(terminal);
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 140)); // Altezza del terminale a 140
+
+        // Pannello per terminal e input
+        JPanel downPanel = new JPanel();
+        downPanel.setLayout(new BorderLayout());
+        downPanel.add(terminalScrollPane, BorderLayout.CENTER);
 
         // Aggiungere il campo di testo per l'input dell'utente
         inputField = new JTextField();
@@ -57,13 +58,9 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         inputField.setBackground(new Color(28, 28, 28));
         inputField.setForeground(Color.WHITE);
         inputField.setCaretColor(Color.WHITE);
-        downPanel.add(inputField);
+        downPanel.add(inputField, BorderLayout.SOUTH);
 
-        // Aggiungere il JScrollPane per il terminale
-        JScrollPane terminalScrollPane = new JScrollPane(terminal);
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 140));
-        downPanel.add(terminalScrollPane, BorderLayout.SOUTH);
-        
+        center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
         buttonPanel = new JPanel();
@@ -121,6 +118,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 graphic.setText(" ");
                 graphic.setIcon(null);
                 wallcount = 0;
+                clearTerminal(); // Aggiungi questa linea per svuotare il terminale
             }
         });
         resetButton.setBackground(new Color(54, 54, 54));
@@ -146,11 +144,13 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String mex = inputField.getText();
-                if (mex.isEmpty()) {
+                writeToTerminal(game.nextMove(mex));
+
+                /*if (mex.isEmpty()) {
                     writeToTerminal("Non hai scritto nulla");
                 } else {
                     writeToTerminal("Si! Hai scritto: " + mex);
-                }
+                }*/
                 inputField.setText(""); // Pulisce il campo di testo dopo l'invio
             }
         });
@@ -172,9 +172,8 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 int w = frame.getWidth();
                 double grapSize = w / 25;
                 graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int) grapSize));
-
-                terminalScrollPane.setPreferredSize(new Dimension(w, 150));
-                center.setPreferredSize(new Dimension(w, h - 150));
+                terminalScrollPane.setPreferredSize(new Dimension(w, 140)); // Mantieni l'altezza del terminale a 140
+                center.setPreferredSize(new Dimension(w, h - 140));
             }
         });
 
@@ -217,11 +216,24 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     private void writeToTerminal(String message) {
         StyledDocument doc = terminal.getStyledDocument();
         SimpleAttributeSet paraSet = new SimpleAttributeSet();
-        StyleConstants.setLineSpacing(paraSet, -0.3f);
+        StyleConstants.setLineSpacing(paraSet, -0.2f); // Prova un valore più alto se -1f non funziona
 
         try {
+            // Inserisci il messaggio nel documento
             doc.insertString(doc.getLength(), message + "\n", paraSet);
+            // Applicare gli attributi di paragrafo all'area appena aggiunta
+            doc.setParagraphAttributes(doc.getLength() - message.length() - 1, message.length() + 1, paraSet, false);
+            // Imposta la posizione del cursore alla fine del documento
             terminal.setCaretPosition(doc.getLength());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearTerminal() {
+        StyledDocument doc = terminal.getStyledDocument();
+        try {
+            doc.remove(0, doc.getLength());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -256,5 +268,4 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     public void mouseReleased(MouseEvent e) {
         //System.out.println("You have RELEASED the mouse");
     }
-
 }

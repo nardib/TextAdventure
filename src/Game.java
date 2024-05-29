@@ -143,7 +143,7 @@ public class Game {
             return e.getMessage();
         }
         // enemy turn
-        out += enemyTurn();
+        out +="\n" + enemyTurn();
         //i save the state of the game after each move
         saveCurrentState();
         return out;
