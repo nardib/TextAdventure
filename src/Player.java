@@ -12,8 +12,8 @@ enum Gender{
  */
 enum Direction{
     NORTH,
-    SOUTH,
     EAST,
+    SOUTH,
     WEST
 }
 

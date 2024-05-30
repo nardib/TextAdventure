@@ -33,7 +33,7 @@ public class Character {
             gender = Gender.NEUTRAL;
         else
             throw new IllegalArgumentException("Invalid Gender");
-        currentRoom = 5;
+        currentRoom = 1;
     }
 
     /*
@@ -80,9 +80,9 @@ public class Character {
      */
     public void setCurrentRoom(int n)
     {
-        if (currentRoom + n <= 0 || currentRoom + n > 9)
+        if (n <= 0 || n > 9)
             throw new IllegalArgumentException("Invalid Room");
-        currentRoom += n;
+        currentRoom = n;
     }
 
     /*

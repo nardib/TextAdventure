@@ -34,7 +34,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         center.setLayout(new BorderLayout());
 
         JLabel graphic = new JLabel();
-        graphic.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
         center.add(graphic, BorderLayout.CENTER);
@@ -58,12 +58,15 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         inputField.setBackground(new Color(28, 28, 28));
         inputField.setForeground(Color.WHITE);
         inputField.setCaretColor(Color.WHITE);
+        //added this in order to perform an action when "enter" key is triggered
         inputField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
-                    inputField.setText(""); // Pulisce il campo di testo dopo l'invio
+                    //i print the current room and direction of the player as an image
+                    graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom()-1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+                    inputField.setText("");
                 }
             }
         });
@@ -81,7 +84,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         gameStatusLabel = new JLabel();
-        gameStatusLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        gameStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
         gameStatusLabel.setForeground(Color.WHITE);
 
         gbc.gridx = 2;
@@ -98,7 +101,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         Color buttonTextColor = Color.WHITE;
 
         JButton startButton = new JButton("Start");
-        startButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        startButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameStatusLabel.setText("GIOCO INIZIATO");
@@ -109,7 +112,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         buttonPanelCenter.add(startButton);
 
         JButton pauseButton = new JButton("Pause");
-        pauseButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        pauseButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
         pauseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameStatusLabel.setText("GIOCO IN PAUSA");
@@ -120,7 +123,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         buttonPanelCenter.add(pauseButton);
 
         JButton resetButton = new JButton("Reset");
-        resetButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        resetButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
         resetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameStatusLabel.setText("");
@@ -135,7 +138,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         buttonPanelCenter.add(resetButton);
 
         JButton nextWallButton = new JButton("Turn Right");
-        nextWallButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        nextWallButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
         nextWallButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 graphic.setIcon(new ImageIcon(Images[wallcount]));
@@ -148,7 +151,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         buttonPanelCenter.add(nextWallButton);
 
         JButton attackButton = new JButton("Attack");
-        attackButton.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        attackButton.setFont(new Font("Monospaced", Font.BOLD, 20));
         writeToTerminal("Prova per il funzionamento del terminale, scrivi qualcosa");
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -175,17 +178,19 @@ public class GameFrame implements MouseMotionListener, MouseListener {
 
         frame.add(buttonPanel, BorderLayout.PAGE_START);
 
+        //this function changes the size of some things when the window is resized
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 int h = frame.getHeight();
                 int w = frame.getWidth();
                 double grapSize = w / 25;
-                graphic.setFont(new Font("Times New Roman", Font.PLAIN, (int) grapSize));
+                graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
                 terminalScrollPane.setPreferredSize(new Dimension(w, 140)); // Mantieni l'altezza del terminale a 140
                 center.setPreferredSize(new Dimension(w, h - 140));
             }
         });
 
+        //when triggered f11 key the window is put in fullscreen mode or windowed mode
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "toggleFullscreen");
         frame.getRootPane().getActionMap().put("toggleFullscreen", new AbstractAction() {
@@ -194,11 +199,12 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("F11");
             }
         });
-
+        /*
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         System.setOut(printStream);
         System.setErr(printStream);
+        */
 
         frame.setVisible(true);
         toggleFullscreen();

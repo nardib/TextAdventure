@@ -135,8 +135,8 @@ public class Map
 
     public Room getRoom(int n)
     {
-        if(0<=n || n<9)
-            return rooms[n];
+        if(0<n || n<=9)
+            return rooms[n-1];
         else
             throw new IllegalArgumentException("Room index out of bounds.");
     }
