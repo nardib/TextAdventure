@@ -22,7 +22,7 @@ public class Character {
     /*
      * Constructior for the character
      */
-    public Character(String n, String g/*aggingeremo il parametro Room r che sarà la stanza di partenza */)
+    public Character(String n, String g, int currRoom)
     {
         name = n;
         if(g.toLowerCase().compareTo("m") == 0 || g.toLowerCase().compareTo("male") == 0)
@@ -33,7 +33,7 @@ public class Character {
             gender = Gender.NEUTRAL;
         else
             throw new IllegalArgumentException("Invalid Gender");
-        currentRoom = 1;
+        currentRoom = currRoom;
     }
 
     /*

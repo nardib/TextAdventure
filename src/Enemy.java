@@ -32,6 +32,15 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
     }
 
     public Enemy(String n, String g) {
-        super(n, g);
+        super(n, g, generateStartingPoint());
+    }
+
+    //private function to generate a random numeber for the starting point between 1 and 9 except 5
+    private static int generateStartingPoint() {
+        int room = (int) Math.round(Math.random()*8)+1;
+        if(room == 5) {
+            return generateStartingPoint();
+        }
+        return room;
     }
 }

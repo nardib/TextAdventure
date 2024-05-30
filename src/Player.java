@@ -30,13 +30,14 @@ public class Player extends Character{
      */
     final int MAX_HEALTH = 5;
     final int MAX_WEIGHT = 10;
+    final static int STARTING_ROOM = 5;
 
     /*
      * Constructor for the player
      */
     public Player(String n, String g)
     {
-        super(n, g);
+        super(n, g, STARTING_ROOM);
         health = MAX_HEALTH;
         score = 0;
         ArrayIndexCount = 0;

@@ -37,6 +37,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
+        graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom()-1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
         center.add(graphic, BorderLayout.CENTER);
 
         terminal = new JTextPane(); // Cambiato da JTextArea a JTextPane
