@@ -58,6 +58,15 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         inputField.setBackground(new Color(28, 28, 28));
         inputField.setForeground(Color.WHITE);
         inputField.setCaretColor(Color.WHITE);
+        inputField.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String mex = inputField.getText();
+                    writeToTerminal(game.nextMove(mex));
+                    inputField.setText(""); // Pulisce il campo di testo dopo l'invio
+                }
+            }
+        });
         downPanel.add(inputField, BorderLayout.SOUTH);
 
         center.add(downPanel, BorderLayout.PAGE_END);

@@ -111,7 +111,7 @@ public class Game {
      */
     public String nextMove(String input) {
         if (!isGameOn) {
-            throw new IllegalArgumentException("Game is over");
+            return "Game is Over!";
         }
         else if (!isGameOn) {
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
