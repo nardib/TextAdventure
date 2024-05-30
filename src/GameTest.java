@@ -20,15 +20,45 @@ public class GameTest {
     @Test
     public void playerMove() {
         var g = new Game("Player", "f", "Enemy", "m");
-        Assert.assertTrue(g.getMap().getRoom(g.getPlayer().getCurrentRoom()).getCrossableSouth());
-        g.nextMove("cross south");
-        Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
-        g.nextMove("cross east");
+        //player is in the room 5
         Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
-        g.nextMove("cross north");
-        Assert.assertEquals(2, g.getPlayer().getCurrentRoom());
+        //test passage number 9
+        g.nextMove("cross south");
+        Assert.assertEquals(8, g.getPlayer().getCurrentRoom());
+        //test passage number 11
         g.nextMove("cross west");
+        Assert.assertEquals(7, g.getPlayer().getCurrentRoom());
+        //test passage number 8
+        g.nextMove("cross north");
+        Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
+        //test passage number 3
+        g.nextMove("cross north");
         Assert.assertEquals(1, g.getPlayer().getCurrentRoom());
+        //test passage number 1
+        g.nextMove("cross east");
+        Assert.assertEquals(2, g.getPlayer().getCurrentRoom());
+        //test passage number 4 (it doesn't exist)
+        g.nextMove("cross south ");
+        Assert.assertEquals(2, g.getPlayer().getCurrentRoom());
+        //test passage number 2
+        g.nextMove("cross east");
+        Assert.assertEquals(3, g.getPlayer().getCurrentRoom());
+        //test passage number 5
+        g.nextMove("cross south");
+        Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
+        //test passage number 10
+        g.nextMove("cross south");
+        Assert.assertEquals(9, g.getPlayer().getCurrentRoom());
+        //test passage number 12 (it doesn't exist)
+        g.nextMove("cross west");
+        Assert.assertEquals(9, g.getPlayer().getCurrentRoom());
+        //test passage number 7
+        g.nextMove("cross north");
+        g.nextMove("cross west");
+        Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
+        //test passage number 6
+        g.nextMove("cross west");
+        Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
     }
 
     //i verify that the game returns to a previous state after calling the undo method

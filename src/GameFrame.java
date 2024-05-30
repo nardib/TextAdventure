@@ -200,12 +200,12 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("F11");
             }
         });
-        /*
+        
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         System.setOut(printStream);
         System.setErr(printStream);
-        */
+        
 
         frame.setVisible(true);
         toggleFullscreen();
