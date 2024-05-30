@@ -44,20 +44,42 @@ public class Game {
         }
         else if(input.length() > 4 && input.substring(0, 5).equalsIgnoreCase("cross"))
         {
-            if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
+            if(input.length() == 5){
+                if(player.getCurrentDirection() == Direction.NORTH && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
+                    player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
+                    return "You moved to the room: " + player.getCurrentRoom();
+                }
+                else if(player.getCurrentDirection() == Direction.SOUTH && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
+                    player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
+                    return "You moved to the room: " + player.getCurrentRoom();
+                }
+                else if(player.getCurrentDirection() == Direction.EAST && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
+                    player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
+                    return "You moved to the room: " + player.getCurrentRoom();
+                }
+                else if(player.getCurrentDirection() == Direction.WEST && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
+                    player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
+                    return "You moved to the room: " + player.getCurrentRoom();
+                }
+            }
+            else if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
+                player.changeDirection(Direction.NORTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
             else if (input.substring(6).equalsIgnoreCase("south") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
+                player.changeDirection(Direction.SOUTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
             else if (input.substring(6).equalsIgnoreCase("east") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
+                player.changeDirection(Direction.EAST);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
             else if (input.substring(6).equalsIgnoreCase("west") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
+                player.changeDirection(Direction.WEST);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
             throw new IllegalArgumentException("You can't cross in that direction");
