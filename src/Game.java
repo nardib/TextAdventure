@@ -8,7 +8,7 @@ public class Game {
     private Player player;
     private Map map;
     private Enemy enemy;
-    private boolean isGameOn;
+    private boolean isGamePaused, isGameOn;
     private List<GameMemento> mementos = new ArrayList<>();
 
     /*
@@ -19,6 +19,7 @@ public class Game {
         map = new Map();
         enemy = new Enemy(en, eg);
         isGameOn = true;
+        isGamePaused = false;
     }
 
     /*
@@ -41,7 +42,7 @@ public class Game {
             player.changeDirection(Direction.WEST);
             return "You are now facing west";
         }
-        else if(input.substring(0, 5).equalsIgnoreCase("cross"))
+        else if(input.length() > 4 && input.substring(0, 5).equalsIgnoreCase("cross"))
         {
             if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
@@ -113,19 +114,20 @@ public class Game {
         if (!isGameOn) {
             return "Game is Over!";
         }
-        else if (!isGameOn) {
+        if (input.equalsIgnoreCase("pause")) {
+            isGamePaused = true;
+            return "Game paused";
+        }
+        else if (isGamePaused) {
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
                 isGameOn = false;
                 return "Game over";
             }
-            if (input.equalsIgnoreCase("save"))
-            {
-                //save the game
+            if (input.equalsIgnoreCase("save")) {
                 return "Game saved";
             }
-            if (input.equalsIgnoreCase("resume"))
-            {
-                isGameOn = true;
+            if (input.equalsIgnoreCase("resume")) {
+                isGamePaused = false;
                 return "Game resumed";
             }
         }

@@ -33,7 +33,7 @@ public class Character {
             gender = Gender.NEUTRAL;
         else
             throw new IllegalArgumentException("Invalid Gender");
-        currentRoom = 0;
+        currentRoom = 1;
     }
 
     /*

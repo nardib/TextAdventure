@@ -62,7 +62,13 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         inputField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String mex = inputField.getText();
+                    String mex = "";
+                    try{
+                        mex = inputField.getText();
+                    }
+                    catch (Exception ex){
+                        mex = "zio lupo";
+                    }
                     writeToTerminal(game.nextMove(mex));
                     inputField.setText("");
                 }
@@ -197,7 +203,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("F11");
             }
         });
-
+        
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         System.setOut(printStream);
