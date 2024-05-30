@@ -8,7 +8,8 @@ public class Item {
     protected ImageIcon icon;
     protected int weight;
     protected int currentRoom;
-    protected boolean pickable; 
+    protected boolean pickable;
+    protected String usingMessage;
 
     /*
      * constructor
@@ -60,5 +61,12 @@ public class Item {
     public boolean isPickable()
     {
         return pickable;
+    }
+
+    /*
+     * returns the using message
+     */
+    public String getUsingMessage() {
+        return usingMessage;
     }
 }

@@ -36,5 +36,6 @@ public class Lock extends Item {
         super(name, image, weight, currentRoom, false);
         this.id = id;
         this.locked = true;
+        usingMessage = "You unlock the " + name + " with the key.";
     }    
 }

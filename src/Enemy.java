@@ -1,6 +1,7 @@
 import java.lang.Math;
 
 public class Enemy extends Character{ //AKA ER CATTIVONE
+
     /*
      * state variables
      */
@@ -14,16 +15,16 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
         rooms[2] = n.getCrossableEast();  //
         rooms[3] = n.getCrossableWest();  //
         while(true) {
-            int i = (int) Math.round(Math.random()*3);  //genera un intero da 0 a 3 che sarà usato per vedere se la facciata è attraversabile o meno. Se non lo è riprova. L'ordine delle facciate è 0=N, 1=S, 2=E e 3=W;
-            if(rooms[i]==true) {
+            int i = (int) (Math.random()*4);;  //genera un intero da 0 a 3 che sarà usato per vedere se la facciata è attraversabile o meno. Se non lo è riprova. L'ordine delle facciate è 0=N, 1=S, 2=E e 3=W;
+            if(rooms[i]) {
                 switch(i) { //se la stanza selezionata è attraversabile allora setta la nuova stanza
-                    case 0: currentRoom = n.getRoomNumber()-3;
+                    case 0: currentRoom += CROSS_NORTH;
                     break;
-                    case 1: currentRoom = n.getRoomNumber()+3;
+                    case 1: currentRoom += CROSS_SOUTH;
                     break;
-                    case 2: currentRoom = n.getRoomNumber()+1;
+                    case 2: currentRoom += CROSS_EAST;
                     break;
-                    case 3: currentRoom = n.getRoomNumber()-1;
+                    case 3: currentRoom += CROSS_WEST;
                     break;
                 }
             }

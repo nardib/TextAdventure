@@ -1,5 +1,5 @@
 public class HealingItem extends Item {
-    private int healthPoints;
+    final int HEALING_POINTS;
     
     /*
      * constructor
@@ -11,7 +11,7 @@ public class HealingItem extends Item {
         {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
         }
-        this.healthPoints = healthPoints;
+        this.HEALING_POINTS = healthPoints;
     }
 
     /*
@@ -19,6 +19,6 @@ public class HealingItem extends Item {
      */
     public int getHealthPoints()
     {
-        return healthPoints;
+        return HEALING_POINTS;
     }
 }

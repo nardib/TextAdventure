@@ -49,11 +49,11 @@ public class Player extends Character{
     /*
      * decrease the health of the player
      */
-    public int decreaseHealth()
+    public int decreaseHealth(int damage)
     {
-        if (health - 1 < 0)
+        if (health - damage < 0)
             throw new IllegalStateException("the player can't have an health score of less than zero");
-        return health--;
+        return health -= damage;
     }
 
     /*

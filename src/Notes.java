@@ -1,9 +1,9 @@
 public class Notes extends Item {
-    private String message;
+    final private String message;
 
     public String getMessage() 
     {
-        return message;
+        return "It says: \n" + message;
     }
     
     /*
@@ -13,5 +13,6 @@ public class Notes extends Item {
     {
         super(name, image, weight, currentRoom, true);
         this.message = message;
+        usingMessage = "You read the note";
     }    
 }

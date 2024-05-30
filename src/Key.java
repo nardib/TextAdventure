@@ -16,5 +16,6 @@ public class Key extends Item {
     {
         super(name, image, weight, currentRoom, true);
         this.id = id;
+        usingMessage = "You used the " + name;
     }    
 }

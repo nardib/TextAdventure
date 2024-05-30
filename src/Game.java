@@ -120,12 +120,17 @@ public class Game {
      */
     private String enemyTurn() {
         if (enemy.getCurrentRoom() == player.getCurrentRoom()) {
-            player.decreaseHealth();
-            return "The enemy attacked you";
+            try {
+                    player.decreaseHealth(enemy.DAMAGE);
+            } catch (IllegalStateException e) {
+                isGameOn = false;
+                return "Game Over!";
+            }
+            return "The enemy attacked you, now you have " + player.getHealth() + " health points left";
         }
         else {
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
-            return "The enemy moved to another room";
+            return "The enemy moved to another room (for testing purposes: " + enemy.getCurrentRoom() + ")";
         }
     }
 
@@ -161,14 +166,6 @@ public class Game {
         }
         String out = "";
         // player turn
-        if(map.getRoom(player.getCurrentRoom()).getCrossableNorth())
-            System.out.println("You can cross to the north");
-        if(map.getRoom(player.getCurrentRoom()).getCrossableEast())
-            System.out.println("You can cross to the east");
-        if(map.getRoom(player.getCurrentRoom()).getCrossableSouth())
-            System.out.println("You can cross to the south");
-        if(map.getRoom(player.getCurrentRoom()).getCrossableWest())
-            System.out.println("You can cross to the west");
         try {
             out += playerTurn(input);
         } catch (IllegalArgumentException e) {
@@ -176,9 +173,10 @@ public class Game {
         }
         // enemy turn
         out +="\n" + enemyTurn();
+        if(isGameOver())
+            return "Game Over! The enemy killed you!";
         //i save the state of the game after each move
         saveCurrentState();
-        System.out.println(player.getCurrentRoom());
         return out;
     }
 
