@@ -62,14 +62,10 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         inputField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String mex = "";
-                    try{
-                        mex = inputField.getText();
-                    }
-                    catch (Exception ex){
-                        mex = "zio lupo";
-                    }
+                    String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
+                    //i print the current room and direction of the player as an image
+                    graphic.setIcon(new ImageIcon(Images[game.getPlayer().getCurrentRoom() * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
                     inputField.setText("");
                 }
             }

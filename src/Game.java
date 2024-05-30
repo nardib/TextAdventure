@@ -118,7 +118,7 @@ public class Game {
             isGamePaused = true;
             return "Game paused";
         }
-        else if (isGamePaused) {
+        if (isGamePaused) {
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
                 isGameOn = false;
                 return "Game over";

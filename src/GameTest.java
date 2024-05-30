@@ -21,15 +21,15 @@ public class GameTest {
     public void playerMove() {
         var g = new Game("Player", "f", "Enemy", "m");
         Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
-        Assert.assertEquals(true, g.getMap().getRoom(g.getPlayer().getCurrentRoom()).getCrossableSouth());
+        Assert.assertTrue(g.getMap().getRoom(g.getPlayer().getCurrentRoom()).getCrossableSouth());
         g.nextMove("cross south");
         Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
         g.nextMove("cross east");
-        Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
-        g.nextMove("cross north");
-        Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
-        g.nextMove("cross west");
         Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
+        g.nextMove("cross north");
+        Assert.assertEquals(1, g.getPlayer().getCurrentRoom());
+        g.nextMove("cross west");
+        Assert.assertEquals(0, g.getPlayer().getCurrentRoom());
     }
 
     //i verify that the game returns to a previous state after calling the undo method
