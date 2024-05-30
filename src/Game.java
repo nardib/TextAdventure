@@ -1,7 +1,4 @@
 import java.util.List;
-
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 
 public class Game {
@@ -114,12 +111,38 @@ public class Game {
             }
         }
         */
-        else if(input.substring(0, 3).equalsIgnoreCase("use"))
-        {
-            return "You used the " + input.substring(4);
+        else if(input.substring(0, 3).equalsIgnoreCase("use")) {
+            if (player.getInventoryCount() != 0) {
+                for (int i = 0; i < player.getInventoryCount(); i++) {
+                    if (player.getItem(i).getName().equalsIgnoreCase(input.substring(4))) {
+                        Item item = player.getItem(i);
+                        if (item instanceof Key) {
+                            Key key = (Key) item;
+                            //i have to check if there is a lock in the room
+                            return key.getUsingMessage();
+                        }
+                        else if (item instanceof Notes) {
+                            Notes note = (Notes) item;
+                            return note.getUsingMessage();
+                        }
+                        else if (item instanceof Hammer) {
+                            Hammer hammer = (Hammer) item;
+                            return hammer.getUsingMessage();
+                        }
+                        else if (item instanceof HealingItem) {
+                            HealingItem healingItem = (HealingItem) item;
+                            player.increaseHealth(healingItem.HEALING_POINTS);
+                            player.removeItem(i);
+                            return healingItem.getUsingMessage();
+                        }
+                    }
+                }
+            }
+            //i also must check if there is an hiding item in the room
+            return "You can't use this item";
         }
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
-     }
+    }
 
     /*
      * Method to manage the enemy moves

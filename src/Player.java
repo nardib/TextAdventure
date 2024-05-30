@@ -59,11 +59,11 @@ public class Player extends Character{
     /*
      * increase the health of the player
      */
-    public int increaseHealth()
+    public int increaseHealth(int healingPoints)
     {
-        if (health + 1 > 5)
+        if (health + healingPoints > 5)
             throw new IllegalStateException("Player's health can't be more than 5");
-        return health++;
+        return health += healingPoints;
     }
 
     /*
@@ -109,6 +109,25 @@ public class Player extends Character{
     public Item[] getInventory()
     {
         return inventory;
+    }
+
+    /*
+     * returns the element at index i of the inventory
+     */
+    public Item getItem(int i)
+    {
+        if (i < 0 || i > ArrayIndexCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+        return inventory[i];
+    }
+
+
+    /*
+     * returns the numeber of items in the inventory
+     */
+    public int getInventoryCount()
+    {
+        return ArrayIndexCount;
     }
 
     /*

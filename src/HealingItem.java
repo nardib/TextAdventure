@@ -12,13 +12,6 @@ public class HealingItem extends Item {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
         }
         this.HEALING_POINTS = healthPoints;
-    }
-
-    /*
-     * getter for healthPoints
-     */
-    public int getHealthPoints()
-    {
-        return HEALING_POINTS;
+        usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
     }
 }
