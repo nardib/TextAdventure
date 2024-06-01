@@ -69,4 +69,23 @@ public class Item {
     public String getUsingMessage() {
         return usingMessage;
     }
+
+    /*
+     * override method equals
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof Item || other == null))
+            return false;
+        Item i = (Item) other;
+        return this.name.equals(i.name) && this.weight == i.weight && this.currentRoom == i.currentRoom && this.pickable == i.pickable;
+    }
+
+    /*
+     * override method clone
+     */
+    public Item clone() {
+        return new Item(this.name, this.icon.toString(), this.weight, this.currentRoom, this.pickable);
+    }
 }

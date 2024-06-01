@@ -98,6 +98,7 @@ public class Player extends Character{
         if (!i.isPickable())
             throw new IllegalArgumentException("The item is not pickable");
         WeightCount += i.getWeight();
+        inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
     }
 
@@ -106,14 +107,14 @@ public class Player extends Character{
      */
     public Item removeItem(int i)
     {
-        if (i < 0 || i > ArrayIndexCount)
+        if (i < 0 || i >= ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
-        WeightCount -= inventory[i].getWeight();
-        ArrayIndexCount--;
         Item out = inventory[i];
-        //i swap all the elemnts in i-maxIndex one position below
-        for (int j = i; j <= ArrayIndexCount; j++) 
-            inventory[j] = inventory[j+1];
+        //i remove the item i and i shift all the other items to the left
+        inventory[i] = null;
+        inventory = compactedInventory();
+        WeightCount -= out.getWeight();
+        ArrayIndexCount--;
         return out;
     }
 
@@ -130,7 +131,7 @@ public class Player extends Character{
      */
     public Item getItem(int i)
     {
-        if (i < 0 || i > ArrayIndexCount)
+        if (i < 0 || i >= ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
         return inventory[i];
     }
@@ -142,6 +143,14 @@ public class Player extends Character{
     public int getInventoryCount()
     {
         return ArrayIndexCount;
+    }
+
+    /*
+     * returns the total weigth of the items in the inventory
+     */
+    public int getWeight()
+    {
+        return WeightCount;
     }
 
     /*
@@ -202,5 +211,21 @@ public class Player extends Character{
             p.inventory[i] = inventory[i];*/
         p.currentDirection = this.currentDirection;
         return p;
+    }
+
+    //private method to compact the inventory when an item is removes
+    private Item[] compactedInventory()
+    {
+        Item[] out = new Item[MAX_WEIGHT];
+        int j = 0;
+        for (int i = 0; i < ArrayIndexCount; i++)
+        {
+            if (inventory[i] != null)
+            {
+                out[j] = inventory[i];
+                j++;
+            }
+        }
+        return out;
     }
 }
