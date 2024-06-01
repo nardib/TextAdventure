@@ -1,6 +1,4 @@
-import java.util.List;
-import java.util.ArrayList;
-
+import java.util.Stack;
 public class Game {
     /*
      * State variables
@@ -9,7 +7,7 @@ public class Game {
     private Map map;
     private Enemy enemy;
     private boolean isGamePaused, isGameOn;
-    private List<GameMemento> mementos = new ArrayList<>();
+    private Stack<GameMemento> mementos = new Stack<>();
 
     final String HELP = "The commands are:\n"
             + "north, south, east, west, cross <direction>, look, take <item>, use <item>, pause, resume, save, undo/back, quit";
@@ -23,6 +21,7 @@ public class Game {
         enemy = new Enemy(en, eg);
         isGameOn = true;
         isGamePaused = false;
+        mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
     /*
@@ -193,7 +192,7 @@ public class Game {
         }
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) {
-                return "Undo successful";
+                return "Undo successful! Now the player is in room " + player.getCurrentRoom() + " and the enemy is in room " + enemy.getCurrentRoom();
             }
             return "No previous moves to undo";
         }
@@ -264,8 +263,8 @@ public class Game {
         private final boolean isGameOn;
 
         public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn) {
-            this.player = player;
-            this.enemy = enemy;
+            this.player = player.clone();
+            this.enemy = enemy.clone();
             this.map = map;
             this.isGameOn = isGameOn;
         }
@@ -291,7 +290,7 @@ public class Game {
      * Method to save the current state of the game
      */
     private void saveCurrentState() {
-        mementos.add(new GameMemento(player, enemy, map, isGameOn));
+        mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
     /*
@@ -301,12 +300,13 @@ public class Game {
      */
     public boolean undo() {
         if (mementos.size() > 0) {
-            GameMemento memento = mementos.get(mementos.size() - 1);
-            player = memento.getPlayer();
-            enemy = memento.getEnemy();
+            //i remove the current state from the stack and i return the previous one
+            mementos.pop();
+            GameMemento memento = mementos.peek();
+            player = memento.getPlayer().clone();
+            enemy = memento.getEnemy().clone();
             map = memento.getMap();
             isGameOn = memento.getisGameOn();
-            mementos.remove(mementos.size() - 1);
             return true;
         }
         return false;
