@@ -74,4 +74,5 @@ public class PlayerTest {
         Assert.assertEquals("potion", p.getItem(0).getName());
         Assert.assertEquals("hammer", p.getItem(1).getName());
     }
+    
 }
