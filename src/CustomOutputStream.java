@@ -4,9 +4,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.StyledDocument;
 
 public class CustomOutputStream extends OutputStream {
-    private JTextPane textPane; // Cambiato da JTextArea a JTextPane
+    private JTextPane textPane; 
 
-    public CustomOutputStream(JTextPane textPane) { // Cambiato il tipo di parametro
+    public CustomOutputStream(JTextPane textPane) { 
         this.textPane = textPane;
     }
 
