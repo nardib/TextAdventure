@@ -5,19 +5,21 @@ import java.awt.event.*;
 import java.io.PrintStream;
 
 public class GameFrame implements MouseMotionListener, MouseListener {
-    Game game = new Game("Player", "m", "Enemy", "f");
-    int x = 0;
-    int y = 0;
-    int wallcount = 0;
-    Image[] Images = new Image[36];
-    boolean isFullscreen = false;
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    JFrame frame;
-    JTextPane terminal; // Cambiato da JTextArea a JTextPane
+    // Variabili di istanza
+    Game game = new Game("Player", "m", "Enemy", "f"); // Oggetto del gioco
+    int x = 0; // Coordinata X del mouse
+    int y = 0; // Coordinata Y del mouse
+    int wallcount = 0; // Contatore per il cambio di muro
+    Image[] Images = new Image[36]; // Array di immagini dei muri
+    boolean isFullscreen = false; // Stato della finestra (fullscreen o no)
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); // Dispositivo grafico
+    JFrame frame; // Finestra principale
+    JTextPane terminal; // Terminale di output
     JTextField inputField; // Campo di testo per l'input dell'utente
-    JPanel buttonPanel;
-    JLabel gameStatusLabel;
+    JPanel buttonPanel; // Pannello dei pulsanti
+    JLabel gameStatusLabel; // Etichetta per lo stato del gioco
 
+    // Costruttore della classe
     public GameFrame() {
         frame = new JFrame("TextAdventure");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,10 +27,12 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         frame.addMouseMotionListener(this);
         frame.addMouseListener(this);
 
+        // Carica le immagini dei muri
         for (int i = 0; i < 36; i++) {
             Images[i] = (Image) Room.Walls[i].getCombinedImage();
         }
 
+        // Configura il pannello centrale
         JPanel center = new JPanel();
         center.setBackground(new Color(0, 0, 0));
         center.setLayout(new BorderLayout());
@@ -37,10 +41,11 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
-        graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom()-1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+        graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
         center.add(graphic, BorderLayout.CENTER);
 
-        terminal = new JTextPane(); // Cambiato da JTextArea a JTextPane
+        // Configura il terminale e lo scorrimento
+        terminal = new JTextPane();
         terminal.setEditable(false);
         terminal.setFont(new Font("Monospaced", Font.PLAIN, 14));
         terminal.setBackground(new Color(28, 28, 28));
@@ -53,21 +58,19 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         downPanel.setLayout(new BorderLayout());
         downPanel.add(terminalScrollPane, BorderLayout.CENTER);
 
-        // Aggiungere il campo di testo per l'input dell'utente
+        // Crea il campo di testo per l'input dell'utente
         inputField = new JTextField();
         inputField.setFont(new Font("Monospaced", Font.PLAIN, 14));
         inputField.setBackground(new Color(28, 28, 28));
         inputField.setForeground(Color.WHITE);
         inputField.setCaretColor(Color.WHITE);
-        //added this in order to perform an action when "enter" key is triggered
         inputField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
-                    //i print the current room and direction of the player as an image
-                    graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom()-1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
-                    if(game.isGamePaused())
+                    graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+                    if (game.isGamePaused())
                         gameStatusLabel.setText("GIOCO IN PAUSA");
                     inputField.setText("");
                 }
@@ -78,6 +81,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
+        // Configura il pannello dei pulsanti
         buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(28, 28, 28));
         buttonPanel.setLayout(new GridBagLayout());
@@ -90,10 +94,10 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         gameStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
         gameStatusLabel.setForeground(Color.WHITE);
 
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.EAST;
+        gbc.gridx = 2; // Colonna 2
+        gbc.gridy = 0; // Riga 0
+        gbc.weightx = 1.0; // Espansione orizzontale
+        gbc.anchor = GridBagConstraints.EAST; // Ancoraggio a destra
         buttonPanel.add(gameStatusLabel, gbc);
 
         JPanel buttonPanelCenter = new JPanel();
@@ -103,6 +107,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         Color buttonBackgroundColor = new Color(70, 70, 70);
         Color buttonTextColor = Color.WHITE;
 
+        // Aggiungi pulsanti
         JButton startButton = new JButton("Start");
         startButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
         startButton.addActionListener(new ActionListener() {
@@ -110,8 +115,8 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("GIOCO INIZIATO");
             }
         });
-        startButton.setBackground(new Color(54, 54, 54));
-        startButton.setForeground(Color.WHITE);
+        startButton.setBackground(buttonBackgroundColor);
+        startButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(startButton);
 
         JButton pauseButton = new JButton("Pause");
@@ -122,8 +127,8 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 game.pauseGame();
             }
         });
-        pauseButton.setBackground(new Color(54, 54, 54));
-        pauseButton.setForeground(Color.WHITE);
+        pauseButton.setBackground(buttonBackgroundColor);
+        pauseButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(pauseButton);
 
         JButton resetButton = new JButton("Reset");
@@ -134,11 +139,11 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 graphic.setText(" ");
                 graphic.setIcon(null);
                 wallcount = 0;
-                clearTerminal(); // Aggiungi questa linea per svuotare il terminale
+                clearTerminal();
             }
         });
-        resetButton.setBackground(new Color(54, 54, 54));
-        resetButton.setForeground(Color.WHITE);
+        resetButton.setBackground(buttonBackgroundColor);
+        resetButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(resetButton);
 
         JButton nextWallButton = new JButton("Turn Right");
@@ -150,8 +155,8 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 wallcount++;
             }
         });
-        nextWallButton.setBackground(new Color(54, 54, 54));
-        nextWallButton.setForeground(Color.WHITE);
+        nextWallButton.setBackground(buttonBackgroundColor);
+        nextWallButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(nextWallButton);
 
         JButton attackButton = new JButton("Attack");
@@ -161,28 +166,22 @@ public class GameFrame implements MouseMotionListener, MouseListener {
             public void actionPerformed(ActionEvent e) {
                 String mex = inputField.getText();
                 writeToTerminal(game.nextMove(mex));
-
-                /*if (mex.isEmpty()) {
-                    writeToTerminal("Non hai scritto nulla");
-                } else {
-                    writeToTerminal("Si! Hai scritto: " + mex);
-                }*/
                 inputField.setText(""); // Pulisce il campo di testo dopo l'invio
             }
         });
-        attackButton.setBackground(new Color(54, 54, 54));
-        attackButton.setForeground(Color.WHITE);
+        attackButton.setBackground(buttonBackgroundColor);
+        attackButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(attackButton);
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.0;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 1; // Colonna 1
+        gbc.gridy = 0; // Riga 0
+        gbc.weightx = 0.0; // Nessuna espansione orizzontale
+        gbc.anchor = GridBagConstraints.CENTER; // Ancoraggio al centro
         buttonPanel.add(buttonPanelCenter, gbc);
 
         frame.add(buttonPanel, BorderLayout.PAGE_START);
 
-        //this function changes the size of some things when the window is resized
+        // Listener per il ridimensionamento della finestra
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 int h = frame.getHeight();
@@ -194,7 +193,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
             }
         });
 
-        //when triggered f11 key the window is put in fullscreen mode or windowed mode
+        // Configura i key bindings per la finestra
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "toggleFullscreen");
         frame.getRootPane().getActionMap().put("toggleFullscreen", new AbstractAction() {
@@ -203,17 +202,17 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                 gameStatusLabel.setText("F11");
             }
         });
-        
+
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         System.setOut(printStream);
         System.setErr(printStream);
-        
 
         frame.setVisible(true);
         toggleFullscreen();
     }
 
+    // Attiva/disattiva la modalità fullscreen
     private void toggleFullscreen() {
         if (isFullscreen) {
             gd.setFullScreenWindow(null);
@@ -232,23 +231,22 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         isFullscreen = !isFullscreen;
     }
 
+    // Scrive un messaggio nel terminale
     private void writeToTerminal(String message) {
         StyledDocument doc = terminal.getStyledDocument();
         SimpleAttributeSet paraSet = new SimpleAttributeSet();
-        StyleConstants.setLineSpacing(paraSet, -0.2f); // Prova un valore più alto se -1f non funziona
+        StyleConstants.setLineSpacing(paraSet, -0.2f);
 
         try {
-            // Inserisci il messaggio nel documento
             doc.insertString(doc.getLength(), message + "\n", paraSet);
-            // Applicare gli attributi di paragrafo all'area appena aggiunta
             doc.setParagraphAttributes(doc.getLength() - message.length() - 1, message.length() + 1, paraSet, false);
-            // Imposta la posizione del cursore alla fine del documento
             terminal.setCaretPosition(doc.getLength());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
 
+    // Pulisce il terminale
     private void clearTerminal() {
         StyledDocument doc = terminal.getStyledDocument();
         try {
@@ -258,33 +256,17 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         }
     }
 
-    public void mouseDragged(MouseEvent e) {
-    }
-
+    // Listener del mouse
+    public void mouseDragged(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {
         PointerInfo a = MouseInfo.getPointerInfo();
         Point b = a.getLocation();
         x = (int) b.getX();
         y = (int) b.getY();
     }
-
-    public void mouseClicked(MouseEvent e) {
-        //System.out.println("You have CLICKED the frame");
-    }
-
-    public void mouseEntered(MouseEvent e) {
-        //System.out.println("The mouse has ENTERED the frame");
-    }
-
-    public void mouseExited(MouseEvent e) {
-        //System.out.println("The mouse has EXITED the frame");
-    }
-
-    public void mousePressed(MouseEvent e) {
-        //System.out.println("You have PRESSED the mouse");
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        //System.out.println("You have RELEASED the mouse");
-    }
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
 }
