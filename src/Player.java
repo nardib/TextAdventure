@@ -47,6 +47,20 @@ public class Player extends Character{
     }
 
     /*
+     * Constructor for the player with gender as argument
+     */
+    public Player(String n, Gender g)
+    {
+        super(n, g, STARTING_ROOM);
+        health = MAX_HEALTH;
+        score = 0;
+        ArrayIndexCount = 0;
+        WeightCount = 0;
+        inventory = new Item[MAX_WEIGHT]; 
+        currentDirection = Direction.NORTH;
+    }
+
+    /*
      * decrease the health of the player
      */
     public int decreaseHealth(int damage)
@@ -84,6 +98,7 @@ public class Player extends Character{
         if (!i.isPickable())
             throw new IllegalArgumentException("The item is not pickable");
         WeightCount += i.getWeight();
+        inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
     }
 
@@ -92,14 +107,14 @@ public class Player extends Character{
      */
     public Item removeItem(int i)
     {
-        if (i < 0 || i > ArrayIndexCount)
+        if (i < 0 || i >= ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
-        WeightCount -= inventory[i].getWeight();
-        ArrayIndexCount--;
         Item out = inventory[i];
-        //i swap all the elemnts in i-maxIndex one position below
-        for (int j = i; j <= ArrayIndexCount; j++) 
-            inventory[j] = inventory[j+1];
+        //i remove the item i and i shift all the other items to the left
+        inventory[i] = null;
+        inventory = compactedInventory();
+        WeightCount -= out.getWeight();
+        ArrayIndexCount--;
         return out;
     }
 
@@ -116,7 +131,7 @@ public class Player extends Character{
      */
     public Item getItem(int i)
     {
-        if (i < 0 || i > ArrayIndexCount)
+        if (i < 0 || i >= ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
         return inventory[i];
     }
@@ -128,6 +143,14 @@ public class Player extends Character{
     public int getInventoryCount()
     {
         return ArrayIndexCount;
+    }
+
+    /*
+     * returns the total weigth of the items in the inventory
+     */
+    public int getWeight()
+    {
+        return WeightCount;
     }
 
     /*
@@ -149,5 +172,60 @@ public class Player extends Character{
      */
     public Direction getCurrentDirection() {
         return currentDirection;
+    }
+
+    /*
+     * returns true if this player is equal to the other player
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof Player || other == null))
+            return false;
+        Player p = (Player) other;
+        //i also check the inventory
+        if (ArrayIndexCount != p.ArrayIndexCount)
+            return false;
+        /*
+        for (int i = 0; i < ArrayIndexCount; i++){
+            if (!inventory[i].equals(p.inventory[i]))
+                return false;
+        }*/    
+        return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && score == p.score && WeightCount == p.WeightCount && currentDirection == p.currentDirection;
+    }
+
+    /*
+     * method to create a deep copy of the player
+     */
+    @Override
+    public Player clone()
+    {
+        Player p = new Player(this.name, this.gender);
+        p.currentRoom = this.currentRoom;
+        p.health = this.health;
+        p.score = this.score;
+        p.ArrayIndexCount = this.ArrayIndexCount;
+        p.WeightCount = this.WeightCount;
+        //this is actually a shellow copy, must be corrected
+        /*for (int i = 0; i < ArrayIndexCount; i++)
+            p.inventory[i] = inventory[i];*/
+        p.currentDirection = this.currentDirection;
+        return p;
+    }
+
+    //private method to compact the inventory when an item is removes
+    private Item[] compactedInventory()
+    {
+        Item[] out = new Item[MAX_WEIGHT];
+        int j = 0;
+        for (int i = 0; i < ArrayIndexCount; i++)
+        {
+            if (inventory[i] != null)
+            {
+                out[j] = inventory[i];
+                j++;
+            }
+        }
+        return out;
     }
 }

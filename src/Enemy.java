@@ -36,6 +36,10 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
         super(n, g, generateStartingPoint());
     }
 
+    public Enemy(String n,Gender g) {
+        super(n, g, generateStartingPoint());
+    }
+
     //private function to generate a random numeber for the starting point between 1 and 9 except 5
     private static int generateStartingPoint() {
         int room = (int) Math.round(Math.random()*8)+1;
@@ -43,5 +47,26 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
             return generateStartingPoint();
         }
         return room;
+    }
+
+    /*
+     * method to check equality between two enemies
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Enemy || other == null))
+            return false;
+        Enemy e = (Enemy) other;
+        return this.name.equals(e.name) && this.gender == e.gender && this.currentRoom == e.currentRoom;
+    }
+
+    /*
+     * method to clone this enemy (deep copy)
+     */
+    @Override
+    public Enemy clone() {
+        Enemy e = new Enemy(this.getName(), this.getGender());
+        e.setCurrentRoom(this.getCurrentRoom());
+        return e;
     }
 }

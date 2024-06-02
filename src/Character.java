@@ -25,6 +25,16 @@ public class Character {
     }
 
     /*
+     * Constructior for the character with gender as argument
+     */
+    public Character(String n, Gender g, int currRoom)
+    {
+        setName(n);
+        gender = g;
+        setCurrentRoom(currRoom);
+    }
+
+    /*
      * method to set the name of the player
      */
     public void setName(String n)

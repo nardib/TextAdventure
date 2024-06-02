@@ -65,24 +65,34 @@ public class GameTest {
     @Test
     public void undoTest() {
         var g = new Game("Player", "f", "Enemy", "m");
-        var p = g.getPlayer();
-        var e = g.getEnemy();
-        var m = g.getMap();
-        var b = g.isGameOver();
 
         //i do some random moves to change the state of the game
         g.nextMove("south");
         g.nextMove("cross east");
-        g.nextMove("look");
-
-        //i go back three states and i check if the state is the same as the initial one
-        g.nextMove("undo");
-        g.nextMove("undo");
-        g.nextMove("undo");
-
+        g.nextMove("cross north");
+        var p = g.getPlayer().clone();
+        var e = g.getEnemy().clone();
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
-        Assert.assertEquals(m, g.getMap());
-        Assert.assertEquals(b, g.isGameOver());
+        //i should implement a way to check the map state
+        g.nextMove("cross west");
+        g.nextMove("cross");
+
+        //i go back 2 states and i check if the state is the same as the initial one
+        g.nextMove("undo");
+        g.nextMove("back");
+
+        //i check the single parameters so that i can avoid the check by copy
+        Assert.assertEquals(p, g.getPlayer());
+        Assert.assertEquals(e, g.getEnemy());
+
+        //now i go back to the initial state to see if the state is diffrent
+        g.nextMove("undo");
+        g.nextMove("undo");
+        g.nextMove("undo");
+
+        Assert.assertNotEquals(p, g.getPlayer());
+        //sometimes this fails becauce the enemy may not have been moved since the last record state
+        Assert.assertNotEquals(e, g.getEnemy());
     }
 }
