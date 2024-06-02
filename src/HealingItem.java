@@ -14,4 +14,18 @@ public class HealingItem extends Item {
         this.HEALING_POINTS = healthPoints;
         usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
     }
+
+    /*
+     * override equal method
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof HealingItem))
+            return false;
+        HealingItem item = (HealingItem) obj;
+        return super.equals(obj) && item.HEALING_POINTS == this.HEALING_POINTS;
+    }
 }

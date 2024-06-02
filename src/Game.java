@@ -147,12 +147,12 @@ public class Game {
      * Method to manage the enemy moves
      */
     private String enemyTurn() {
-        if (enemy.getCurrentRoom() == player.getCurrentRoom()) {
+        if (enemy.getCurrentRoom() == player.getCurrentRoom() && !player.isHidden()){
             try {
                     player.decreaseHealth(enemy.DAMAGE);
             } catch (IllegalStateException e) {
                 isGameOn = false;
-                return "Game Over!";
+                return "Game Over! The enemy killed you!";
             }
             return "The enemy attacked you, now you have " + player.getHealth() + " health points left";
         }
@@ -166,47 +166,55 @@ public class Game {
      * Method to generate the actions of a move
      */
     public String nextMove(String input) {
-        if (!isGameOn) {
+
+        input = input.trim(); //remove leading and trailing whitespaces
+
+        if (!isGameOn)
             return "Game is Over!";
-        }
-        if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h")) {
+
+        if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
             return HELP;
-        }
-        if (isGamePaused && !input.equalsIgnoreCase("resume")) {
+        
+        if (isGamePaused && !input.equalsIgnoreCase("resume"))
             return "Game is paused. Type 'resume' to continue";
-        }
-        if (input.equalsIgnoreCase("pause")) {
+        
+        if (input.equalsIgnoreCase("pause"))
             return pauseGame();
-        }
+        
         if (isGamePaused) {
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
                 isGameOn = false;
                 return "Game over";
             }
-            if (input.equalsIgnoreCase("save")) {
+            if (input.equalsIgnoreCase("save"))
                 return "Game saved";
-            }
-            if (input.equalsIgnoreCase("resume")) {
+            
+            if (input.equalsIgnoreCase("resume"))
                 return resumeGame();
-            }
+            
         }
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
-            if (undo()) {
+
+            if (undo()) 
                 return "Undo successful! Now the player is in room " + player.getCurrentRoom() + " and the enemy is in room " + enemy.getCurrentRoom();
-            }
+            
             return "No previous moves to undo";
         }
+
         String out = "";
+
         // player turn
         try {
             out += playerTurn(input);
         } catch (IllegalArgumentException e) {
             return e.getMessage();
         }
+
         // enemy turn
         out +="\n" + enemyTurn();
         if(isGameOver())
             return "Game Over! The enemy killed you!";
+        
         //i save the state of the game after each move
         saveCurrentState();
         return out;
@@ -252,7 +260,6 @@ public class Game {
     public Map getMap() {
         return map;
     }
-
     /*
      * class for memento pattern to implement undo function
      */

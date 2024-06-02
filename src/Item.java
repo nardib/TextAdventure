@@ -19,7 +19,7 @@ public class Item {
         icon = new ImageIcon(getClass().getResource(image));
         this.weight = weight;
         this.name = name;
-        this.currentRoom = currentRoom;
+        setRoom(currentRoom);
         this.pickable = pickable;
     }
 
@@ -36,6 +36,8 @@ public class Item {
      */
     public int getWeight()
     {
+        if (weight < 0)
+            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
         return weight;
     }
 
@@ -71,6 +73,16 @@ public class Item {
     }
 
     /*
+     * set the current room (if =0, then it is picked by the player)
+     */
+    public void setRoom(int room)
+    {
+        if(room >= 0 && room <= 9)
+            currentRoom = room;
+        throw new IllegalArgumentException("Room must be between 0 and 9");
+    }
+
+    /*
      * override method equals
      */
     @Override
@@ -85,6 +97,7 @@ public class Item {
     /*
      * override method clone
      */
+    @Override
     public Item clone() {
         return new Item(this.name, this.icon.toString(), this.weight, this.currentRoom, this.pickable);
     }

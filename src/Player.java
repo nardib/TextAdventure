@@ -22,6 +22,7 @@ public class Player extends Character{
      * state variables
      */
     private int health, score, ArrayIndexCount, WeightCount;
+    private boolean hidden;
     private Item[] inventory;
     private Direction currentDirection;
 
@@ -44,6 +45,7 @@ public class Player extends Character{
         WeightCount = 0;
         inventory = new Item[MAX_WEIGHT]; 
         currentDirection = Direction.NORTH;
+        hidden = false;
     }
 
     /*
@@ -136,7 +138,6 @@ public class Player extends Character{
         return inventory[i];
     }
 
-
     /*
      * returns the numeber of items in the inventory
      */
@@ -175,6 +176,20 @@ public class Player extends Character{
     }
 
     /*
+     * returns if the player is hidden or not
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /*
+     * change the state of the player from hidden to not hidden and vice versa
+     */
+    public void setHidden() {
+        hidden = !hidden;
+    }
+
+    /*
      * returns true if this player is equal to the other player
      */
     @Override
@@ -207,8 +222,8 @@ public class Player extends Character{
         p.ArrayIndexCount = this.ArrayIndexCount;
         p.WeightCount = this.WeightCount;
         //this is actually a shellow copy, must be corrected
-        /*for (int i = 0; i < ArrayIndexCount; i++)
-            p.inventory[i] = inventory[i];*/
+        for (int i = 0; i < ArrayIndexCount; i++)
+            p.inventory[i].equals(inventory[i]);
         p.currentDirection = this.currentDirection;
         return p;
     }

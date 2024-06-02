@@ -1,6 +1,6 @@
 public class Key extends Item {
     private int id; //used to identify the correct lock to interract with depending on the key used. There are more keys
-
+    final int WEIGHT = 1;
     /*
      * used to get the id to match the correct lock with the key
      */
