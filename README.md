@@ -23,7 +23,7 @@ Each item has its own weight (expressed in Kg) and the player can carry a maximu
 Some items, like the hammer, can occupy almost all the carrable weight, forcing the player to carfully manage the storage.
 Also, once used, the item dissapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage.
 
-### **Player**
+### **Player and commands**
 At the beginning of the game, the user can choose the name and the gender of the player. 
 In orther to interract with the game, the player as to use the command line implemented in the GUI executing specific commands:
 
@@ -37,8 +37,35 @@ In orther to interract with the game, the player as to use the command line impl
 - use ITEM (command used to interract with a specific item in your inventory. After using the item, it will dissapear freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
 
 - get ITEM (command used to interract with a specific item in the room. After keeping the item, it will appear in your inventory freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
+
+- inventory (command used to display a list of the item in the inventory)
+
+- object_name (used to get info about an object in the inventory)
+
+- help (command used to get a short description of commands)
+
+- save (used to save the status of the game)
+
+- quit (used to quit the game)
+
+### Enemy
+
+The enemy is a NPG randomly moving in the rooms of the maps, seeking for the player, with the scope to kill him by inflicting damage.
+
+### Purpose of the game
+
+As in the real-life escape-room the purpose of this game is to solve all the riddles, use all the objects and complete the puzzles to unlock the exit door and gain freedom. The player must also survive to the enemy looking who will randomly move each time the player makes a move.
+When both the player and the enemy are in the same room, the enemy will start inflicting some damege to the player, who's provided with 5 hearts of healt points. Heach hit provides 1 damage point.
+If the player's healt drops to zero point, the game ends with loss.
+The player can also find and use some special healing items like bandages and painkillers to restore some healt points.
+
 ## Project
 
+| Name | Version | Description |
+| --- | --- | --- |
+| Java | 20.0.1 | IDE and programming language used in the development |
+| JavaSwing | 1.0.3 | Platform used for develpment of client applications, based on Java, later on substitued with JavaFX |
+| JUnit | 5.9.1 | Framework for Java class tests. |
 
 ## Design Patterns
 
@@ -56,7 +83,7 @@ Game class has the responsability to mangate the informations about Player, Enem
 
 #### High Cohesion
 
-Each class has a single, well defined responsability ...
+Each class has a single, well defined responsability ... They have been developed following a black-box mindset that allow us to maintain all the classes indipendent and distinguised
 
 #### Low Copuling
 
@@ -68,6 +95,45 @@ Game class creates the istances of Player, Enemy, Map classes ...
 
 ## Specifications
 
+| Use case | Start |
+| --- | --- |
+| Brief description | User can start the game |
+| Actor | User |
+| Basic flow | User presses Start button. |
+| Alternative flow | An error message is displyed. |
+| Precondition | The game was succesfully installed. |
+| Postcondition | Player settings page is shown. |
+| Extensions points | - |
+
+| Use case | Player configuration |
+| --- | --- |
+| Brief description | User can choose the name and sex of the player. |
+| Actor | User |
+| Basic flow | User writes the name and select the gender between the aveilable optios. |
+| Alternative flow | No errors because pre-selected values are provided by default. |
+| Precondition | User has started the game. |
+| Postcondition | The game begins in its essence and the player finds itself in the first room, where the game will also end. |
+| Extensions points | - |
+
+| Use case | Coomands |
+| --- | --- |
+| Brief description | User can play the game interacting throw the command shell. |
+| Actor | User |
+| Basic flow | User interacts with the game, moving between the rooms, collecting objects and knowledge in the scope of solving the quizs and the riddles. |
+| Alternative flow | • The player is either killed by the enemy = LOSS or the player as solved the game = WIN • |
+| Precondition | Game must be correctly started |
+| Postcondition | GUI updates at pretty every move |
+| Extensions points | The enemy also makes a move every time the player does one |
+
+| Use case | Win |
+| --- | --- |
+| Brief description | User wins the game. |
+| Actor | User |
+| Basic flow | User unlocks the door at in the room where all started. |
+| Alternative flow | The player is killed. |
+| Precondition | The player must have used all the items and must have visited all the rooms. |
+| Postcondition | The enemy dissapears and a win window is shown |
+| Extensions points | - |
 
 ## Design Documents
 
