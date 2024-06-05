@@ -23,6 +23,8 @@ alt insert an input in the TextField
         else 
             Game --> Player : moves player in the desired room
         end
+    else command is "cross"
+        Game --> Player : moves player in the room in the direction he is facing
     else command is "look"
         Game --> Player : Returns a list of the items in the room
     else command is "take <item>"
@@ -32,38 +34,27 @@ alt insert an input in the TextField
             Game --> Player : Return an error message
         end
     else command is "use <item>"
-        alt the item is in the inventory
+        alt the item is in the inventory or can be used
             Game --> Player : Let the player use the object
-        else the object is not in the inventory
+        else the object is not in the inventory or can't be used 
             Game --> Player : Return an error message
         end
     end
-else clicks on "Back" button
+else use on "Back" button or submit "undo"/"back" command
     Player --> Game : triggers "back" button
-    Game --> Player : returns back of a move
+    Game --> Player : returns the state of the game one step back
 else clicks on "Intruction" button
     Player -> Game : clicks on instruction Button
     Game --> Player : shows the instruction page with all the instructions
-else clicks on "Pause" button
-    Player -> Game : Clicks "Pause" button
-    Game --> Player : Shows pause menu
-    alt clicks on "Resume"
-        Player -> Game : Resume
-        Game --> Player : Returns to game interface
-    else clicks on "Save and Exit"
-        Player -> Game : Save and Exit
-        Game --> Player : Save the game and returns to home page
-    else clicks on "Exit"
-        Player -> Game : Exit
-        Game --> Player : Returns to the home page without saving
-    else clicks on "new game"
-        Player -> Game : New Game
-        Game --> Player : Start a new game without saving the previous one
-    end
-else click on "Settings"
-    Game --> Player : Shows settings page 
-    Player -> Game : Changes settings and click "apply"
-    Game --> Player : Applies new setting to the game
+else clicks on "Save and Exit"
+    Player -> Game : Save and Exit
+    Game --> Player : Save the game and returns to home page
+else clicks on "Exit"
+    Player -> Game : Exit
+    Game --> Player : Returns to the home page without saving
+else clicks on "New Game"
+    Player -> Game : New Game
+    Game --> Player : Start a new game without saving the previous one
 end
 
 @enduml

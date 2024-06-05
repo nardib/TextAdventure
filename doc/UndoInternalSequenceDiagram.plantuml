@@ -5,14 +5,17 @@ title Undo Command - Intenal Sequence Diagram
 actor User
 participant GameFrame
 participant Game
+participant GameMemento
 
 activate GameFrame
-User -> GameFrame : insert "undo" as a command
+User -> GameFrame : insert "undo"/"back" as a command
 
 activate Game
 GameFrame -> Game : "undo" or "back"
 
 Game -> Game : undo()
+GameMemento -> Game : gives the state of the previous move 
+Game -> Game : update the state of the game with the previous move
 
 alt "game has no previous moves" 
     Game -> GameFrame : notify "No previous moves to undo"
