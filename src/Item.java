@@ -1,79 +1,106 @@
 import javax.swing.ImageIcon;
 
+/**
+ * Class Item - Represents an item in the game. It has a name, an image, a weight, a current room, and a pickable state.
+ */
 public class Item {
-    /*
-     * state variable
+    /**
+     * Name of the Item
      */
     protected String name;
+
+    /**
+     * Icon of the Item
+     */
     protected ImageIcon icon;
-    protected int weight;
+
+    /**
+     * Weight of the Item
+     */
+    public final int WEIGHT;
+
+    /**
+     * Current room of the Item
+     */
     protected int currentRoom;
-    protected boolean pickable;
+
+    /**
+     * Pickable state of the Item
+     */
+    public final boolean PICKABLE;
+
+    /**
+     * Message to show when the item is used
+     */
     protected String usingMessage;
 
-    /*
-     * constructor
+    /**
+     * Constructor for the Item
+     * 
+     * @param name name of the item
+     * @param image image of the item given as a path
+     * @param weight weight of the item
+     * @param currentRoom current room of the item
+     * @param pickable pickable state of the item
+     * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
      */
     public Item(String name, String image, int weight, int currentRoom, boolean pickable)
     {
         icon = new ImageIcon(getClass().getResource(image));
-        this.weight = weight;
-        this.name = name;
+        setName(name);
         setRoom(currentRoom);
-        this.pickable = pickable;
+        this.PICKABLE = pickable;
+
+        if(weight >= 0)
+            this.WEIGHT = weight;
+        else
+            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
     }
 
-    /*
-     * retrurns the icon of the image
+    /**
+     * Retrurns the icon of the image
+     * 
+     * @return icon of the image
      */
     public ImageIcon getIcon()
     {
         return icon;
     }
 
-    /*
-     * returns the weight of the object
-     */
-    public int getWeight()
-    {
-        if (weight < 0)
-            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
-        return weight;
-    }
-
-    /*
-     * returns the roomt of the object
+    /**
+     * Returns the roomt of the object
+     * 
+     * @return room of the object as an integer (0 if the object is picked by the player)
      */
     public int getRoom()
     {
         return currentRoom;
     }
     
-    /*
-     * used to get the name
+    /**
+     * Returns the name of the object
+     * 
+     * @return name of the object
      */
     public String getName()
     {
         return name;
     }
 
-    /*
-     * is held?
-     */
-    public boolean isPickable()
-    {
-        return pickable;
-    }
-
-    /*
-     * returns the using message
+    /**
+     * Returns the using message of the object
+     * 
+     * @return using message of the object
      */
     public String getUsingMessage() {
         return usingMessage;
     }
 
-    /*
-     * set the current room (if =0, then it is picked by the player)
+    /**
+     * Set the current room (if 0, then it is picked by the player)
+     * 
+     * @param room room of the object given as an integer
+     * @throws IllegalArgumentException if the room is not between 0 and 9
      */
     public void setRoom(int room)
     {
@@ -84,8 +111,20 @@ public class Item {
         throw new IllegalArgumentException("Room must be between 0 and 9");
     }
 
-    /*
-     * override method equals
+    /**
+     * Method to set the name of an item
+     * 
+     * @param name name of the item
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /**
+     * Method to check if two items are equal
+     * 
+     * @param other object to compare
      */
     @Override
     public boolean equals(Object other)
@@ -93,14 +132,16 @@ public class Item {
         if (!(other instanceof Item || other == null))
             return false;
         Item i = (Item) other;
-        return this.name.equals(i.name) && this.weight == i.weight && this.currentRoom == i.currentRoom && this.pickable == i.pickable;
+        return this.name.equals(i.name) && this.WEIGHT == i.WEIGHT && this.currentRoom == i.currentRoom && this.PICKABLE == i.PICKABLE;
     }
 
-    /*
-     * override method clone
+    /**
+     * Method to clone an item
+     * 
+     * @return a new item with the same attributes
      */
     @Override
     public Item clone() {
-        return new Item(this.name, this.icon.toString(), this.weight, this.currentRoom, this.pickable);
+        return new Item(this.name, this.icon.toString(), this.WEIGHT, this.currentRoom, this.PICKABLE);
     }
 }

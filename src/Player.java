@@ -131,11 +131,11 @@ public class Player extends Character{
      */
     public void insertItem(Item i)
     {
-        if (WeightCount + i.getWeight() > 10)
+        if (WeightCount + i.WEIGHT > 10)
             throw new IllegalStateException("The item weigth exiding the max carriable weigth");
-        if (!i.isPickable())
+        if (!i.PICKABLE)
             throw new IllegalArgumentException("The item is not pickable");
-        WeightCount += i.getWeight();
+        WeightCount += i.WEIGHT;
         inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
     }
@@ -154,7 +154,7 @@ public class Player extends Character{
         //i remove the item i and i shift all the other items to the left
         inventory[i] = null;
         inventory = compactedInventory();
-        WeightCount -= out.getWeight();
+        WeightCount -= out.WEIGHT;
         ArrayIndexCount--;
         return out;
     }
