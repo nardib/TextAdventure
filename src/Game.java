@@ -10,7 +10,16 @@ public class Game {
     private Stack<GameMemento> mementos = new Stack<>();
 
     final String HELP = "The commands are:\n"
-            + "north, south, east, west, cross <direction>, look, take <item>, use <item>, save, undo/back, quit, status";
+            + "- <direction> : you can face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
+            + "- cross <direction> : it allows you to cross in a specified direction; if <direction> argument is omitted, then you cross the direction you are facing\n"
+            + "- look : it returns a list of the items in the current room\n"
+            + "- take <item> : you can pick an item in the current room given it's name as argument\n"
+            + "- use <item> : you can use an item in you inventory or an hiding item if there is one in the room\n"
+            + "- throw <item> : you throw an item in the current room\n"
+            + "- status : give the status of the player, in particular it returns the health of the Player and the items in his inventory\n"
+            + "- undo/back : goes back of a move in the game\n"
+            + "- save : save the current state of the game\n"
+            + "- quit/exit : exit the game without saving the changes\n";
 
     /*
      * Constructor for initializing the game variables
@@ -28,19 +37,19 @@ public class Game {
      */
     private String playerTurn (String input) {
         //commands to change the wall the player is facing
-        if (input.equalsIgnoreCase("north")){
+        if (input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")){
             player.changeDirection(Direction.NORTH);
             return "You are now facing north";
         }
-        else if (input.equalsIgnoreCase("south")){
+        else if (input.equalsIgnoreCase("south") || input.equalsIgnoreCase("s")){
             player.changeDirection(Direction.SOUTH);
             return "You are now facing south";
         }
-        else if (input.equalsIgnoreCase("east")){
+        else if (input.equalsIgnoreCase("east") || input.equalsIgnoreCase("e")){
             player.changeDirection(Direction.EAST);
             return "You are now facing east";
         }
-        else if (input.equalsIgnoreCase("west")){
+        else if (input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")){
             player.changeDirection(Direction.WEST);
             return "You are now facing west";
         }
@@ -152,7 +161,11 @@ public class Game {
 
         //command to throw an item in the invenotory
         if (input.substring(0, 5).equalsIgnoreCase("throw")) {
-            //i should add a way to check if the user has inserted the number of the item he wants to throw
+            //items number goes from 1 to max
+            try {
+                player.removeItem(Integer.parseInt(input.substring(6)) - 1);
+            } catch (Exception e) { /* do nothing */}
+
             if (player.getInventoryCount() != 0) {
                 for (int i = 0; i < player.getInventoryCount(); i++) {
                     if (player.getItem(i).getName().equalsIgnoreCase(input.substring(6))) {
@@ -162,7 +175,7 @@ public class Game {
                     }
                 }
             }
-            return "You can't throw this item";
+            throw new IllegalArgumentException("You can't throw this item");
         }
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }

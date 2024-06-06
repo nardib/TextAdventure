@@ -1,40 +1,63 @@
-/*
- * enum for all the accepted gender types
-*/
-enum Gender{
-    MALE,
-    FEMALE,
-    NEUTRAL
-}
-
-/*
- * enum for all the accepted directions
+/**
+ * Class to manage the Player properties. In particular it manages the health, the inventory, the name and the current room of the player
  */
-enum Direction{
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST
-}
-
 public class Player extends Character{
-    /*
-     * state variables
+    /**
+     * The health of the Player
      */
-    private int health, score, ArrayIndexCount, WeightCount;
+    private int health;
+
+    /**
+     * The score of the Player
+     */
+    private int score;
+
+    /**
+     * The number of items in the inventory
+     */
+    private int ArrayIndexCount;
+
+    /**
+     * The total weigth of the items in the inventory
+     */
+    private int WeightCount;
+
+    /**
+     * Tells if the player is hidden or not
+     */
     private boolean hidden;
+
+    /**
+     * The inventory of the player
+     */
     private Item[] inventory;
+
+    /**
+     * The direction the player is facing
+     */
     private Direction currentDirection;
 
-    /*
-     * constants
+    /**
+     * The defualt value for the max health of the player
      */
     final int MAX_HEALTH = 5;
+
+    /**
+     * The defualt value for the max weigth the player can carry
+     */
     final int MAX_WEIGHT = 10;
+
+    /**
+     * The defualt value for the starting room of the player
+     */
     final static int STARTING_ROOM = 5;
 
-    /*
-     * Constructor for the player
+    /**
+     * Creates a new player with the given name and a given gender. The standard position for the spawn is the room 5 and the standard direction is north. The standard health is 5
+     *
+     * @param n name of the player
+     * @param g gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
+     * @throws IllegalArgumentException if the gender is not given in a valid format
      */
     public Player(String n, String g)
     {
@@ -48,8 +71,11 @@ public class Player extends Character{
         hidden = false;
     }
 
-    /*
+    /**
      * Constructor for the player with gender as argument
+     * 
+     * @param n name of the player
+     * @param g gender of the player given as Gender type
      */
     public Player(String n, Gender g)
     {
@@ -62,8 +88,11 @@ public class Player extends Character{
         currentDirection = Direction.NORTH;
     }
 
-    /*
-     * decrease the health of the player
+    /**
+     * Decreses the health of the player
+     * 
+     * @param damage the amount of health to decrease
+     * @return the new health of the player
      */
     public int decreaseHealth(int damage)
     {
@@ -72,8 +101,11 @@ public class Player extends Character{
         return health -= damage;
     }
 
-    /*
-     * increase the health of the player
+    /**
+     * Increases the health of the player
+     * 
+     * @param healingPoints the amount of health to increase
+     * @return the new health of the player
      */
     public int increaseHealth(int healingPoints)
     {
@@ -82,16 +114,20 @@ public class Player extends Character{
         return health += healingPoints;
     }
 
-    /*
+    /**
      * Return the health of the player
+     * 
+     * @return the health of the player
      */
     public int getHealth()
     {
         return health;
     }
 
-    /*
+    /**
      * Insert an Item in the inventory
+     * 
+     * @param i the item to insert
      */
     public void insertItem(Item i)
     {
@@ -104,8 +140,11 @@ public class Player extends Character{
         ArrayIndexCount++;
     }
 
-    /*
-     * removes and returns the Item at index i
+    /**
+     * Removes and returns the Item at index i
+     * 
+     * @param i the index of the item to remove
+     * @return the item removed
      */
     public Item removeItem(int i)
     {
@@ -120,16 +159,21 @@ public class Player extends Character{
         return out;
     }
 
-    /*
-     * returns the inventory as an array
+    /**
+     * Returns the inventory as an array of items
+     * 
+     * @return the inventory as an array of items
      */
     public Item[] getInventory()
     {
         return inventory;
     }
 
-    /*
-     * returns the element at index i of the inventory
+    /**
+     * Returns the element at index i of the inventory
+     * 
+     * @param i the index of the item to return
+     * @return the item at index i
      */
     public Item getItem(int i)
     {
@@ -138,24 +182,30 @@ public class Player extends Character{
         return inventory[i];
     }
 
-    /*
-     * returns the numeber of items in the inventory
+    /**
+     * Returns the numeber of items in the inventory
+     * 
+     * @return the number of items in the inventory
      */
     public int getInventoryCount()
     {
         return ArrayIndexCount;
     }
 
-    /*
-     * returns the total weigth of the items in the inventory
+    /**
+     * Returns the total weigth of the items in the inventory
+     * 
+     * @return the total weigth of the items in the inventory
      */
     public int getWeight()
     {
         return WeightCount;
     }
 
-    /*
-     * prints the inventory of the player
+    /**
+     * Returns a String containing all the items in the inventory
+     * 
+     * @return a String containing all the items in the inventory, each one in a new line
      */
     public String printInventory(){
         if (ArrayIndexCount == 0)
@@ -166,43 +216,54 @@ public class Player extends Character{
         return out + "\n";
     }
 
-    /*
-     * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
+    /**
+     * Function to cross a door. 
+     * 
+     * @param newRoom the room the player will end in
      */
     public void crossDoor(Room newRoom) {
         currentRoom = newRoom.getRoomNumber();
     }
 
-    /*
-     * function to change the wall. The parameter is the number of the door the player will end in.
+    /**
+     * Function to change the wall the player is facing
+     * 
+     * @param newDirection the new direction the player will be facing
      */
     public void changeDirection(Direction newDirection) {
         currentDirection = newDirection;
     }
 
-    /* 
-     * returns the current direction of the player
+    /**
+     * Returns the current direction the player is facing
+     * 
+     * @return the current direction of the player
      */
     public Direction getCurrentDirection() {
         return currentDirection;
     }
 
-    /*
-     * returns if the player is hidden or not
+    /**
+     * Returns if the player is hidden or not
+     * 
+     * @return true if the player is hidden, false otherwise
      */
     public boolean isHidden() {
         return hidden;
     }
 
-    /*
-     * change the state of the player from hidden to not hidden and vice versa
+    /**
+     * Change the state of the player from hidden to not hidden and vice versa
      */
     public void setHidden() {
         hidden = !hidden;
     }
 
-    /*
-     * returns true if this player is equal to the other player
+    /**
+     * Returns true if this player is equal to the other player given as argument
+     * 
+     * @param other the player to compare
+     * @return true if the two players are equal, false otherwise
      */
     @Override
     public boolean equals(Object other)
@@ -221,8 +282,10 @@ public class Player extends Character{
         return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && score == p.score && WeightCount == p.WeightCount && currentDirection == p.currentDirection;
     }
 
-    /*
-     * method to create a deep copy of the player
+    /**
+     * Method to create a deep copy of the player
+     * 
+     * @return a deep copy of the player
      */
     @Override
     public Player clone()
@@ -240,7 +303,11 @@ public class Player extends Character{
         return p;
     }
 
-    //private method to compact the inventory when an item is removes
+    /**
+    * Private method to compact the inventory when an item is removes 
+    *
+    * @return the compacted inventory
+    */
     private Item[] compactedInventory()
     {
         Item[] out = new Item[MAX_WEIGHT];
