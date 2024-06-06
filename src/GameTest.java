@@ -32,7 +32,7 @@ public class GameTest {
         g.nextMove("cross north");
         Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
         //test passage number 3
-        g.nextMove("cross north");
+        g.nextMove("cross");
         Assert.assertEquals(1, g.getPlayer().getCurrentRoom());
         //test passage number 1
         g.nextMove("cross east");
@@ -47,7 +47,7 @@ public class GameTest {
         g.nextMove("cross south");
         Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
         //test passage number 10
-        g.nextMove("cross south");
+        g.nextMove("cross ");
         Assert.assertEquals(9, g.getPlayer().getCurrentRoom());
         //test passage number 12 (it doesn't exist)
         g.nextMove("cross west");
@@ -65,6 +65,8 @@ public class GameTest {
     @Test
     public void undoTest() {
         var g = new Game("Player", "f", "Enemy", "m");
+        var initP = g.getPlayer().clone();
+        var initE = g.getEnemy().clone();
 
         //i do some random moves to change the state of the game
         g.nextMove("south");
@@ -91,8 +93,10 @@ public class GameTest {
         g.nextMove("undo");
         g.nextMove("undo");
 
-        Assert.assertNotEquals(p, g.getPlayer());
+        Assert.assertEquals(initP, g.getPlayer());
         //sometimes this fails becauce the enemy may not have been moved since the last record state
-        Assert.assertNotEquals(e, g.getEnemy());
+        Assert.assertEquals(initE, g.getEnemy());
     }
+
+    
 }

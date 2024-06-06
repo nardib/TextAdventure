@@ -6,11 +6,11 @@ public class Game {
     private Player player;
     private Map map;
     private Enemy enemy;
-    private boolean isGamePaused, isGameOn;
+    private boolean isGameOn;
     private Stack<GameMemento> mementos = new Stack<>();
 
     final String HELP = "The commands are:\n"
-            + "north, south, east, west, cross <direction>, look, take <item>, use <item>, pause, resume, save, undo/back, quit";
+            + "north, south, east, west, cross <direction>, look, take <item>, use <item>, save, undo/back, quit";
 
     /*
      * Constructor for initializing the game variables
@@ -20,7 +20,6 @@ public class Game {
         map = new Map();
         enemy = new Enemy(en, eg);
         isGameOn = true;
-        isGamePaused = false;
         mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
@@ -174,25 +173,16 @@ public class Game {
 
         if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
             return HELP;
+
         
-        if (isGamePaused && !input.equalsIgnoreCase("resume"))
-            return "Game is paused. Type 'resume' to continue";
         
-        if (input.equalsIgnoreCase("pause"))
-            return pauseGame();
-        
-        if (isGamePaused) {
-            if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-                isGameOn = false;
-                return "Game over";
-            }
-            if (input.equalsIgnoreCase("save"))
-                return "Game saved";
-            
-            if (input.equalsIgnoreCase("resume"))
-                return resumeGame();
-            
-        }
+        if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
+            isGameOn = false;
+            return "Game over";
+       }
+        if (input.equalsIgnoreCase("save"))
+            return "Game saved";
+
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
 
             if (undo()) 
@@ -229,20 +219,6 @@ public class Game {
         }
         //i should probably add a win condition here
         return !isGameOn;
-    }
-
-    public String pauseGame() {
-        isGamePaused = true;
-        return "Game paused";
-    }
-
-    public String resumeGame() {
-        isGamePaused = false;
-        return "Game resumed";
-    }
-
-    public boolean isGamePaused() {
-        return isGamePaused;
     }
 
     public boolean isGameOn() {

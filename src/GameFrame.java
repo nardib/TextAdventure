@@ -70,8 +70,6 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
                     graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
-                    if (game.isGamePaused())
-                        gameStatusLabel.setText("GIOCO IN PAUSA");
                     inputField.setText("");
                 }
             }
@@ -124,7 +122,6 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         pauseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameStatusLabel.setText("GIOCO IN PAUSA");
-                game.pauseGame();
             }
         });
         pauseButton.setBackground(buttonBackgroundColor);
