@@ -40,17 +40,17 @@ public class Player extends Character{
     /**
      * The defualt value for the max health of the player
      */
-    final int MAX_HEALTH = 5;
+    public final int MAX_HEALTH = 5;
 
     /**
      * The defualt value for the max weigth the player can carry
      */
-    final int MAX_WEIGHT = 10;
+    public final int MAX_WEIGHT = 10;
 
     /**
      * The defualt value for the starting room of the player
      */
-    final static int STARTING_ROOM = 5;
+    public final static int STARTING_ROOM = 5;
 
     /**
      * Creates a new player with the given name and a given gender. The standard position for the spawn is the room 5 and the standard direction is north. The standard health is 5

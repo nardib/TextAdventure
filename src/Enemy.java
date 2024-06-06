@@ -15,6 +15,7 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
      * 
      * @see Room
      * @param n room in which the enemy is
+     * @return the room in which the enemy is
      */
     public int move(Room n) {
         boolean[] rooms = new boolean[4]; //contiene i boleani N, S, E, W per sapere se la facciata ha la porta o meno

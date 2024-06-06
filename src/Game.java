@@ -1,15 +1,38 @@
 import java.util.Stack;
+
+/**
+ * Game class. This class represents the game. The game is composed by a player, an enemy and a map. The player can move in the map and interact with the items in the rooms. The enemy moves randomly in the map and can attack the player. The game can be saved and the player can undo the last move.
+ */
 public class Game {
-    /*
-     * State variables
+    /**
+     * Player in the game
      */
     private Player player;
+
+    /**
+     * Map of the game
+     */
     private Map map;
+
+    /**
+     * Enemy in the game
+     */
     private Enemy enemy;
+
+    /**
+     * Tells if the game is on or not
+     */
     private boolean isGameOn;
+
+    /**
+     * Stack of mementos to implement the undo function
+     */
     private Stack<GameMemento> mementos = new Stack<>();
 
-    final String HELP = "The commands are:\n"
+    /**
+     * The help message
+     */
+    public final String HELP = "The commands are:\n"
             + "- <direction> : you can face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
             + "- cross <direction> : it allows you to cross in a specified direction; if <direction> argument is omitted, then you cross the direction you are facing\n"
             + "- look : it returns a list of the items in the current room\n"
@@ -21,8 +44,15 @@ public class Game {
             + "- save : save the current state of the game\n"
             + "- quit/exit : exit the game without saving the changes\n";
 
-    /*
-     * Constructor for initializing the game variables
+    /**
+     * Constructor to initialize the game variables
+     * 
+     * @param pn name of the player
+     * @param pg the gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
+     * @param en name of the enemy
+     * @param eg the gender of the enemy given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
+     * 
+     * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format
      */
     public Game(String pn, String pg, String en, String eg) {
         player = new Player(pn, pg);
@@ -32,8 +62,13 @@ public class Game {
         mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
-    /*
-     * Method to manage the player moves
+    /**
+     * Method to manage the turn of the player
+     * 
+     * @param input the input of the player. The accepted input are the player commands.
+     * @return the output of the player's turn in a String format
+     * 
+     * @throws IllegalArgumentException if the input is not valid in different ways
      */
     private String playerTurn (String input) {
         //commands to change the wall the player is facing
@@ -75,22 +110,22 @@ public class Game {
                     return "You moved to the room: " + player.getCurrentRoom();
                 }
             }
-            else if (input.substring(6).equalsIgnoreCase("north") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
+            else if (input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("south") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
+            else if (input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("east") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
+            else if (input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("west") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
+            else if (input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
                 return "You moved to the room: " + player.getCurrentRoom();
@@ -180,8 +215,10 @@ public class Game {
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }
 
-    /*
-     * Method to manage the enemy moves
+    /**
+     * Method to manage the enemy turn
+     * 
+     * @return the output of the enemy's turn in a String format
      */
     private String enemyTurn() {
         if (enemy.getCurrentRoom() == player.getCurrentRoom() && !player.isHidden()){
@@ -198,8 +235,11 @@ public class Game {
         }
     }
 
-    /*
-     * Method to generate the actions of a move
+    /**
+     * Method to generate the actions of a move given a specific input by the user
+     * 
+     * @param input the input of the player
+     * @return the output of the move in a String format
      */
     public String nextMove(String input) {
 
@@ -250,41 +290,87 @@ public class Game {
         return out;
     }
 
-    /*
+    /**
      * Method to check if the game is over
+     * 
+     * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        if (player.getHealth() == 0) {
+        if (player.getHealth() == 0)
             isGameOn = false;
-        }
+
         //i should probably add a win condition here
         return !isGameOn;
     }
 
+    /**
+     * Method to check if the game is on
+     * 
+     * @return true if the game is on, false otherwise
+     */
     public boolean isGameOn() {
         return isGameOn;
     }
 
+    /**
+     * Method to get the player
+     * 
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Method to get the enemy
+     * 
+     * @return the enemy
+     */
     public Enemy getEnemy() {
         return enemy;
     }
 
+    /**
+     * Method to get the map
+     * 
+     * @return the map
+     */
     public Map getMap() {
         return map;
     }
-    /*
-     * class for memento pattern to implement undo function
+    /**
+     * Class for memento pattern to implement "undo" function
      */
     private class GameMemento {
+
+        /**
+         * Player in the game
+         */
         private final Player player;
+
+        /**
+         * Enemy in the game
+         */
         private final Enemy enemy;
+
+        /**
+         * Map of the game
+         */
         private final Map map;
+
+        /**
+         * Tells if the game is on or not
+         */
         private final boolean isGameOn;
 
+        /**
+         * Constructor to initialize the memento
+         * 
+         * @param player the player
+         * @param enemy the enemy
+         * @param map the map
+         * @param isGameOn tells if the game is on or not
+         */
         public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn) {
             this.player = player.clone();
             this.enemy = enemy.clone();
@@ -292,32 +378,52 @@ public class Game {
             this.isGameOn = isGameOn;
         }
 
+        /**
+         * Method to get the player
+         * 
+         * @return the player of the current memento
+         */
         public Player getPlayer() {
             return player;
         }
 
+        /**
+         * Method to get the enemy
+         * 
+         * @return the enemy of the current memento
+         */
         public Enemy getEnemy() {
             return enemy;
         }
 
+        /**
+         * Method to get the map
+         * 
+         * @return the map of the current memento
+         */
         public Map getMap() {
             return map;
         }
 
+        /**
+         * Method to get if the game is on
+         * 
+         * @return true if the game is on, false otherwise (in the current memento)
+         */
         public boolean getisGameOn() {
             return isGameOn;
         }
     }
 
-    /*
-     * Method to save the current state of the game
+    /**
+     * Method to save the current state of the game and add it to the stack of mementos
      */
     private void saveCurrentState() {
         mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
-    /*
-     * Method to undo the last move
+    /**
+     * Method to undo the last move, i.e. go back to the previous state of the game
      * 
      * @return true if undo is successful, false otherwise
      */

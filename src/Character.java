@@ -20,22 +20,22 @@ public class Character {
     /**
      * constants value to move the character in the north room
      */
-    final static int CROSS_NORTH = -3; 
+    public final static int CROSS_NORTH = -3; 
 
     /**
      * constants value to move the character in the south room
      */
-    final static int CROSS_SOUTH = 3;
+    public final static int CROSS_SOUTH = 3;
 
     /**
      * constants value to move the character in the east room
      */
-    final static int CROSS_EAST = 1;
+    public final static int CROSS_EAST = 1;
 
     /**
      * constants value to move the character in the west room
      */
-    final static int CROSS_WEST = -1;
+    public final static int CROSS_WEST = -1;
     
     /**
      * Constructior for the Character
@@ -128,7 +128,7 @@ public class Character {
         currentRoom = n;
     }
 
-    /*
+    /**
      * Method to get the current room of the player
      * 
      * @return current room of the player as integer
