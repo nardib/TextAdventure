@@ -155,6 +155,18 @@ public class Player extends Character{
     }
 
     /*
+     * prints the inventory of the player
+     */
+    public String printInventory(){
+        if (ArrayIndexCount == 0)
+            return "no items\n";
+        String out = "\n";
+        for (int i = 0; i < ArrayIndexCount; i++)
+            out += inventory[i].getName() + "\n";
+        return out + "\n";
+    }
+
+    /*
      * function to cross the door. Ability to cross must be checked out of the function. The parameter is the number of the door the player will end in.
      */
     public void crossDoor(Room newRoom) {

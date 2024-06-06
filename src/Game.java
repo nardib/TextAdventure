@@ -10,7 +10,7 @@ public class Game {
     private Stack<GameMemento> mementos = new Stack<>();
 
     final String HELP = "The commands are:\n"
-            + "north, south, east, west, cross <direction>, look, take <item>, use <item>, save, undo/back, quit";
+            + "north, south, east, west, cross <direction>, look, take <item>, use <item>, save, undo/back, quit, status";
 
     /*
      * Constructor for initializing the game variables
@@ -27,6 +27,7 @@ public class Game {
      * Method to manage the player moves
      */
     private String playerTurn (String input) {
+        //commands to change the wall the player is facing
         if (input.equalsIgnoreCase("north")){
             player.changeDirection(Direction.NORTH);
             return "You are now facing north";
@@ -43,6 +44,8 @@ public class Game {
             player.changeDirection(Direction.WEST);
             return "You are now facing west";
         }
+        
+        //commands to move the player
         else if(input.length() > 4 && input.substring(0, 5).equalsIgnoreCase("cross"))
         {
             if(input.length() == 5){
@@ -85,7 +88,9 @@ public class Game {
             }
             throw new IllegalArgumentException("You can't cross in that direction");
         }
+
         /*
+        //command to check the items in the room
         else if (input.equalsIgnoreCase("look"))
         {
             Item[] roomItems = map.getRoom(player.getCurrentRoom()).getItems());
@@ -97,6 +102,7 @@ public class Game {
             return items;
         }*/
         /*
+        //command to take an item in the room
         else if (input.substring(0, 4).equalsIgnoreCase("take"))
         {
             if (map.getRoom(player.getCurrentRoom()).getItems().length == 0)
@@ -109,6 +115,8 @@ public class Game {
             }
         }
         */
+
+        //command to use an item in the inventory
         else if(input.substring(0, 3).equalsIgnoreCase("use")) {
             if (player.getInventoryCount() != 0) {
                 for (int i = 0; i < player.getInventoryCount(); i++) {
@@ -128,6 +136,8 @@ public class Game {
                             return hammer.getUsingMessage();
                         }
                         else if (item instanceof HealingItem) {
+                            if (player.getHealth() == 5)
+                                return "You already have full health";
                             HealingItem healingItem = (HealingItem) item;
                             player.increaseHealth(healingItem.HEALING_POINTS);
                             player.removeItem(i);
@@ -138,6 +148,21 @@ public class Game {
             }
             //i also must check if there is an hiding item in the room
             return "You can't use this item";
+        }
+
+        //command to throw an item in the invenotory
+        if (input.substring(0, 5).equalsIgnoreCase("throw")) {
+            //i should add a way to check if the user has inserted the number of the item he wants to throw
+            if (player.getInventoryCount() != 0) {
+                for (int i = 0; i < player.getInventoryCount(); i++) {
+                    if (player.getItem(i).getName().equalsIgnoreCase(input.substring(6))) {
+                        Item item = player.removeItem(i);
+                        //map.getRoom(player.getCurrentRoom()).addItem(item);
+                        return "You threw the " + item.getName() + " in the room";
+                    }
+                }
+            }
+            return "You can't throw this item";
         }
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }
@@ -168,41 +193,44 @@ public class Game {
         input = input.trim(); //remove leading and trailing whitespaces
 
         if (!isGameOn)
-            return "Game is Over!";
+            return "\nGame is Over!";
 
         if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
             return HELP;
 
-        
+        if (input.equalsIgnoreCase("status"))
+            return "\nPlayer is in room " + player.getCurrentRoom() + " and has " + player.getHealth() + " health points\n"
+                    + "In his invenotory there are the following items: " + player.printInventory()
+                    + "Enemy is in room " + enemy.getCurrentRoom();
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
             isGameOn = false;
-            return "Game over";
+            return "\nGame over";
        }
         if (input.equalsIgnoreCase("save"))
-            return "Game saved";
+            return "\nGame saved";
 
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
 
             if (undo()) 
-                return "Undo successful! Now the player is in room " + player.getCurrentRoom() + " and the enemy is in room " + enemy.getCurrentRoom();
+                return "\nUndo successful! Now the player is in room " + player.getCurrentRoom() + " and the enemy is in room " + enemy.getCurrentRoom();
             
-            return "No previous moves to undo";
+            return "\nNo previous moves to undo";
         }
 
-        String out = "";
+        String out = "\n";
 
         // player turn
         try {
             out += playerTurn(input);
         } catch (IllegalArgumentException e) {
-            return e.getMessage();
+            return "\n" + e.getMessage();
         }
 
         // enemy turn
         out +="\n" + enemyTurn();
         if(isGameOver())
-            return "Game Over! The enemy killed you!";
+            return "\nGame Over! The enemy killed you!";
         
         //i save the state of the game after each move
         saveCurrentState();
