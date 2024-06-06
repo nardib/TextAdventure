@@ -77,8 +77,10 @@ public class Item {
      */
     public void setRoom(int room)
     {
-        if(room >= 0 && room <= 9)
+        if(room >= 0 && room <= 9) {
             currentRoom = room;
+            return;
+        }
         throw new IllegalArgumentException("Room must be between 0 and 9");
     }
 

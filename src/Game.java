@@ -147,9 +147,8 @@ public class Game {
      */
     private String enemyTurn() {
         if (enemy.getCurrentRoom() == player.getCurrentRoom() && !player.isHidden()){
-            try {
-                    player.decreaseHealth(enemy.DAMAGE);
-            } catch (IllegalStateException e) {
+            player.decreaseHealth(enemy.DAMAGE);
+            if (player.getHealth() == 0){
                 isGameOn = false;
                 return "Game Over! The enemy killed you!";
             }

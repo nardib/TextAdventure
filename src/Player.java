@@ -68,7 +68,7 @@ public class Player extends Character{
     public int decreaseHealth(int damage)
     {
         if (health - damage < 0)
-            throw new IllegalStateException("the player can't have an health score of less than zero");
+            return health = 0;
         return health -= damage;
     }
 
@@ -78,7 +78,7 @@ public class Player extends Character{
     public int increaseHealth(int healingPoints)
     {
         if (health + healingPoints > 5)
-            throw new IllegalStateException("Player's health can't be more than 5");
+            return health = 5;
         return health += healingPoints;
     }
 

@@ -75,4 +75,33 @@ public class PlayerTest {
         Assert.assertEquals("hammer", p.getItem(1).getName());
     }
     
+    //i test if the health of the player is correctly updated
+    @Test
+    public void testHealth() {
+        Player p = new Player("Filippo", "n");
+        Enemy e = new Enemy("Enemy", "m");
+        Item i = new HealingItem("potion", "test.png", 3, 1, 2);
+        Assert.assertEquals(5, p.getHealth());
+        p.decreaseHealth(e.DAMAGE);
+        Assert.assertEquals(4, p.getHealth());
+        p.decreaseHealth(e.DAMAGE);
+        Assert.assertEquals(3, p.getHealth());
+        p.decreaseHealth(e.DAMAGE);
+        Assert.assertEquals(2, p.getHealth());
+        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        Assert.assertEquals(4, p.getHealth());
+        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        Assert.assertEquals(5, p.getHealth());
+        p.decreaseHealth(e.DAMAGE);
+        p.decreaseHealth(e.DAMAGE);
+        p.decreaseHealth(e.DAMAGE);
+        p.decreaseHealth(e.DAMAGE);
+        p.decreaseHealth(e.DAMAGE);
+        Assert.assertEquals(0, p.getHealth());
+        p.decreaseHealth(e.DAMAGE);
+        Assert.assertEquals(0, p.getHealth());
+        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        Assert.assertEquals(4, p.getHealth());
+    }
 }

@@ -97,6 +97,4 @@ public class GameTest {
         //sometimes this fails becauce the enemy may not have been moved since the last record state
         Assert.assertEquals(initE, g.getEnemy());
     }
-
-    
 }
