@@ -18,6 +18,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     JTextField inputField; // Campo di testo per l'input dell'utente
     JPanel buttonPanel; // Pannello dei pulsanti
     JLabel gameStatusLabel; // Etichetta per lo stato del gioco
+    public static JLabel playerHelthLabel; //Etichetta per la vita del giocatore 
 
     // Costruttore della classe
     public GameFrame() {
@@ -79,6 +80,13 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
+        //Configura Label vita giocatore
+        playerHelthLabel = new JLabel();
+        playerHelthLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        playerHelthLabel.setForeground(Color.WHITE);
+        playerHelthLabel.setText("SALUTE: ♥♥♥♥♥");
+        center.add(playerHelthLabel, BorderLayout.PAGE_START);
+
         // Configura il pannello dei pulsanti
         buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(28, 28, 28));
@@ -134,6 +142,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
             public void actionPerformed(ActionEvent e) {
                 gameStatusLabel.setText("");
                 graphic.setText(" ");
+                playerHelthLabel.setText("SALUTE: ♥♥♥♥♥");
                 graphic.setIcon(null);
                 wallcount = 0;
                 clearTerminal();
