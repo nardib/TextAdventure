@@ -11,6 +11,8 @@ else click on "Resume Game"
     Player -> Game : Load Game
 end
 
+Game --> Player : Asks for name and gender of the Player
+Player -> Game : Gives the requested parameters
 Game --> Player : Shows game interface
 
 alt insert an input in the TextField
@@ -41,7 +43,7 @@ alt insert an input in the TextField
         end
     end
 else use on "Back" button or submit "undo"/"back" command
-    Player --> Game : triggers "back" button
+    Player -> Game : triggers "back" button
     Game --> Player : returns the state of the game one step back
 else clicks on "Intruction" button
     Player -> Game : clicks on instruction Button

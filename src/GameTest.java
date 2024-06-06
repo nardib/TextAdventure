@@ -26,10 +26,10 @@ public class GameTest {
         g.nextMove("cross south");
         Assert.assertEquals(8, g.getPlayer().getCurrentRoom());
         //test passage number 11
-        g.nextMove("cross west");
+        g.nextMove("cross w");
         Assert.assertEquals(7, g.getPlayer().getCurrentRoom());
         //test passage number 8
-        g.nextMove("cross north");
+        g.nextMove("cross n  ");
         Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
         //test passage number 3
         g.nextMove("cross");
@@ -38,13 +38,13 @@ public class GameTest {
         g.nextMove("cross east");
         Assert.assertEquals(2, g.getPlayer().getCurrentRoom());
         //test passage number 4 (it doesn't exist)
-        g.nextMove("cross south ");
+        g.nextMove("cross south");
         Assert.assertEquals(2, g.getPlayer().getCurrentRoom());
         //test passage number 2
-        g.nextMove("cross east");
+        g.nextMove("cross e");
         Assert.assertEquals(3, g.getPlayer().getCurrentRoom());
         //test passage number 5
-        g.nextMove("cross south");
+        g.nextMove("cross s");
         Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
         //test passage number 10
         g.nextMove("cross ");

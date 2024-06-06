@@ -1,4 +1,13 @@
 /**
+ * Enum for all the accepted gender types
+*/
+enum Gender{
+    MALE,
+    FEMALE,
+    NEUTRAL
+}
+
+/**
  * Class to create a character with name and gender
  */
 public class Character {

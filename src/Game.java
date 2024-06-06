@@ -110,22 +110,22 @@ public class Game {
                     return "You moved to the room: " + player.getCurrentRoom();
                 }
             }
-            else if (input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n") && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
+            else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s") && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
+            else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e") && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
+            else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
                 return "You moved to the room: " + player.getCurrentRoom();
             }
-            else if (input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w") && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
+            else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
                 return "You moved to the room: " + player.getCurrentRoom();

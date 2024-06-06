@@ -21,7 +21,9 @@
         gender
     }
     object Items{
+        name
         weight
+        pickable state
     }
 
     Player "1" -- "1" Enemy : attacks < 

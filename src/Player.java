@@ -1,4 +1,14 @@
 /**
+ * Enum for all the accepted directions
+ */
+enum Direction{
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+}
+
+/**
  * Class to manage the Player properties. In particular it manages the health, the inventory, the name and the current room of the player
  */
 public class Player extends Character{

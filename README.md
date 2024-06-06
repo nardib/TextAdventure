@@ -24,7 +24,7 @@ Some items, like the hammer, can occupy almost all the carrable weight, forcing 
 Also, once used, the item dissapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage.
 
 ### **Player and commands**
-At the beginning of the game, the user can choose the name and the gender of the player. 
+At the beginning of the game, the user can choose the name and the gender of the player.
 In orther to interract with the game, the player as to use the command line implemented in the GUI executing specific commands:
 
 - north (command used to change the facing direction to north wall of the room)

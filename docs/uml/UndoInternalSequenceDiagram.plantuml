@@ -14,12 +14,12 @@ activate Game
 GameFrame -> Game : "undo" or "back"
 
 Game -> Game : undo()
-GameMemento -> Game : gives the state of the previous move 
-Game -> Game : update the state of the game with the previous move
-
+GameMemento -> Game : gives the state of the previous move
 alt "game has no previous moves" 
     Game -> GameFrame : notify "No previous moves to undo"
 else "game has previous moves"
+    Game -> Game : update the state of the game with the previous move
+
     Game -> GameFrame : notify "Undo successful"
 deactivate Game
 end

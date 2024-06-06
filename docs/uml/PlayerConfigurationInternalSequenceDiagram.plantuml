@@ -1,0 +1,29 @@
+@startuml Player Configuration
+
+title Player Configuration - Internal Sequence DiagramBorderColor
+
+actor User
+participant GameFrame
+participant Game
+participant Player
+
+activate GameFrame
+loop "until Player accept the given parameters"
+    GameFrame --> User: Asks for a name and a gender for the player
+    User -> GameFrame : provides the asked parameters
+
+    activate Game
+    GameFrame -> Game: Game()
+
+    activate Player
+    Game -> Player: Player()
+    alt "Player accept the given parameters"
+        Player -> Player : Player()
+    else "Player reject the given parameters"
+        Player -> Game: throws IllegalArgumentException()
+        Game -> GameFrame: requests the parameters again
+        GameFrame --> User: Asks for new parameters
+    end
+end
+
+@enduml
