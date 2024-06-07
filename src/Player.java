@@ -114,10 +114,6 @@ public class Player extends Character{
     {
         if (health - damage < 0)
             return health = 0;
-        for (int i = 0; i < getPlayer().getHealth(); i++) {
-            heartSymbols.append("♥");
-            GameFrame.playerHeltLabel.setText("SALUTE: " + heartSymbols.toString());
-        }    
         return health -= damage;
     }
 
@@ -131,10 +127,6 @@ public class Player extends Character{
     {
         if (health + healingPoints > 5)
             return health = 5;
-            for (int i = 0; i < getPlayer().getHealth(); i++) {
-                heartSymbols.append("♥");
-                GameFrame.playerHeltLabel.setText("SALUTE: " + heartSymbols.toString());
-            }
         return health += healingPoints;
     }
 

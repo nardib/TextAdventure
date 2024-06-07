@@ -18,7 +18,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     JTextField inputField; // Campo di testo per l'input dell'utente
     JPanel buttonPanel; // Pannello dei pulsanti
     JLabel gameStatusLabel; // Etichetta per lo stato del gioco
-    public static JLabel playerHelthLabel; //Etichetta per la vita del giocatore 
+    private static JLabel playerHelthLabel; //Etichetta per la vita del giocatore 
 
     // Costruttore della classe
     public GameFrame() {
@@ -71,6 +71,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
                     graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+                    updatePlayerHealthLabel();
                     inputField.setText("");
                 }
             }
@@ -216,6 +217,17 @@ public class GameFrame implements MouseMotionListener, MouseListener {
 
         frame.setVisible(true);
         toggleFullscreen();
+    }
+
+    /**
+     * Update the player health label
+     */
+    public void updatePlayerHealthLabel() {
+        StringBuilder heartSymbols = new StringBuilder();
+        for (int i = 0; i < game.getPlayer().getHealth(); i++) {
+            heartSymbols.append("♥");
+        }
+        playerHelthLabel.setText("SALUTE: " + heartSymbols.toString());
     }
 
     // Attiva/disattiva la modalità fullscreen
