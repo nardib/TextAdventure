@@ -253,7 +253,7 @@ public class Game {
 
         if (input.equalsIgnoreCase("status"))
             return "\nPlayer is in room " + player.getCurrentRoom() + " and has " + player.getHealth() + " health points\n"
-                    + "In his invenotory there are the following items: " + player.printInventory()
+                    + "In their invenotory there are the following items: " + player.printInventory()
                     + "Enemy is in room " + enemy.getCurrentRoom();
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
