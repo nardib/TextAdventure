@@ -163,7 +163,7 @@ public class Game {
         */
 
         //command to use an item in the inventory
-        else if(input.substring(0, 3).equalsIgnoreCase("use")) {
+        else if(input.length() > 3 && input.substring(0, 3).equalsIgnoreCase("use")) {
             if (player.getInventoryCount() != 0) {
                 for (int i = 0; i < player.getInventoryCount(); i++) {
                     if (player.getItem(i).getName().equalsIgnoreCase(input.substring(4))) {
@@ -197,7 +197,7 @@ public class Game {
         }
 
         //command to throw an item in the invenotory
-        if (input.substring(0, 5).equalsIgnoreCase("throw")) {
+        if (input.length() > 5 && input.substring(0, 5).equalsIgnoreCase("throw")) {
             //items number goes from 1 to max
             try {
                 player.removeItem(Integer.parseInt(input.substring(6)) - 1);
