@@ -3,6 +3,8 @@ package org.zssn.escaperoom;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 public class Room 
@@ -24,19 +26,16 @@ public class Room
     public static Wall[] Walls= new Wall[36];
     // Load images from directory
     public static void loadImages() {
-        File dir = new File("Text Adventure rooms");
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (int i = 0; i < 36; i++) {
-                try {
-                    BufferedImage image = ImageIO.read(files[i]);
-                    Walls[i] = new Wall(image, false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    for (int i = 0; i < 36; i++) {
+        try {
+            InputStream in = Room.class.getResourceAsStream("/rooms/" + i + ".png");
+            BufferedImage image = ImageIO.read(in);
+            Walls[i] = new Wall(image, false);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+}
     /*
      * Room class constructor
      */
