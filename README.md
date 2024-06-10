@@ -63,9 +63,9 @@ The player can also find and use some special healing items like bandages and pa
 
 | Name | Version | Description |
 | --- | --- | --- |
-| Java | 20.0.1 | IDE and programming language used in the development |
+| Java | 17 | Version of Java defined in the `pom.xml` file for compiling and generating the target bytecode|
 | JavaSwing | 1.0.3 | Platform used for develpment of client applications, based on Java, later on substitued with JavaFX |
-| JUnit | 5.9.1 | Framework for Java class tests. |
+| JUnit | 4.13.2 | Framework for Java class tests |
 
 ### Compile and Execute
 
@@ -162,11 +162,15 @@ mvn test surefire-report:report
 
 We used memento design pattern to implement the undo functionality in Game class. We used an inner class inside Game called GameMemento, which takes a snapshot of the state of the game manking a copy of every object relevant for the state of the game: in this way is easy to implement a list of all the snapshots, and every time the game insert "undo" (or "back") as input, it change the state of the game to previous one, removing it form the list. The list is make in order to be able to go back several time.
 
+#### Template Method Pattern
+
+The Item class is extended by other subclasses which define the characteristics for each single item.
+
 ### GRASP
 
 #### Information Expert
 
-Game class has the responsability to mangate the informations about Player, Enemy, Map ...
+Game class has the responsability to manage the informations about Player, Enemy, Map ...
 
 #### High Cohesion
 

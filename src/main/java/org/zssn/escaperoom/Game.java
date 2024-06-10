@@ -35,16 +35,17 @@ public class Game {
      * The help message
      */
     public final String HELP = "The commands are:\n"
-            + "- <direction> : you can face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
-            + "- cross <direction> : it allows you to cross in a specified direction; if <direction> argument is omitted, then you cross the direction you are facing\n"
-            + "- look : it returns a list of the items in the current room\n"
-            + "- take <item> : you can pick an item in the current room given it's name as argument\n"
-            + "- use <item> : you can use an item in you inventory or an hiding item if there is one in the room\n"
-            + "- throw <item> : you throw an item in the current room\n"
-            + "- status : give the status of the player, in particular it returns the health of the Player and the items in his inventory\n"
-            + "- undo/back : goes back of a move in the game\n"
-            + "- save : save the current state of the game\n"
-            + "- quit/exit : exit the game without saving the changes\n";
+            + "· <direction> : you can face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
+            + "· cross <direction> : it allows you to cross in a specified direction; if <direction> argument is omitted, then you cross the direction you are facing\n"
+            + "· look : it returns a list of the items in the current room\n"
+            + "· inventory : shows the items in the player's inventory\n"
+            + "· take <item> : you can pick an item in the current room given it's name as argument\n"
+            + "· use <item> : you can use an item in you inventory or an hiding item if there is one in the room\n"
+            + "· throw <item> : you throw an item in the current room\n"
+            + "· status : give the status of the player, in particular it returns the health of the Player and the items in his inventory\n"
+            + "· undo/back : goes back of a move in the game\n"
+            + "· save : save the current state of the game\n"
+            + "· quit/exit : exit the game without saving the changes\n";
 
     /**
      * Constructor to initialize the game variables
@@ -214,6 +215,12 @@ public class Game {
             }
             throw new IllegalArgumentException("You can't throw this item");
         }
+
+        //command to check the items in the inventory
+        else if (input.equalsIgnoreCase("inventory")) {
+            return "In your inventory there are the following items: " + player.printInventory();
+        }
+        
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }
 

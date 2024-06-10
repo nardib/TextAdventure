@@ -211,11 +211,11 @@ public class Player extends Character{
      */
     public String printInventory(){
         if (ArrayIndexCount == 0)
-            return "no items\n";
+            return "no items";
         String out = "\n";
         for (int i = 0; i < ArrayIndexCount; i++)
-            out += inventory[i].getName() + "\n";
-        return out + "\n";
+            out += "· " + inventory[i].getName() + "\n";
+        return out;
     }
 
     /**
