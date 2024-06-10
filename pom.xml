@@ -1,20 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Root element of the Maven POM (Project Object Model) -->
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Unique identifier for the project's group -->
     <groupId>org.zssn.escaperoom</groupId>
+
+    <!-- Unique identifier for the project's artifact -->
     <artifactId>text-adventure</artifactId>
+
+    <!-- Version of the project -->
     <version>1.0.0</version>
 
+    <!-- Project properties -->
     <properties>
+        <!-- Java version used for compilation -->
         <maven.compiler.source>17</maven.compiler.source>
+        <!-- Java version used for target bytecode -->
         <maven.compiler.target>17</maven.compiler.target>
 
+        <!-- JUnit version used for testing -->
         <junit.version>4.13.2</junit.version>
     </properties>
 
+    <!-- Project dependencies -->
     <dependencies>
+        <!-- JUnit dependency for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -23,59 +35,73 @@
         </dependency>
     </dependencies>
 
+    <!-- Build configuration -->
     <build>
+        <!-- Build plugins -->
         <plugins>
+            <!-- Maven JAR Plugin -->
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.0</version>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>org.zssn.escaperoom.Main</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>3.2.4</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>shade</goal>
-                    </goals>
-                    <configuration>
-                        <transformers>
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>org.zssn.escaperoom.Main</mainClass>
-                            </transformer>
-                        </transformers>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <configuration>
-                <mainClass>org.zssn.escaperoom.Main</mainClass>
-            </configuration>
-        </plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <!-- Configuration for creating the JAR file -->
+                    <archive>
+                        <manifest>
+                            <!-- Main class to be executed when running the JAR -->
+                            <mainClass>org.zssn.escaperoom.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Configuration for creating an executable JAR with dependencies -->
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <!-- Main class to be executed when running the JAR -->
+                                    <mainClass>org.zssn.escaperoom.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Exec Maven Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <!-- Main class to be executed when running Maven -->
+                    <mainClass>org.zssn.escaperoom.Main</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <!-- Reporting configuration -->
     <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M5</version>
-      </plugin>
-    </plugins>
-  </reporting>
-  
+        <!-- Reporting plugins -->
+        <plugins>
+            <!-- Maven Surefire Report Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
