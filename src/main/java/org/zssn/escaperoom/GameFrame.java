@@ -26,6 +26,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     public GameFrame() {
         frame = new JFrame("TextAdventure");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(new ImageIcon(getClass().getResource("/text-adventure-icon.png")).getImage());
         frame.setLayout(new BorderLayout());
         frame.addMouseMotionListener(this);
         frame.addMouseListener(this);

@@ -137,7 +137,7 @@ If you want a report of the test you can generate them after the command `mvn te
 mvn surefire-report:report
 ```
 
-You can then find a report in `target/site/surefire-report.html`.
+You can then find the report in `target/site/surefire-report.html`.
 
 #### Additional Notes
 
