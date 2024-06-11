@@ -8,7 +8,7 @@ import java.io.PrintStream;
 
 public class GameFrame implements MouseMotionListener, MouseListener {
     // Variabili di istanza
-    Game game = new Game("Player", "m", "Enemy", "f"); // Oggetto del gioco
+    Game game = new Game("Cristina", "f", "Giancarlo", "neutral"); // Oggetto del gioco
     int x = 0; // Coordinata X del mouse
     int y = 0; // Coordinata Y del mouse
     int wallcount = 0; // Contatore per il cambio di muro

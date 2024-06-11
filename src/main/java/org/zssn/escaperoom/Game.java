@@ -35,20 +35,20 @@ public class Game {
      * The help message
      */
     public final String HELP = "The commands are:\n"
-            + "· <direction> : you can face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
-            + "· cross <direction> : it allows you to cross in a specified direction; if <direction> argument is omitted, then you cross the direction you are facing\n"
-            + "· look : it returns a list of the items in the current room\n"
+            + "· <direction> : allows face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
+            + "· cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the current facing direction\n"
+            + "· look : returns a list of the items in the current room\n"
             + "· inventory : shows the items in the player's inventory\n"
-            + "· take <item> : you can pick an item in the current room given it's name as argument\n"
-            + "· use <item> : you can use an item in you inventory or an hiding item if there is one in the room\n"
-            + "· throw <item> : you throw an item in the current room\n"
-            + "· status : give the status of the player, in particular it returns the health of the Player and the items in his inventory\n"
+            + "· take <item> : allows to pick an item in the current room given it's name as argument\n"
+            + "· use <item> : allows to use an item in the inventory or an hiding item if there is one in the room\n"
+            + "· throw <item> : allows to throw an item in the current room\n"
+            + "· status : give the status of the player, in particular it returns the health of the player and the items in the inventory\n"
             + "· undo/back : goes back of a move in the game\n"
             + "· save : save the current state of the game\n"
             + "· quit/exit : exit the game without saving the changes\n";
 
     /**
-     * Constructor to initialize the game variables
+     * Constructor to initialize the game variables. It automatically capitalizes the first letter of the names given as argument.
      * 
      * @param pn name of the player
      * @param pg the gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
@@ -58,9 +58,9 @@ public class Game {
      * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format
      */
     public Game(String pn, String pg, String en, String eg) {
-        player = new Player(pn, pg);
+        player = new Player(capitalizeFistLetter(pn), pg);
         map = new Map();
-        enemy = new Enemy(en, eg);
+        enemy = new Enemy(capitalizeFistLetter(en), eg);
         isGameOn = true;
         mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
@@ -77,19 +77,19 @@ public class Game {
         //commands to change the wall the player is facing
         if (input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")){
             player.changeDirection(Direction.NORTH);
-            return "You are now facing north";
+            return player.getName() + " is now facing north";
         }
         else if (input.equalsIgnoreCase("south") || input.equalsIgnoreCase("s")){
             player.changeDirection(Direction.SOUTH);
-            return "You are now facing south";
+            return player.getName() + " is now facing south";
         }
         else if (input.equalsIgnoreCase("east") || input.equalsIgnoreCase("e")){
             player.changeDirection(Direction.EAST);
-            return "You are now facing east";
+            return player.getName() + " is now facing east";
         }
         else if (input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")){
             player.changeDirection(Direction.WEST);
-            return "You are now facing west";
+            return player.getName() + " is now facing west";
         }
         
         //commands to move the player
@@ -98,11 +98,11 @@ public class Game {
             if(input.length() == 5){
                 if(player.getCurrentDirection() == Direction.NORTH && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
-                    return "You moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
                 }
                 else if(player.getCurrentDirection() == Direction.SOUTH && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
-                    return "You moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
                 }
                 else if(player.getCurrentDirection() == Direction.EAST && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
@@ -110,30 +110,30 @@ public class Game {
                 }
                 else if(player.getCurrentDirection() == Direction.WEST && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
-                    return "You moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
                 }
             }
             else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
-                return "You moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the room: " + player.getCurrentRoom();
             }
             else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
-                return "You moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the room: " + player.getCurrentRoom();
             }
             else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
-                return "You moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the room: " + player.getCurrentRoom();
             }
             else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
-                return "You moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the room: " + player.getCurrentRoom();
             }
-            throw new IllegalArgumentException("You can't cross in that direction");
+            throw new IllegalArgumentException(player.getName() + " can't cross in that direction");
         }
 
         /*
@@ -184,7 +184,7 @@ public class Game {
                         }
                         else if (item instanceof HealingItem) {
                             if (player.getHealth() == 5)
-                                return "You already have full health";
+                                return player.getName() + " already have full health";
                             HealingItem healingItem = (HealingItem) item;
                             player.increaseHealth(healingItem.HEALING_POINTS);
                             player.removeItem(i);
@@ -194,7 +194,7 @@ public class Game {
                 }
             }
             //i also must check if there is an hiding item in the room
-            return "You can't use this item";
+            return player.getName() + " can't use this item";
         }
 
         //command to throw an item in the invenotory
@@ -209,16 +209,16 @@ public class Game {
                     if (player.getItem(i).getName().equalsIgnoreCase(input.substring(6))) {
                         Item item = player.removeItem(i);
                         //map.getRoom(player.getCurrentRoom()).addItem(item);
-                        return "You threw the " + item.getName() + " in the room";
+                        return player.getName() + " threw the " + item.getName() + " in the room";
                     }
                 }
             }
-            throw new IllegalArgumentException("You can't throw this item");
+            throw new IllegalArgumentException(player.getName() + " can't throw this item");
         }
 
-        //command to check the items in the inventory
+        //command to check the items in the inventory (probably should be in nextMove)
         else if (input.equalsIgnoreCase("inventory")) {
-            return "In your inventory there are the following items: " + player.printInventory();
+            return "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
         
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
@@ -234,13 +234,13 @@ public class Game {
             player.decreaseHealth(enemy.DAMAGE);
             if (player.getHealth() == 0){
                 isGameOn = false;
-                return "Game Over! The enemy killed you!";
+                return "Game Over! " + enemy.getName() + " killed " + player.getName() + "!";
             }
-            return "The enemy attacked you, now you have " + player.getHealth() + " health points left";
+            return enemy.getName() + " attacked " + player.getName() + ", now " + player.getPronoun() + " has " + player.getHealth() + " health points left";
         }
         else {
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
-            return "The enemy moved to another room (for testing purposes: " + enemy.getCurrentRoom() + ")";
+            return enemy.getName() + " moved to another room (for testing purposes: " + enemy.getCurrentRoom() + ")";
         }
     }
 
@@ -261,9 +261,9 @@ public class Game {
             return HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return "\nPlayer is in room " + player.getCurrentRoom() + " and has " + player.getHealth() + " health points\n"
-                    + "In their invenotory there are the following items: " + player.printInventory()
-                    + "Enemy is in room " + enemy.getCurrentRoom();
+            return "\n" + player.getName() +" is in room " + player.getCurrentRoom() + " and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
+                    + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory() + "\n"
+                    + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
             isGameOn = false;
@@ -275,7 +275,7 @@ public class Game {
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
 
             if (undo()) 
-                return "\nUndo successful! Now the player is in room " + player.getCurrentRoom() + " and the enemy is in room " + enemy.getCurrentRoom();
+                return "\nUndo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
             
             return "\nNo previous moves to undo";
         }
@@ -292,7 +292,7 @@ public class Game {
         // enemy turn
         out +="\n" + enemyTurn();
         if(isGameOver())
-            return "\nGame Over! The enemy killed you!";
+            return "\nGame Over! " + enemy.getName() + " killed you!";
         
         //i save the state of the game after each move
         saveCurrentState();
@@ -448,5 +448,15 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Method to capitalize the first letter of a string
+     * 
+     * @param s the string to capitalize
+     * @return the string with the first letter capitalized
+     */
+    private String capitalizeFistLetter(String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 }
