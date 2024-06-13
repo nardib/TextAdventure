@@ -21,7 +21,7 @@ South Side
 Door. Clock in the top left (07:35) Small table on the right with a house phone on top (will require a number to be called)
 
 West Side
-Paintings on the wall, family members. They each have a specific item in the background which will be required to open a box
+Paintings on the wall, family members. useless?
 There is a large storage chest on the ground that can be used to hide from the pursuer.
 
 Room 2 Game room
@@ -32,7 +32,7 @@ Paintings to fill up space, might have some clues
 
 E
 Door in the middle
-D6 on 6 face, buttons need to be pressed in a certain order
+D6 on 6 face, buttons need to be pressed in a certain order, opens the dice and gives object for final room
 Case with board and card games
 
 S
@@ -45,8 +45,9 @@ Posters of some games with clues (?)
 Room 3 Kitchen
 
 N
-Fridge, locked with a lock, inside is bandages and some hints
+Fridge, locked with a lock, inside is bandages and some objects
 Countertop painkillers
+
 E
 Countertop key on the wall
 
@@ -82,20 +83,104 @@ switch on the side (not working)
 Room 5 Central Room
 
 N
+Chest to hide
+4 star-shaped holes in the wall
 
 E
 DOOR
+2 star-shaped holes in the wall
 
 S
 DOOR
+2 star-shaped holes in the wall
 
 W
 DOOR
+2 star-shaped holes in the wall
 
 Room 6 Living Room
 
-Room 7 ?
+N
+Safe, requires a key (room 1).
+Cabinets, bandages and potentially objects for final room 
+
+E
+TV. Turning it on shows a code
+
+S
+DOOR
+Clothes hanger, theres a coat with a little note with a phone number
+
+W
+DOOR
+Sofa, key hidden under a cushion
+
+Room 7 Indoor Garden
+
+N
+DOOR
+Big plants on either side of the door. Vase to the plant on the right has a door on the back, 
+contains object for final room
+
+E
+DOOR
+Vase on the left has a floral composition that reveals code when looked at from above
+
+S
+Pinpad hidden behind a plant on a vase with wheels (can be moved). 
+Contains object for final room
+
+W
+Big Window, can't be broken, player can try with various objects in their inventory. Nothing particular here
 
 Room 8 Bedroom
 
+N
+DOOR
+Paintings with no useful info
+
+E
+Nightstand 1. There's a chessboard on top. Placing pawns to mirror the other chessboard unlocks the drawer that contains a key
+
+S
+Bed, behind the end of the bed is a safe which contains some objects for the final room
+It requires a code (floral composition) and a key (sofa)
+
+W
+DOOR
+Nightstand 2. alarm clock, setting the same time as the clock in room 1 unlocks the drawer. Inside is a note with a dice and numbers showing order to press
+
 Room 9 Bathroom
+
+N
+DOOR
+Sink on the left, mirror, cabinet to hide on the right, inside is a note with sequence to place down stars
+
+E
+Toilet, toilet paper, bidet
+
+S
+Sequence Lock, uses pin given by phone voice, Shower, towels
+
+W
+Shower, rack with more towels, heater
+
+
+
+
+USED HINTS (source-target)
+-notes (r1 pinboard - fridge r3)
+-game posters (r2 - r1 safe pin)
+-note (r6 coat-r1 phone)
+-Tv code (r6 TV- r7 Pin pad)
+-Note (r8 nightstand 2 - r2 dice)
+-Phone voice (r1 - r9 lock)
+-Floral composition code (r7 - r8 bed safe)
+
+USED OBJECTS (source-target)
+-clock (r1 - r8 alarm)
+-key (pinboard r1- safe r6)
+-phone (r1 - r6 coat note)
+-Key found when inspecting board games (r2 - r8 bed safe)
+-Key sofa (r6 - r8 bed safe)
+-Key nightstand 1 (r8 - r2 chest)
