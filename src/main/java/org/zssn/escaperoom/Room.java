@@ -24,22 +24,38 @@ public class Room
     private boolean crossableSouth;
     private boolean crossableWest;
     public static Wall[] Walls= new Wall[36];
+    /**
+     * Arrays for the items of each wall in the room
+     */
+    private Item[] NWallItems;
+    private Item[] EWallItems;
+    private Item[] SWallItems;
+    private Item[] WWallItems;
+
+    /**
+     * Index of the last item in the arrays
+     */
+    private int NWallIndex;
+    private int EWallIndex;
+    private int SWallIndex;
+    private int WWallIndex;
+
     // Load images from directory
     public static void loadImages() {
-    for (int i = 0; i < 36; i++) {
-        try {
-            InputStream in = Room.class.getResourceAsStream("/rooms/" + i + ".png");
-            BufferedImage image = ImageIO.read(in);
-            Walls[i] = new Wall(image, false);
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < 36; i++) {
+            try {
+                InputStream in = Room.class.getResourceAsStream("/rooms/" + i + ".png");
+                BufferedImage image = ImageIO.read(in);
+                Walls[i] = new Wall(image, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
     /*
      * Room class constructor
      */
-    public Room(int n, int d, String nam) 
+    public Room(int n, int d, String nam, Item[] Nitems, Item[] EItems, Item[] SItems, Item[] WItems) 
     {
         this.roomNumber = n;
         this.name = nam;
@@ -101,6 +117,14 @@ public class Room
                 this.WWall=Walls[35];
                 break;
         }
+
+        this.NWallItems = Nitems;
+        NWallIndex = Nitems.length;
+        this.EWallItems = EItems;
+        EWallIndex = EItems.length;
+        this.SWallItems = SItems;
+        SWallIndex = SItems.length;
+        this.WWallItems = WItems;
     }
     /*
      * Room class methods

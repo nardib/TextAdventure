@@ -3,7 +3,7 @@ package org.zssn.escaperoom;
 /**
  * Notes class that extends Item. It represents a note that can be read by the player.
  */
-public class Notes extends Item {
+public class Note extends Item {
 
     /**
      * Message that the note contains
@@ -29,7 +29,7 @@ public class Notes extends Item {
      * @param message message that the note contains
      * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
      */
-    public Notes(String name, String image, int currentRoom, String message)
+    public Note(String name, String image, int currentRoom, String message)
     {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.message = message;

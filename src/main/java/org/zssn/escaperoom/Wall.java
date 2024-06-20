@@ -5,17 +5,36 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class Wall - Represents a wall in the game. It has an image, (possibly) a door, and items.
+ */
 public class Wall {
-    // Wall
+    
+    /**
+     * The image of the wall
+     */
     private BufferedImage wall;
-    // Door
+    
+    /**
+     * Tells if the wall has a door
+     */
     private boolean hasDoor;
-    // Items
-    private Map<Point, BufferedImage> items = new HashMap<>();
-    // Combined image
+    
+    /**
+     * The items on the wall
+     */
+    private Map<Point, BufferedImage> itemsImages = new HashMap<>();
+    
+    /**
+     * The combined image of the wall and the items
+     */
     private BufferedImage combined;
 
-    // Wall constructor
+    /**
+     * Constructor for the Wall
+     * @param w The image of the wall
+     * @param d Tells if the wall has a door
+     */
     public Wall(BufferedImage w, boolean d) 
     {
         this.wall = w;
@@ -23,37 +42,53 @@ public class Wall {
         this.combined = deepCopy(w);  // Copy the wall image to combined
     }
 
-    // Add item to wall
-    public void addItem(BufferedImage i, Point p) 
+    /**
+     * Add an item to the wall 
+     * @param i The image of the item
+     * @param p The position of the item
+     */
+    public void addItemImages(BufferedImage i, Point p) 
     {
-        this.items.put(p, i);
+        this.itemsImages.put(p, i);
         drawItems();  // Draw the items onto the combined image
     }
 
+    /**
+     * Check if the wall has a door
+     * @return True if the wall has a door, false otherwise
+     */
     public boolean hasDoor() 
     {
         return hasDoor;
     }
 
-    // Remove item from wall
-    public void removeItem(Point p) 
+    /**
+     * Remove an item from the wall
+     * @param p The position of the item
+     */
+    public void removeItemImage(Point p) 
     {
-        this.items.remove(p);
+        this.itemsImages.remove(p);
         this.combined = deepCopy(wall);  // Reset the combined image to the wall image
         drawItems();  // Redraw the remaining items
     }
 
-    // Get the combined image
+    /**
+     * Get the combined image of the wall and the items
+     * @return The combined image
+     */
     public BufferedImage getCombinedImage() 
     {
         return combined;
     }
 
-    // Draw the items onto the combined image
+    /**
+     * Draw the items onto the combined image 
+     */
     private void drawItems() 
     {
         Graphics2D g = combined.createGraphics();
-        for (Map.Entry<Point, BufferedImage> entry : items.entrySet()) 
+        for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet()) 
         {
             Point p = entry.getKey();
             BufferedImage i = entry.getValue();
@@ -62,13 +97,19 @@ public class Wall {
         g.dispose();
     }
 
-    //Set door wall
+    /**
+     * Set the wall to have a door
+     */
     public void setDoor()
     {
         hasDoor = true;
     }
 
-    // Create a copy of a BufferedImage
+    /**
+     * Deep copy a BufferedImage
+     * @param bi The BufferedImage to copy
+     * @return The copied BufferedImage
+     */
     private static BufferedImage deepCopy(BufferedImage bi)
     {
         return new BufferedImage(bi.getColorModel(),

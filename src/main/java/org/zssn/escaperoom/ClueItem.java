@@ -5,7 +5,7 @@ package org.zssn.escaperoom;
  * Each item has a clue necessary for completing the game
  * Clue objects can't be picked up like notes
  */
-public class CluesItem extends Item{
+public class ClueItem extends Item{
     
     /**
      * Weight of the item
@@ -25,7 +25,7 @@ public class CluesItem extends Item{
      * @param currentRoom current room of the item
      * @param usingMessage message to show when the item is used
      */
-    public CluesItem(String name, String image, int currentRoom, String usingMessage) {
+    public ClueItem(String name, String image, int currentRoom, String usingMessage) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.usingMessage = usingMessage;
     }
