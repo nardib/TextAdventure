@@ -33,6 +33,6 @@ public class Note extends Item {
     {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.message = message;
-        usingMessage = "You read the note";
+        usingMessage = "This note says: " + message;
     }    
 }

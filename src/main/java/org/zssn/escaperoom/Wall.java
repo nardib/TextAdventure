@@ -171,4 +171,16 @@ public class Wall {
             lastItem = items.length;
         }
     }
+
+    /**
+     * Remove an item from the wall
+     */
+    public void removeItem(int index) 
+    {
+        if (index < 0 || index >= lastItem)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+        for (int i = index; i < lastItem - 1; i++)
+            items[i] = items[i + 1];
+        lastItem--;
+    }
 }

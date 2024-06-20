@@ -74,6 +74,19 @@ public class Game {
      * @throws IllegalArgumentException if the input is not valid in different ways
      */
     private String playerTurn (String input) {
+
+        //if the player is hidden i have to unhide him or wait for the enemy to go in another room
+        if (player.isHidden()) {
+            if (input.equals("unhide")) {
+                player.setHidden();
+                return player.getName() + " is no longer hidden";
+            }
+            else if (input.equals("wait")) {
+                return player.getName() + " is still hidden";
+            }
+            throw new IllegalArgumentException(player.getName() + " is hidden, " + player.getPronoun() + " can only \"wait\" or \"unhide\".");
+        }
+
         //commands to change the wall the player is facing
         if (input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")){
             player.changeDirection(Direction.NORTH);
@@ -139,57 +152,57 @@ public class Game {
         //command to check the items in the room
         else if (input.equalsIgnoreCase("look"))
         {
-            Item[] items = new Item[0];
-            switch (player.getCurrentDirection()) {
-                case NORTH:
-                    if (!map.getRoom(player.getCurrentRoom()).getNWall().hasItems())
-                        return "There are no items in this wall";
-                    items = new Item[map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength()];
-                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength(); i++)
-                        items[i] = map.getRoom(player.getCurrentRoom()).getNWall().getItem(i);
-                    break;
-                case EAST:
-                    if (!map.getRoom(player.getCurrentRoom()).getEWall().hasItems())
-                        return "There are no items in this wall";
-                    items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
-                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
-                        items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
-                    break;
-                case SOUTH:
-                    if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
-                        return "There are no items in this wall";
-                    items = new Item[map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength()];
-                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength(); i++)
-                        items[i] = map.getRoom(player.getCurrentRoom()).getSWall().getItem(i);
-                    break;
-                case WEST:
-                    if (!map.getRoom(player.getCurrentRoom()).getWWall().hasItems())
-                        return "There are no items in this wall";
-                    items = new Item[map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength()];
-                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength(); i++)
-                        items[i] = map.getRoom(player.getCurrentRoom()).getWWall().getItem(i);
+            try {
+                Item[] items = getItemsInWall();
+                
+                String out = "In this room there are the following items: ";
+                for (int i = 0; i < items.length; i++)
+                    out += items[i].getName() + ", ";
+                return out.substring(0, out.length() - 2);
+            } catch (IllegalAccessException e) {
+                return e.getMessage();
+            } catch (IllegalStateException e) {
+                return e.getMessage();
             }
-            
-            String out = "In this room there are the following items: ";
-            for (int i = 0; i < items.length; i++)
-                out += items[i].getName() + ", ";
-            return out.substring(0, out.length() - 2);
         }
         
-        /*
         //command to take an item in the room
-        else if (input.substring(0, 4).equalsIgnoreCase("take"))
+        else if (input.length() > 5 && input.substring(0, 4).equalsIgnoreCase("take"))
         {
-            if (map.getRoom(player.getCurrentRoom()).getItems().length == 0)
-            {
-                return "There are no items in this room";
+            try {
+                Item[] items = getItemsInWall();
+                
+                for (int i = 0; i < items.length; i++) {
+                    if (items[i].getName().equalsIgnoreCase(input.substring(5))) {
+                        if (!items[i].PICKABLE)
+                            return player.getName() + " can't take " + items[i].getName();
+                        if (player.getWeight() + items[i].WEIGHT > Player.MAX_WEIGHT)
+                            return player.getName() + " can't take " + items[i].getName() + ", it's too heavy";
+                        player.insertItem(items[i]);
+                        switch (player.getCurrentDirection()) {
+                            case NORTH:
+                                map.getRoom(player.getCurrentRoom()).getNWall().removeItem(i);
+                                break;
+                            case EAST:
+                                map.getRoom(player.getCurrentRoom()).getEWall().removeItem(i);
+                                break;
+                            case SOUTH:
+                                map.getRoom(player.getCurrentRoom()).getSWall().removeItem(i);
+                                break;
+                            case WEST:
+                                map.getRoom(player.getCurrentRoom()).getWWall().removeItem(i);
+                                break;
+                        }
+                        return player.getName() + " took the item: " + items[i].getName();
+                    }
+                }
+            
+            } catch (IllegalAccessException e) {
+                return e.getMessage();
+            } catch (IllegalStateException e) {
+                return e.getMessage();
             }
-            else
-            {
-                //chech if item is in the room and then add it to the player inventory
-            }
-        }*/
-        
+        }
 
         //command to use an item in the inventory
         else if(input.length() > 3 && input.substring(0, 3).equalsIgnoreCase("use")) {
@@ -206,10 +219,6 @@ public class Game {
                             Note note = (Note) item;
                             return note.getUsingMessage();
                         }
-                        else if (item instanceof Hammer) {
-                            Hammer hammer = (Hammer) item;
-                            return hammer.getUsingMessage();
-                        }
                         else if (item instanceof HealingItem) {
                             if (player.getHealth() == 5)
                                 return player.getName() + " already have full health";
@@ -221,27 +230,43 @@ public class Game {
                     }
                 }
             }
-            //i also must check if there is an hiding item in the room
-            return player.getName() + " can't use this item";
-        }
-
-        //command to throw an item in the invenotory
-        if (input.length() > 5 && input.substring(0, 5).equalsIgnoreCase("throw")) {
-            //items number goes from 1 to max
+            
             try {
-                player.removeItem(Integer.parseInt(input.substring(6)) - 1);
-            } catch (Exception e) { /* do nothing */}
-
-            if (player.getInventoryCount() != 0) {
-                for (int i = 0; i < player.getInventoryCount(); i++) {
-                    if (player.getItem(i).getName().equalsIgnoreCase(input.substring(6))) {
-                        Item item = player.removeItem(i);
-                        //map.getRoom(player.getCurrentRoom()).addItem(item);
-                        return player.getName() + " threw the " + item.getName() + " in the room";
+                Item[] items = getItemsInWall();
+                
+                for (int i = 0; i < items.length; i++) {
+                    if (items[i].getName().equalsIgnoreCase(input.substring(4))) {
+                        Item item = items[i];
+                        if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
+                            return player.getName() + " must pick the " + item.getName() + " before using it!";
+                        if (item instanceof ClueItem) {
+                            ClueItem clueItem = (ClueItem) item;
+                            //i have to check if there is a lock in the room
+                            return clueItem.getUsingMessage();
+                        }
+                        else if (item instanceof HiderItem) {
+                            HiderItem hiderItem = (HiderItem) item;
+                            return hiderItem.getUsingMessage();
+                        }
+                        else if (item instanceof HidingItem) {
+                            HidingItem hidingItem = (HidingItem) item;
+                            player.setHidden();
+                            return hidingItem.getUsingMessage();
+                        }
+                        else if (item instanceof ItemContainer) {
+                            ItemContainer itemContainer = (ItemContainer) item;
+                            
+                            return itemContainer.getUsingMessage();
+                        }
                     }
                 }
+            } catch (IllegalAccessException e) {
+                return e.getMessage();
+            } catch (IllegalStateException e) {
+                return e.getMessage();
             }
-            throw new IllegalArgumentException(player.getName() + " can't throw this item");
+
+            return player.getName() + " can't use this item";
         }
 
         //command to check the items in the inventory (probably should be in nextMove)
@@ -486,5 +511,48 @@ public class Game {
      */
     private String capitalizeFistLetter(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    /**
+     * Method to get the array of items in the wall the player is facing
+     * 
+     * @return the array of items in the wall the player is facing
+     * @throws IllegalAccessException if there are no items in the wall
+     * @throws IllegalStateException if the player is not facing any wall
+     */
+    public Item[] getItemsInWall() throws IllegalAccessException, IllegalStateException{
+        Item[] items = new Item[0];
+        switch (player.getCurrentDirection()) {
+            case NORTH:
+                if (!map.getRoom(player.getCurrentRoom()).getNWall().hasItems())
+                    throw new IllegalAccessException("There are no items in this wall");
+                items = new Item[map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength()];
+                for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength(); i++)
+                    items[i] = map.getRoom(player.getCurrentRoom()).getNWall().getItem(i);
+                return items;
+            case EAST:
+                if (!map.getRoom(player.getCurrentRoom()).getEWall().hasItems())
+                    throw new IllegalAccessException("There are no items in this wall");
+                items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
+                for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
+                    items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
+                    return items;
+            case SOUTH:
+                if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
+                    throw new IllegalAccessException("There are no items in this wall");
+                items = new Item[map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength()];
+                for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength(); i++)
+                    items[i] = map.getRoom(player.getCurrentRoom()).getSWall().getItem(i);
+                return items;
+            case WEST:
+                if (!map.getRoom(player.getCurrentRoom()).getWWall().hasItems())
+                    throw new IllegalAccessException("There are no items in this wall");
+                items = new Item[map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength()];
+                for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength(); i++)
+                    items[i] = map.getRoom(player.getCurrentRoom()).getWWall().getItem(i);
+                return items;
+            default:
+                throw new IllegalStateException("You are not facing any wall");
+        }
     }
 }

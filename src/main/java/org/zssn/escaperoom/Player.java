@@ -47,7 +47,7 @@ public class Player extends Character{
     /**
      * The defualt value for the max weigth the player can carry
      */
-    public final int MAX_WEIGHT = 10;
+    public final static int MAX_WEIGHT = 10;
 
     /**
      * The defualt value for the starting room of the player
@@ -316,10 +316,13 @@ public class Player extends Character{
         p.score = this.score;
         p.ArrayIndexCount = this.ArrayIndexCount;
         p.WeightCount = this.WeightCount;
-        //this is actually a shellow copy, must be corrected
-        for (int i = 0; i < ArrayIndexCount; i++)
-            p.inventory[i].equals(inventory[i]);
+        if (this.ArrayIndexCount > 0)
+            for (int i = 0; i < ArrayIndexCount; i++)
+                p.insertItem(this.inventory[i]);
+        else 
+            p.inventory = new Item[MAX_WEIGHT];
         p.currentDirection = this.currentDirection;
+        p.hidden = this.hidden;
         return p;
     }
 
