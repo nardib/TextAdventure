@@ -31,15 +31,27 @@ public class Wall {
     private BufferedImage combined;
 
     /**
+     * Items in the room
+     */
+    private Item[] items;
+
+    /**
+     * Last element of the items array
+     */
+    private int lastItem;
+
+    /**
      * Constructor for the Wall
      * @param w The image of the wall
      * @param d Tells if the wall has a door
+     * @param items The items in the room
      */
-    public Wall(BufferedImage w, boolean d) 
+    public Wall(BufferedImage w, boolean d, Item[] items) 
     {
         this.wall = w;
         this.hasDoor = d;
         this.combined = deepCopy(w);  // Copy the wall image to combined
+        setItems(items);
     }
 
     /**
@@ -115,5 +127,48 @@ public class Wall {
         return new BufferedImage(bi.getColorModel(),
                 bi.copyData(null),
                 bi.getColorModel().isAlphaPremultiplied(), null);
+    }
+
+    /**
+     * Get the the items in the room
+     */
+    public Item getItem(int index)
+    {
+        return items[index];
+    }
+
+    /**
+     * Get the length of the array of items
+     */
+    public int getItemsLength()
+    {
+        return lastItem;
+    }
+
+    /**
+     * Check if the room has items
+     */
+    public boolean hasItems()
+    {
+        return items != null && items.length > 0;
+    }
+
+    /**
+     * Set the items in the room
+     */
+    public void setItems(Item[] items)
+    {
+        if (items == null || items.length == 0)
+        {
+            this.items = null;
+            return;
+        }
+        else
+        {
+            this.items = new Item[items.length];
+            for (int i = 0; i < items.length; i++)
+                this.items[i] = items[i];
+            lastItem = items.length;
+        }
     }
 }

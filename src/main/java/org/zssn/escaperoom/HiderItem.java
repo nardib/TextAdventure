@@ -34,7 +34,7 @@ public class HiderItem extends Item{
         this.usingMessage = usingMessage;
         //when created, the item is hiding an element
         hiding = true;
-        this.hiddenItem = hiddenItem.clone();
+        this.hiddenItem = hiddenItem;
     }
 
     /**

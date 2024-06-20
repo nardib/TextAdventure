@@ -135,19 +135,47 @@ public class Game {
             }
             throw new IllegalArgumentException(player.getName() + " can't cross in that direction");
         }
-
-        /*
+        
         //command to check the items in the room
         else if (input.equalsIgnoreCase("look"))
         {
-            Item[] roomItems = map.getRoom(player.getCurrentRoom()).getItems());
-            String items = "In this room there are these items:\n";
-            for (i = 0; i < roomItems.length; i++)
-            {
-                items += (i+1) + ") " + roomItems[i].getName() + "\n";
+            Item[] items = new Item[0];
+            switch (player.getCurrentDirection()) {
+                case NORTH:
+                    if (!map.getRoom(player.getCurrentRoom()).getNWall().hasItems())
+                        return "There are no items in this wall";
+                    items = new Item[map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength()];
+                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength(); i++)
+                        items[i] = map.getRoom(player.getCurrentRoom()).getNWall().getItem(i);
+                    break;
+                case EAST:
+                    if (!map.getRoom(player.getCurrentRoom()).getEWall().hasItems())
+                        return "There are no items in this wall";
+                    items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
+                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
+                        items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
+                    break;
+                case SOUTH:
+                    if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
+                        return "There are no items in this wall";
+                    items = new Item[map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength()];
+                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength(); i++)
+                        items[i] = map.getRoom(player.getCurrentRoom()).getSWall().getItem(i);
+                    break;
+                case WEST:
+                    if (!map.getRoom(player.getCurrentRoom()).getWWall().hasItems())
+                        return "There are no items in this wall";
+                    items = new Item[map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength()];
+                    for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength(); i++)
+                        items[i] = map.getRoom(player.getCurrentRoom()).getWWall().getItem(i);
             }
-            return items;
-        }*/
+            
+            String out = "In this room there are the following items: ";
+            for (int i = 0; i < items.length; i++)
+                out += items[i].getName() + ", ";
+            return out.substring(0, out.length() - 2);
+        }
+        
         /*
         //command to take an item in the room
         else if (input.substring(0, 4).equalsIgnoreCase("take"))
@@ -160,8 +188,8 @@ public class Game {
             {
                 //chech if item is in the room and then add it to the player inventory
             }
-        }
-        */
+        }*/
+        
 
         //command to use an item in the inventory
         else if(input.length() > 3 && input.substring(0, 3).equalsIgnoreCase("use")) {
@@ -174,8 +202,8 @@ public class Game {
                             //i have to check if there is a lock in the room
                             return key.getUsingMessage();
                         }
-                        else if (item instanceof Notes) {
-                            Notes note = (Notes) item;
+                        else if (item instanceof Note) {
+                            Note note = (Note) item;
                             return note.getUsingMessage();
                         }
                         else if (item instanceof Hammer) {

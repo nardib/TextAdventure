@@ -24,7 +24,7 @@ public class HidingItem extends Item {
     */
     public HidingItem(String name, String image, int currentRoom)
     {
-        super (name, image, currentRoom, 11, false);
+        super (name, image, currentRoom, currentRoom, false);
         usingMessage = "You are now hidden in the " + name + "\n The enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"get out\" to exit from the chest.\"";
     }    
 }

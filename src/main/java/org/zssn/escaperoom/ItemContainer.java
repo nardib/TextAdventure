@@ -42,7 +42,7 @@ public class ItemContainer extends Item{
         ArrayIndexCount = items.length;
         this.items = new Item[ArrayIndexCount];
         for (int i = 0; i < ArrayIndexCount; i++) {
-            this.items[i] = items[i].clone();
+            this.items[i] = items[i];
         }
     }
 

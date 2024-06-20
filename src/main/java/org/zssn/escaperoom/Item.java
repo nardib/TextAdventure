@@ -122,28 +122,4 @@ public class Item {
     {
         this.name = name;
     }
-
-    /**
-     * Method to check if two items are equal
-     * 
-     * @param other object to compare
-     */
-    @Override
-    public boolean equals(Object other)
-    {
-        if (!(other instanceof Item || other == null))
-            return false;
-        Item i = (Item) other;
-        return this.name.equals(i.name) && this.WEIGHT == i.WEIGHT && this.currentRoom == i.currentRoom && this.PICKABLE == i.PICKABLE;
-    }
-
-    /**
-     * Method to clone an item
-     * 
-     * @return a new item with the same attributes
-     */
-    @Override
-    public Item clone() {
-        return new Item(this.name, this.icon.toString(), this.WEIGHT, this.currentRoom, this.PICKABLE);
-    }
 }
