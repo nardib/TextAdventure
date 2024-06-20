@@ -19,19 +19,20 @@ public class Map
     private final Item[] safe3Items = {new Key("Key", 777, "test.png", 1)};
     private final Item[] mirrorCabinetItems = {new Key("Key", 888, "test.png", 1)};
     private final Item[] pinpadItems = {new Key("Key", 999, "test.png", 1)};
-    private final Item[] clockDrawerItems = {new Key("Key", 101, "test.png", 1)};
+    private final Item[] clockDrawerItems = {new Note("Clock drawer note", "test.png", 8, "⚄ 143")};
+    private final Item[] lockItems = {new Key("Key", 000, "test.png", 9)};
 
 
     //items for each wall of each room
-    private final Item[] itemsN1 = {new ItemContainer("Drawer", "test.png", 1, drawerItems, false)};
-    private final Item[] itemsE1 = {new HiderItem("Painting", "test.png", 1, new ItemContainer("Safe", "test.png", 1, safeItems, true)), new Note("Note", "test.png", 1, "Message"), new Key("Key", 111, "test.png", 1)};
-    private final Item[] itemsS1 = {new ClueItem("Clock", "test.png", 1, "It's 07:35"), new ClueItem("Phone", "test.png", 1, "Clue message")};
+    private final Item[] itemsN1 = {new ItemContainer("Drawer", "test.png", 1, drawerItems, LockType.NONE, 0)};
+    private final Item[] itemsE1 = {new HiderItem("Painting", "test.png", 1, new ItemContainer("Safe", "test.png", 1, safeItems, LockType.COMBINATION, 352)), new Note("Note on pinboard", "test.png", 1, "Use this key for the safe in the office"), new Key("Key on pinboard", 151, "test.png", 1)};
+    private final Item[] itemsS1 = {new ClueItem("Clock", "test.png", 1, "It's 07:35"), new ClueItem("Phone", "test.png", 1, "You have called the number 0335212 and you heard someone sayng: \"To unlock the lock in the bathroom type: 1313\"")};
     private final Item[] itemsW1 = {new HidingItem("Hiding chest", "test.png", 1)};
-    private final Item[] itemsN2 = {new ItemContainer("Item chest", "test.png", 2, itemChestItems, true)};
-    private final Item[] itemsE2 = {new ItemContainer("Dice", "test.png", 2, diceItems, true)};
-    private final Item[] itemsS2 = {new ClueItem("Chess board", "test.png", 2, "The order is: 1, 2, 3, 4, 5, 6, 7, 8")};
-    private final Item[] itemsW2 = null;
-    private final Item[] itemsN3 = {new ItemContainer("Fridge", "test.png", 3, fridgeItems, true)};
+    private final Item[] itemsN2 = {new ItemContainer("Item chest", "test.png", 2, itemChestItems, LockType.KEY, 1)};
+    private final Item[] itemsE2 = {new ItemContainer("Dice", "test.png", 2, diceItems, LockType.COMBINATION, 143), new HiderItem("Board games", "test.png", 2, new Key ("Bed safe key", 777, "test.png", 2))};
+    private final Item[] itemsS2 = {new ClueItem("Chess board", "test.png", 2, "You can notice three pawns in position 3, 5, 8")};
+    private final Item[] itemsW2 = {new ClueItem("game poster", "test.png", 2, "In the poster there is a safe with the code 352")};
+    private final Item[] itemsN3 = {new ItemContainer("Fridge", "test.png", 3, fridgeItems, LockType.KEY, 151)};
     private final Item[] itemsE3 = {new Key("Key", 222, "test.png", 3)};
     private final Item[] itemsS3 = {new HidingItem("Hiding cabinet", "test.png", 3)};
     private final Item[] itemsW3 = null;
@@ -43,21 +44,21 @@ public class Map
     private final Item[] itemsE5 = null;
     private final Item[] itemsS5 = null;
     private final Item[] itemsW5 = null;
-    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, safe2Items, true)};
-    private final Item[] itemsE6 = {new ClueItem("Television", "test.png", 6, "Clue message")};
-    private final Item[] itemsS6 = {new Note("Note in the coat", "test.png", 6, "0335765")};
+    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, safe2Items, LockType.KEY, 3)};
+    private final Item[] itemsE6 = {new ClueItem("Television", "test.png", 6, "The television turns on and shows the code \"0563\" on a pinpad")};
+    private final Item[] itemsS6 = {new Note("Note in the coat", "test.png", 6, "Telephone number: 0335212")};
     private final Item[] itemsW6 = {new HiderItem("Sofa", "test.png", 6, new Key("Key", 333, "test.png", 6))};
     private final Item[] itemsN7 = {new HiderItem("Vase", "test.png", 7, new Item("Name", "test.png", 7, 7, false))};
     private final Item[] itemsE7 = {new ClueItem("Floreal composition", "test.png", 7, "The order is: 1, 2, 3, 4, 5, 6, 7, 8")};
-    private final Item[] itemsS7 = {new HiderItem("Vase with wheels", "test.png", 7, new ItemContainer("Pinpad", "test.png", 7, pinpadItems, true))};
+    private final Item[] itemsS7 = {new HiderItem("Vase with wheels", "test.png", 7, new ItemContainer("Pinpad", "test.png", 7, pinpadItems, LockType.COMBINATION, 0563))};
     private final Item[] itemsW7 = null;
     private final Item[] itemsN8 = null;
-    private final Item[] itemsE8 = {new ItemContainer("Chess drawer", "test.png", 8, chessDrawerItems, true)};
-    private final Item[] itemsS8 = {new ItemContainer("Safe", "test.png", 8, safe3Items, true)};
-    private final Item[] itemsW8 = {new ItemContainer("Clock drawer", "test.png", 8, clockDrawerItems, true)};
-    private final Item[] itemsN9 = {new HidingItem("Hiding cabinet", "test.png", 9), new ItemContainer("Mirror cabinet", "test.png", 9, mirrorCabinetItems, false)};
+    private final Item[] itemsE8 = {new ItemContainer("Chess drawer", "test.png", 8, chessDrawerItems, LockType.COMBINATION, 358)};
+    private final Item[] itemsS8 = {new ItemContainer("Bed Safe", "test.png", 8, safe3Items, LockType.COMBINATION, 777)};
+    private final Item[] itemsW8 = {new ItemContainer("Clock drawer", "test.png", 8, clockDrawerItems, LockType.COMBINATION, 0735)};
+    private final Item[] itemsN9 = {new HidingItem("Hiding cabinet", "test.png", 9), new ItemContainer("Mirror cabinet", "test.png", 9, mirrorCabinetItems, LockType.NONE, 0)};
     private final Item[] itemsE9 = null;
-    private final Item[] itemsS9 = null;
+    private final Item[] itemsS9 = {new ItemContainer("Lock", "test.png", 9, lockItems, LockType.COMBINATION, 1313)};
     private final Item[] itemsW9 = null;
 
     public final Item[][][] items = {

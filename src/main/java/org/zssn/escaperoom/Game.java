@@ -150,8 +150,7 @@ public class Game {
         }
         
         //command to check the items in the room
-        else if (input.equalsIgnoreCase("look"))
-        {
+        else if (input.equalsIgnoreCase("look")) {
             try {
                 Item[] items = getItemsInWall();
                 
@@ -167,8 +166,7 @@ public class Game {
         }
         
         //command to take an item in the room
-        else if (input.length() > 5 && input.substring(0, 4).equalsIgnoreCase("take"))
-        {
+        else if (input.length() > 5 && input.substring(0, 4).equalsIgnoreCase("take")) {
             try {
                 Item[] items = getItemsInWall();
                 
@@ -231,71 +229,102 @@ public class Game {
                     }
                 }
             }
-            
+
+            //if there is no item in the inventory i have to check if there is an hiding item in the room
+            Item[] items = null;            
             try {
-                Item[] items = getItemsInWall();
-                
-                for (int i = 0; i < items.length; i++) {
-                    if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
-                        Item item = items[i];
-                        if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
-                            return player.getName() + " must pick the " + item.getName() + " before using it!";
-                        else if (item instanceof ClueItem) {
-                            ClueItem clueItem = (ClueItem) item;
-                            return clueItem.getUsingMessage();
-                        }
-                        else if (item instanceof HiderItem) {
-                            HiderItem hiderItem = (HiderItem) item;
-                            Item hiddenItem = hiderItem.reveal();
-                            //i change the item in the wall with the hidden one
-                            items[i] = hiddenItem;
-                            switch (player.getCurrentDirection()) {
-                                case NORTH:
-                                    map.getRoom(player.getCurrentRoom()).getNWall().setItems(items);
-                                case EAST:
-                                    map.getRoom(player.getCurrentRoom()).getEWall().setItems(items);
-                                case SOUTH:
-                                    map.getRoom(player.getCurrentRoom()).getSWall().setItems(items);
-                                case WEST:
-                                    map.getRoom(player.getCurrentRoom()).getWWall().setItems(items);
-                            }
-                            return hiderItem.getUsingMessage();
-                        }
-                        else if (item instanceof HidingItem) {
-                            HidingItem hidingItem = (HidingItem) item;
-                            player.setHidden();
-                            return hidingItem.getUsingMessage();
-                        }
-                        else if (item instanceof ItemContainer) {
-                            ItemContainer itemContainer = (ItemContainer) item;
-                            if (itemContainer.isLocked())
-                                return "The container is locked, you must unlock it first!";
-                            String newInput = "";
-                            try {
-                                newInput = input.substring(5 + itemContainer.getName().length());
-                            } catch (StringIndexOutOfBoundsException e) {}
-                            if (newInput.length() == 0)
-                                return itemContainer.getUsingMessage();
-                            else {
-                                for (int j = 0; j < itemContainer.getItemsLength(); j++) {
-                                    if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
-                                        Item removedItem = itemContainer.removeItem(j);
-                                        player.insertItem(removedItem);
-                                        itemContainer.setUsingMessage();
-                                        return player.getName() + " took the item: " + removedItem.getName();
-                                    }
-                                }
-                                return "The item is not in the container";
-                            }
-                        }
-                    }
-                }
+                items = getItemsInWall();
             } catch (IllegalAccessException e) {
                 return e.getMessage();
             } catch (IllegalStateException e) {
                 return e.getMessage();
             }
-
+                
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
+                    Item item = items[i];
+                    if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
+                        return player.getName() + " must pick the " + item.getName() + " before using it!";
+                    else if (item instanceof ClueItem) {
+                        ClueItem clueItem = (ClueItem) item;
+                        return clueItem.getUsingMessage();
+                    }
+                    else if (item instanceof HiderItem) {
+                        HiderItem hiderItem = (HiderItem) item;
+                        Item hiddenItem = hiderItem.reveal();
+                        //i change the item in the wall with the hidden one
+                        items[i] = hiddenItem;
+                        switch (player.getCurrentDirection()) {
+                            case NORTH:
+                                map.getRoom(player.getCurrentRoom()).getNWall().setItems(items);
+                            case EAST:
+                                map.getRoom(player.getCurrentRoom()).getEWall().setItems(items);
+                            case SOUTH:
+                                map.getRoom(player.getCurrentRoom()).getSWall().setItems(items);
+                            case WEST:
+                                map.getRoom(player.getCurrentRoom()).getWWall().setItems(items);
+                        }
+                        return hiderItem.getUsingMessage();
+                    }
+                    else if (item instanceof HidingItem) {
+                        HidingItem hidingItem = (HidingItem) item;
+                        player.setHidden();
+                        return hidingItem.getUsingMessage();
+                    }
+                    else if (item instanceof ItemContainer) {
+                        ItemContainer itemContainer = (ItemContainer) item;
+                        if (itemContainer.isLocked()){
+                            if (itemContainer.getLockType() == LockType.NONE)
+                                itemContainer.unlock(null);
+                            else if (itemContainer.getLockType() == LockType.KEY) {
+                                for (int j = 0; j < player.getInventoryCount(); j++) {
+                                    if (player.getItem(j) instanceof Key) {
+                                        Key key = (Key) player.getItem(j);
+                                        if (key.ID == itemContainer.getID()) {
+                                            itemContainer.unlock(key);
+                                            player.removeItem(i);
+                                            return "You unlocked the " + itemContainer.getName() + " with the key " + key.getName();
+                                        }
+                                    }
+                                }
+                                return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName() + "' with the correct key in your inventry";
+                            }
+                            else if (itemContainer.getLockType() == LockType.COMBINATION) {
+                                String newInput = "";
+                                try {
+                                    newInput = input.substring(5 + itemContainer.getName().length());
+                                } catch (StringIndexOutOfBoundsException e) {}
+                                if (newInput.length() == 0)
+                                    return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName() + " <id>' where <id> is the correct combination";
+                                else {
+                                    if (Integer.parseInt(newInput) == itemContainer.getID()) {
+                                        itemContainer.unlock(Integer.parseInt(newInput));
+                                        return "You unlocked the " + itemContainer.getName() + " with the combination " + newInput;
+                                    }
+                                    return "The combination is not correct";
+                                }
+                            }
+                        }
+                        String newInput = "";
+                        try {
+                            newInput = input.substring(5 + itemContainer.getName().length());
+                        } catch (StringIndexOutOfBoundsException e) {}
+                        if (newInput.length() == 0)
+                            return itemContainer.getUsingMessage();
+                        else {
+                            for (int j = 0; j < itemContainer.getItemsLength(); j++) {
+                                if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
+                                    Item removedItem = itemContainer.removeItem(j);
+                                    player.insertItem(removedItem);
+                                    itemContainer.setUsingMessage();
+                                    return player.getName() + " took the item: " + removedItem.getName();
+                                }
+                            }
+                            return "The item is not in the container";
+                        }
+                    }
+                }
+            }
             return player.getName() + " can't use this item";
         }
 

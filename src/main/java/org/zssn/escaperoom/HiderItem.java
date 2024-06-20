@@ -32,7 +32,7 @@ public class HiderItem extends Item{
     public HiderItem (String name, String image, int currentRoom, Item hiddenItem) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.hiddenItem = hiddenItem;
-        this.usingMessage = this.name + " is hiding a " + hiddenItem.getName();
+        this.usingMessage = this.name + " was hiding a " + hiddenItem.getName();
         //when created, the item is hiding an element
         hiding = true;
     }

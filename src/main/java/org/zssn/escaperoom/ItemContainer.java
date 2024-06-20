@@ -1,5 +1,10 @@
 package org.zssn.escaperoom;
 
+enum LockType {
+    KEY,
+    COMBINATION,
+    NONE
+}
 /**
  * ItemContainer class that contains other items used in the game
  * The items in the container can be removed, but can't be added back
@@ -30,13 +35,22 @@ public class ItemContainer extends Item{
      */
     private boolean locked;
 
+    /**
+     * Lock of the container
+     */
+    public final LockType lock;
+
+    /**
+     * ID of the lock
+     */
+    private int ID;
+
     
     /**
      * Constructor for the CluesItem class
      */
-    public ItemContainer (String name, String image, int currentRoom, Item[] items, boolean locked) {
+    public ItemContainer (String name, String image, int currentRoom, Item[] items, LockType lock, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.locked = locked;
 
         ArrayIndexCount = items.length;
         this.items = new Item[ArrayIndexCount];
@@ -44,6 +58,11 @@ public class ItemContainer extends Item{
             this.items[i] = items[i];
         }
         setUsingMessage();
+        this.lock = lock;
+        locked = false;
+        if (lock != LockType.NONE)
+            locked = true;
+        this.ID = ID;
     }
 
     /**
@@ -69,22 +88,31 @@ public class ItemContainer extends Item{
     }
 
     /**
-     * Method to print the items in the container
-     */
-    public String printItems() {
-        if (locked)
-            throw new IllegalArgumentException("The container is locked");
-        String out = "";
-        for (int i = 0; i < ArrayIndexCount; i++)
-            out += items[i].getName() + "\n";
-        return out;
-    }
-
-    /**
      * Method to unlock the container
      */
-    public void unlock() {
-        locked = false;
+    public void unlock(Object obj) {
+        switch (lock) {
+            case KEY:
+                if (obj instanceof Key) {
+                    Key key = (Key) obj;
+                    if (key.ID == this.ID)
+                        locked = false;
+                }
+            break;
+            case COMBINATION:
+                if (obj instanceof Integer) {
+                    int combination = (Integer) obj;
+                    if (combination == this.ID)
+                        locked = false;
+                }
+            break;
+        case NONE:
+            locked = false;
+        break;
+        default:
+            throw new IllegalArgumentException("Invalid lock type");
+        }
+        throw new IllegalArgumentException("Invalid input");
     }
 
     /**
@@ -122,5 +150,20 @@ public class ItemContainer extends Item{
      */
     public boolean isLocked() {
         return locked;
+    }
+
+    /**
+     * Method to get the lock type of the container
+     */
+    public LockType getLockType() {
+        return lock;
+    }
+
+
+    /**
+     * Method to get the ID of the lock
+     */
+    public int getID() {
+        return ID;
     }
 }

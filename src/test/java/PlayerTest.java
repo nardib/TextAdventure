@@ -17,14 +17,14 @@ public class PlayerTest {
     public void testInventory() {
         Key key = new Key("key", 1, "test.png", 1);
         HealingItem hammer = new HealingItem("hammer", "test.png", 5, 1, 3);
-        Lock lock = new Lock("lock", 1, "test.png", 1);
+        HidingItem lock = new HidingItem("lock", "test.png", 1);
         HealingItem potion = new HealingItem("potion", "test.png", 3, 1, 3);
 
         Player p = new Player("Filippo", "n");
         p.insertItem(key);
         p.insertItem(hammer);
         //this item is not pickable
-        Assert.assertThrows(IllegalStateException.class, () -> {
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
             p.insertItem(lock);
         });
         p.insertItem(potion);

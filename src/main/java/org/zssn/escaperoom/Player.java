@@ -133,10 +133,10 @@ public class Player extends Character{
      */
     public void insertItem(Item i)
     {
-        if (WeightCount + i.WEIGHT > 10)
-            throw new IllegalStateException("The item weigth exiding the max carriable weigth");
         if (!i.PICKABLE)
             throw new IllegalArgumentException("The item is not pickable");
+        if (WeightCount + i.WEIGHT > 10)
+            throw new IllegalStateException("The item weigth exiding the max carriable weigth");
         WeightCount += i.WEIGHT;
         inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
