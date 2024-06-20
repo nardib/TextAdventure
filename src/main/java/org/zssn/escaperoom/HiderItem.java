@@ -29,19 +29,12 @@ public class HiderItem extends Item{
    /**
      * Constructor for the HiderItem class
      */
-    public HiderItem (String name, String image, int currentRoom, String usingMessage, Item hiddenItem) {
+    public HiderItem (String name, String image, int currentRoom, Item hiddenItem) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.usingMessage = usingMessage;
+        this.hiddenItem = hiddenItem;
+        this.usingMessage = this.name + " is hiding a " + hiddenItem.getName();
         //when created, the item is hiding an element
         hiding = true;
-        this.hiddenItem = hiddenItem;
-    }
-
-    /**
-     * Method to get the hidden item
-     */
-    public Item getHiddenItem() {
-        return hiddenItem;
     }
 
     /**
@@ -54,7 +47,8 @@ public class HiderItem extends Item{
     /**
      * Method to reveal the hidden item
      */
-    public void reveal() {
+    public Item reveal() {
         hiding = false;
+        return hiddenItem;
     }
 }

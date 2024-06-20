@@ -34,9 +34,8 @@ public class ItemContainer extends Item{
     /**
      * Constructor for the CluesItem class
      */
-    public ItemContainer (String name, String image, int currentRoom, String usingMessage, Item[] items, boolean locked) {
+    public ItemContainer (String name, String image, int currentRoom, Item[] items, boolean locked) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.usingMessage = usingMessage;
         this.locked = locked;
 
         ArrayIndexCount = items.length;
@@ -44,6 +43,7 @@ public class ItemContainer extends Item{
         for (int i = 0; i < ArrayIndexCount; i++) {
             this.items[i] = items[i];
         }
+        setUsingMessage();
     }
 
     /**
@@ -85,5 +85,42 @@ public class ItemContainer extends Item{
      */
     public void unlock() {
         locked = false;
+    }
+
+    /**
+     * Method to set the using message of the container
+     */
+    public void setUsingMessage() {
+        usingMessage = "In this container you find: \n";
+        for (int i = 0; i < ArrayIndexCount; i++)
+            usingMessage += "· " + items[i].getName() + "\n";
+        usingMessage += "If you want to pick an item from the container, type 'use " + this.getName() + " <item_name>'";
+    }
+
+    /**
+     * Method to get the element at index i of the container
+     */
+    public Item getItem(int i) {
+        if (locked)
+            throw new IllegalArgumentException("The container is locked");
+        if (i < 0 || i >= ArrayIndexCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+        return items[i];
+    }
+
+    /**
+     * Method to get the number of items in the container
+     */
+    public int getItemsLength() {
+        if (locked)
+            throw new IllegalArgumentException("The container is locked");
+        return ArrayIndexCount;
+    }
+
+    /**
+     * Method to check if the container is locked
+     */
+    public boolean isLocked() {
+        return locked;
     }
 }

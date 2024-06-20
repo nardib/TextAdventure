@@ -178,6 +178,7 @@ public class Game {
                             return player.getName() + " can't take " + items[i].getName();
                         if (player.getWeight() + items[i].WEIGHT > Player.MAX_WEIGHT)
                             return player.getName() + " can't take " + items[i].getName() + ", it's too heavy";
+                        items[i].setRoom(0);
                         player.insertItem(items[i]);
                         switch (player.getCurrentDirection()) {
                             case NORTH:
@@ -235,17 +236,29 @@ public class Game {
                 Item[] items = getItemsInWall();
                 
                 for (int i = 0; i < items.length; i++) {
-                    if (items[i].getName().equalsIgnoreCase(input.substring(4))) {
+                    if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
                         Item item = items[i];
                         if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
                             return player.getName() + " must pick the " + item.getName() + " before using it!";
-                        if (item instanceof ClueItem) {
+                        else if (item instanceof ClueItem) {
                             ClueItem clueItem = (ClueItem) item;
-                            //i have to check if there is a lock in the room
                             return clueItem.getUsingMessage();
                         }
                         else if (item instanceof HiderItem) {
                             HiderItem hiderItem = (HiderItem) item;
+                            Item hiddenItem = hiderItem.reveal();
+                            //i change the item in the wall with the hidden one
+                            items[i] = hiddenItem;
+                            switch (player.getCurrentDirection()) {
+                                case NORTH:
+                                    map.getRoom(player.getCurrentRoom()).getNWall().setItems(items);
+                                case EAST:
+                                    map.getRoom(player.getCurrentRoom()).getEWall().setItems(items);
+                                case SOUTH:
+                                    map.getRoom(player.getCurrentRoom()).getSWall().setItems(items);
+                                case WEST:
+                                    map.getRoom(player.getCurrentRoom()).getWWall().setItems(items);
+                            }
                             return hiderItem.getUsingMessage();
                         }
                         else if (item instanceof HidingItem) {
@@ -255,8 +268,25 @@ public class Game {
                         }
                         else if (item instanceof ItemContainer) {
                             ItemContainer itemContainer = (ItemContainer) item;
-                            
-                            return itemContainer.getUsingMessage();
+                            if (itemContainer.isLocked())
+                                return "The container is locked, you must unlock it first!";
+                            String newInput = "";
+                            try {
+                                newInput = input.substring(5 + itemContainer.getName().length());
+                            } catch (StringIndexOutOfBoundsException e) {}
+                            if (newInput.length() == 0)
+                                return itemContainer.getUsingMessage();
+                            else {
+                                for (int j = 0; j < itemContainer.getItemsLength(); j++) {
+                                    if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
+                                        Item removedItem = itemContainer.removeItem(j);
+                                        player.insertItem(removedItem);
+                                        itemContainer.setUsingMessage();
+                                        return player.getName() + " took the item: " + removedItem.getName();
+                                    }
+                                }
+                                return "The item is not in the container";
+                            }
                         }
                     }
                 }
