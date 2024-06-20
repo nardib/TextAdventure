@@ -110,40 +110,40 @@ public class Game {
             if(input.length() == 5){
                 if(player.getCurrentDirection() == Direction.NORTH && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
-                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.SOUTH && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
-                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.EAST && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
-                    return "You moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.WEST && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
-                    return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
                 }
             }
             else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
-                return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
-                return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
-                return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
-                return player.getName() + " moved to the room: " + player.getCurrentRoom();
+                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
             }
             throw new IllegalArgumentException(player.getName() + " can't cross in that direction");
         }
@@ -152,11 +152,13 @@ public class Game {
         else if (input.equalsIgnoreCase("look")) {
             try {
                 Item[] items = getItemsInWall();
-                
-                String out = "In this room there are the following items: ";
+                if (items.length == 0)
+                    return "There are no items in this room";
+
+                String out = "In this room there are the following items:\n";
                 for (int i = 0; i < items.length; i++)
-                    out += items[i].getName() + ", ";
-                return out.substring(0, out.length() - 2);
+                    out += "·" + items[i].getName().toLowerCase() + "\n";
+                return out.substring(0, out.length() - 1);
             } catch (IllegalAccessException e) {
                 return e.getMessage();
             } catch (IllegalStateException e) {
@@ -172,9 +174,9 @@ public class Game {
                 for (int i = 0; i < items.length; i++) {
                     if (items[i].getName().equalsIgnoreCase(input.substring(5))) {
                         if (!items[i].PICKABLE)
-                            return player.getName() + " can't take " + items[i].getName();
+                            return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's not pickable";
                         if (player.getWeight() + items[i].WEIGHT > Player.MAX_WEIGHT)
-                            return player.getName() + " can't take " + items[i].getName() + ", it's too heavy";
+                            return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's too heavy";
                         items[i].setRoom(0);
                         player.insertItem(items[i]);
                         switch (player.getCurrentDirection()) {
@@ -191,7 +193,7 @@ public class Game {
                                 map.getRoom(player.getCurrentRoom()).getWWall().removeItem(i);
                                 break;
                         }
-                        return player.getName() + " took the item: " + items[i].getName();
+                        return player.getName() + " took the item: " + items[i].getName().toLowerCase();
                     }
                 }
             
@@ -219,7 +221,7 @@ public class Game {
                         }
                         else if (item instanceof HealingItem) {
                             if (player.getHealth() == 5)
-                                return player.getName() + " already have full health";
+                                return player.getName() + " already has full health";
                             HealingItem healingItem = (HealingItem) item;
                             player.increaseHealth(healingItem.HEALING_POINTS);
                             player.removeItem(i);
@@ -243,7 +245,7 @@ public class Game {
                 if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
                     Item item = items[i];
                     if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
-                        return player.getName() + " must pick the " + item.getName() + " before using it!";
+                        return player.getName() + " must pick the " + item.getName().toLowerCase() + " before using it!";
                     else if (item instanceof ClueItem) {
                         ClueItem clueItem = (ClueItem) item;
                         return clueItem.getUsingMessage();
@@ -282,11 +284,11 @@ public class Game {
                                         if (key.ID == itemContainer.getID()) {
                                             itemContainer.unlock(key);
                                             player.removeItem(i);
-                                            return "You unlocked the " + itemContainer.getName() + " with the key " + key.getName();
+                                            return "You unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase();
                                         }
                                     }
                                 }
-                                return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName() + "' with the correct key in your inventry";
+                                return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in your inventry";
                             }
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
                                 String newInput = "";
@@ -294,11 +296,11 @@ public class Game {
                                     newInput = input.substring(5 + itemContainer.getName().length());
                                 } catch (StringIndexOutOfBoundsException e) {}
                                 if (newInput.length() == 0)
-                                    return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName() + " <id>' where <id> is the correct combination";
+                                    return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
-                                        return "You unlocked the " + itemContainer.getName() + " with the combination " + newInput;
+                                        return "You unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput;
                                     }
                                     return "The combination is not correct";
                                 }
@@ -316,7 +318,7 @@ public class Game {
                                     Item removedItem = itemContainer.removeItem(j);
                                     player.insertItem(removedItem);
                                     itemContainer.setUsingMessage();
-                                    return player.getName() + " took the item: " + removedItem.getName();
+                                    return player.getName() + " took the item: " + removedItem.getName().toLowerCase();
                                 }
                             }
                             return "The item is not in the container";
