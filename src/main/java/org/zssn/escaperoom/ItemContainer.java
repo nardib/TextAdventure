@@ -10,9 +10,9 @@ enum LockType {
  * The items in the container can be removed, but can't be added back
  */
 public class ItemContainer extends Item{
-     /**
-     * Weight of the item
-     */
+    /**
+    * Weight of the item
+    */
     public final static int WEIGHT = 11;
 
     /**
@@ -48,6 +48,13 @@ public class ItemContainer extends Item{
     
     /**
      * Constructor for the CluesItem class
+     * 
+     * @param name name of the item
+     * @param image image of the item
+     * @param currentRoom current room of the item
+     * @param items items in the container
+     * @param lock lock of the container
+     * @param ID ID of the lock
      */
     public ItemContainer (String name, String image, int currentRoom, Item[] items, LockType lock, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
@@ -67,10 +74,17 @@ public class ItemContainer extends Item{
 
     /**
      * Method to remove an item to the container
+     * 
+     * @param index index of the item to remove
+     * @return the removed item
+     * 
+     * @throws IllegalArgumentException if the container is locked or the index is invalid
      */
     public Item removeItem(int index) {
         if (locked)
             throw new IllegalArgumentException("The container is locked");
+        if (index < 0 || index >= ArrayIndexCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
         Item removedItem = items[index];
         items[index] = null;
         //compact the elements of the array
@@ -89,6 +103,10 @@ public class ItemContainer extends Item{
 
     /**
      * Method to unlock the container
+     * 
+     * @param obj object to unlock the container (Key or combination)
+     * 
+     * @throws IllegalArgumentException if the container is already unlocked
      */
     public void unlock(Object obj) {
         switch (lock) {
@@ -112,7 +130,6 @@ public class ItemContainer extends Item{
         default:
             throw new IllegalArgumentException("Invalid lock type");
         }
-        throw new IllegalArgumentException("Invalid input");
     }
 
     /**
@@ -127,6 +144,11 @@ public class ItemContainer extends Item{
 
     /**
      * Method to get the element at index i of the container
+     * 
+     * @param i index of the item
+     * @return the item at index i
+     * 
+     * @throws IllegalArgumentException if the container is locked or the index is invalid
      */
     public Item getItem(int i) {
         if (locked)
@@ -138,6 +160,10 @@ public class ItemContainer extends Item{
 
     /**
      * Method to get the number of items in the container
+     * 
+     * @return the number of items in the container
+     * 
+     * @throws IllegalArgumentException if the container is locked
      */
     public int getItemsLength() {
         if (locked)
@@ -147,6 +173,8 @@ public class ItemContainer extends Item{
 
     /**
      * Method to check if the container is locked
+     * 
+     * @return true if the container is locked, false otherwise
      */
     public boolean isLocked() {
         return locked;
@@ -154,14 +182,17 @@ public class ItemContainer extends Item{
 
     /**
      * Method to get the lock type of the container
+     * 
+     * @return the lock type of the container
      */
     public LockType getLockType() {
         return lock;
     }
 
-
     /**
      * Method to get the ID of the lock
+     * 
+     * @return the ID of the lock
      */
     public int getID() {
         return ID;

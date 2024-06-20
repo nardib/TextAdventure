@@ -6,30 +6,69 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintStream;
 
-public class GameFrame implements MouseMotionListener, MouseListener {
-    // Variabili di istanza
-    Game game = new Game("Cristina", "f", "Giancarlo", "neutral"); // Oggetto del gioco
-    int x = 0; // Coordinata X del mouse
-    int y = 0; // Coordinata Y del mouse
-    int wallcount = 0; // Contatore per il cambio di muro
-    Image[] Images = new Image[36]; // Array di immagini dei muri
-    boolean isFullscreen = false; // Stato della finestra (fullscreen o no)
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); // Dispositivo grafico
-    JFrame frame; // Finestra principale
-    JTextPane terminal; // Terminale di output
-    JTextField inputField; // Campo di testo per l'input dell'utente
-    JPanel buttonPanel; // Pannello dei pulsanti
-    JLabel gameStatusLabel; // Etichetta per lo stato del gioco
-    private static JLabel playerHelthLabel; //Etichetta per la vita del giocatore 
+/**
+ * GameFrame class. This class represents the frame of the game. It contains the main window of the game, the terminal, the input field.
+ */
+public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
+    
+    /**
+     * Game object
+     */
+    private Game game = new Game("Cristina", "f", "Giancarlo", "neutral"); // Oggetto del gioco
+    //int x = 0; // Coordinata X del mouse
+    //int y = 0; // Coordinata Y del mouse
+    /**
+     * counter for the walls
+     */
+    private int wallcount = 0;
+    /**
+     * Array of images of the walls
+     */
+    private Image[] Images = new Image[36];
+    /**
+     * Boolean for the fullscreen state
+     */
+    private boolean isFullscreen = false;
+    /**
+     * GraphicsDevice object
+     */
+    private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    /**
+     * JFrame object for the main window
+     */
+    private JFrame frame;
+    /**
+     * JTextPane object for the terminal
+     */
+    private JTextPane terminal;
+    /**
+     * JTextField object for the input field
+     */
+    JTextField inputField;
+    /**
+     * JPanel object for the buttons
+     
+     */
+    JPanel buttonPanel;
+    /**
+     * JLabel object for the game status
+     */
+    JLabel gameStatusLabel;
+    /**
+     * JLabel object for the player health
+     */
+    private static JLabel playerHelthLabel;
 
-    // Costruttore della classe
+    /**
+     * Constructor of the GameFrame class
+     */
     public GameFrame() {
         frame = new JFrame("TextAdventure");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setIconImage(new ImageIcon(getClass().getResource("/text-adventure-icon.png")).getImage());
         frame.setLayout(new BorderLayout());
-        frame.addMouseMotionListener(this);
-        frame.addMouseListener(this);
+        /*frame.addMouseMotionListener(this);
+        frame.addMouseListener(this);*/
 
         // Carica le immagini dei muri
         for (int i = 0; i < 36; i++) {
@@ -225,7 +264,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     /**
      * Update the player health label
      */
-    public void updatePlayerHealthLabel() {
+    private void updatePlayerHealthLabel() {
         StringBuilder heartSymbols = new StringBuilder();
         for (int i = 0; i < game.getPlayer().getHealth(); i++) {
             heartSymbols.append("♥");
@@ -233,7 +272,9 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         playerHelthLabel.setText("SALUTE: " + heartSymbols.toString());
     }
 
-    // Attiva/disattiva la modalità fullscreen
+    /**
+     * Toggle the fullscreen mode
+     */
     private void toggleFullscreen() {
         if (isFullscreen) {
             gd.setFullScreenWindow(null);
@@ -252,7 +293,11 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         isFullscreen = !isFullscreen;
     }
 
-    // Scrive un messaggio nel terminale
+    /**
+     * Write a message to the terminal
+     * 
+     * @param message the message to write
+     */
     private void writeToTerminal(String message) {
         StyledDocument doc = terminal.getStyledDocument();
         SimpleAttributeSet paraSet = new SimpleAttributeSet();
@@ -267,7 +312,9 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         }
     }
 
-    // Pulisce il terminale
+    /**
+     * Clear the terminal
+     */
     private void clearTerminal() {
         StyledDocument doc = terminal.getStyledDocument();
         try {
@@ -277,6 +324,7 @@ public class GameFrame implements MouseMotionListener, MouseListener {
         }
     }
 
+    /*
     // Listener del mouse
     public void mouseDragged(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {
@@ -290,4 +338,5 @@ public class GameFrame implements MouseMotionListener, MouseListener {
     public void mouseExited(MouseEvent e) {}
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
+    */
 }

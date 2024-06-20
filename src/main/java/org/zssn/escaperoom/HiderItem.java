@@ -26,8 +26,13 @@ public class HiderItem extends Item{
      */
     private Item hiddenItem;
 
-   /**
+    /**
      * Constructor for the HiderItem class
+     * 
+     * @param name name of the hider item
+     * @param image image of the hider item
+     * @param currentRoom current room of the hider item
+     * @param hiddenItem item hidden by the hider item
      */
     public HiderItem (String name, String image, int currentRoom, Item hiddenItem) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
@@ -39,6 +44,8 @@ public class HiderItem extends Item{
 
     /**
      * Method to get the hiding state of the item
+     * 
+     * @return true if the item is hiding, false otherwise
      */
     public boolean isHiding() {
         return hiding;
@@ -46,6 +53,8 @@ public class HiderItem extends Item{
 
     /**
      * Method to reveal the hidden item
+     * 
+     * @return the hidden item
      */
     public Item reveal() {
         hiding = false;

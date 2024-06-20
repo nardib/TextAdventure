@@ -22,6 +22,8 @@ public class HealingItem extends Item {
      * @param weight weight of the healing item
      * @param currentRoom current room of the healing item
      * @param healthPoints health points that the healing item heals
+     * 
+     * @throws IllegalArgumentException if health points are less than 0
      */
     public HealingItem(String name, String image, int weight, int currentRoom, int healthPoints)
     {

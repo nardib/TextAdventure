@@ -131,6 +131,9 @@ public class Wall {
 
     /**
      * Get the the items in the room
+     * 
+     * @param index the index of the item
+     * @return the items in the room
      */
     public Item getItem(int index)
     {
@@ -139,6 +142,8 @@ public class Wall {
 
     /**
      * Get the length of the array of items
+     * 
+     * @return the length of the array of items
      */
     public int getItemsLength()
     {
@@ -147,6 +152,8 @@ public class Wall {
 
     /**
      * Check if the room has items
+     * 
+     * @return true if the room has items, false otherwise
      */
     public boolean hasItems()
     {
@@ -155,6 +162,8 @@ public class Wall {
 
     /**
      * Set the items in the room
+     * 
+     * @param items the items in the room
      */
     public void setItems(Item[] items)
     {
@@ -174,6 +183,10 @@ public class Wall {
 
     /**
      * Remove an item from the wall
+     * 
+     * @param index the index of the item to remove
+     * 
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
      */
     public void removeItem(int index) 
     {

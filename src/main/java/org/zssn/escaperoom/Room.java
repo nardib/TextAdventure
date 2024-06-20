@@ -7,25 +7,63 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Room class is used to create the rooms of the game. Each room has 4 walls and each wall can have items.
+ */
 public class Room 
 {
-    /*
-     * Room class variables
+    /**
+     * Number of the room
      */
     private int roomNumber;
+    /**
+     * Name of the room
+     */
     private String name;
+    /**
+     * Number of doors in the room
+     */
     private int doors;
+    /**
+     * North wall of the room
+     */
     private Wall NWall;
+    /**
+     * East wall of the room
+     */
     private Wall EWall;
+    /**
+     * South wall of the room
+     */
     private Wall SWall;
+    /**
+     * West wall of the room
+     */
     private Wall WWall;
+    /**
+     * Crossable state of the room on the north side
+     */
     private boolean crossableNorth;
+    /**
+     * Crossable state of the room on the east side
+     */
     private boolean crossableEast;
+    /**
+     * Crossable state of the room on the south side
+     */
     private boolean crossableSouth;
+    /**
+     * Crossable state of the room on the west side
+     */
     private boolean crossableWest;
+    /**
+     * Array of walls in the game
+     */
     public static Wall[] Walls= new Wall[36];
 
-    // Load images from directory
+    /**
+     * Load images for the walls
+     */
     public static void loadImages() {
         for (int i = 0; i < 36; i++) {
             try {
@@ -37,8 +75,17 @@ public class Room
             }
         }
     }
-    /*
+
+    /**
      * Room class constructor
+     * 
+     * @param n number of the room
+     * @param d number of doors in the room
+     * @param nam name of the room
+     * @param NItems items in the north wall
+     * @param EItems items in the east wall
+     * @param SItems items in the south wall
+     * @param WItems items in the west wall
      */
     public Room(int n, int d, String nam, Item[] NItems, Item[] EItems, Item[] SItems, Item[] WItems) 
     {
@@ -139,21 +186,42 @@ public class Room
                 break;
         }
     }
-    /*
-     * Room class methods
+
+    /**
+     * Get the name of the room
+     * 
+     * @return name of the room
      */
     public String getName() 
     {
         return name;
     }
+
+    /**
+     * Get the number of the room
+     * 
+     * @return number of the room
+     */
     public int getRoomNumber() 
     {
         return roomNumber;
     }
+
+    /**
+     * Get the number of doors in the room
+     * 
+     * @return number of doors in the room
+     */
     public int getDoors() 
     {
         return doors;
     }
+
+    /**
+     * Add a passage way to the room
+     * 
+     * @param room room to add the passage way to
+     */
     public void addPassageWay(Room room) 
     {
         // Add passage way to room
@@ -179,52 +247,125 @@ public class Room
         }
     }
 
+    /**
+     * Get the north wall of the room
+     * 
+     * @return north wall of the room
+     */
     public Wall getNWall()
     {
         return NWall;
     }
+
+    /**
+     * Get the south wall of the room
+     * 
+     * @return south wall of the room
+     */
     public Wall getSWall()
     {
         return SWall;
     }
+
+    /**
+     * Get the east wall of the room
+     * 
+     * @return east wall of the room
+     */
     public Wall getEWall()
     {
         return EWall;
     }
+
+    /**
+     * Get the west wall of the room
+     * 
+     * @return west wall of the room
+     */
     public Wall getWWall()
     {
         return WWall;
     }
 
+    /**
+     * Set the north wall of the room
+     * 
+     * @param image image of the wall
+     * @param door door in the wall
+     */
     public void setNWall(BufferedImage image, boolean door)
     {
         NWall = new Wall(image, door, null);
     }
+
+    /**
+     * Set the south wall of the room
+     * 
+     * @param image image of the wall
+     * @param door door in the wall
+     */
     public void setSWall(BufferedImage image, boolean door)
     {
         SWall = new Wall(image, door, null);
     }
+
+    /**
+     * Set the east wall of the room
+     * 
+     * @param image image of the wall
+     * @param door door in the wall
+     */
     public void setEWall(BufferedImage image, boolean door)
     {
         EWall = new Wall(image, door, null);
     }
+
+    /**
+     * Set the west wall of the room
+     * 
+     * @param image image of the wall
+     * @param door door in the wall
+     */
     public void setWWall(BufferedImage image, boolean door)
     {
         WWall = new Wall(image, door, null);
     }
 
+    /**
+     * Get the crossable state of the room on the north side
+     * 
+     * @return true if the room is crossable on the north side, false otherwise
+     */
     public boolean getCrossableNorth()
     {
         return crossableNorth;
     }
+
+    /**
+     * Get the crossable state of the room on the east side
+     * 
+     * @return true if the room is crossable on the east side, false otherwise
+     */
     public boolean getCrossableEast()
     {
         return crossableEast;
     }
+
+    /**
+     * Get the crossable state of the room on the south side
+     * 
+     * @return true if the room is crossable on the south side, false otherwise
+     */
     public boolean getCrossableSouth()
     {
         return crossableSouth;
     }
+
+    /**
+     * Get the crossable state of the room on the west side
+     * 
+     * @return true if the room is crossable on the west side, false otherwise
+     */
     public boolean getCrossableWest()
     {
         return crossableWest;

@@ -147,6 +147,8 @@ public class Player extends Character{
      * 
      * @param i the index of the item to remove
      * @return the item removed
+     * 
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
      */
     public Item removeItem(int i)
     {
@@ -176,6 +178,8 @@ public class Player extends Character{
      * 
      * @param i the index of the item to return
      * @return the item at index i
+     * 
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
      */
     public Item getItem(int i)
     {
