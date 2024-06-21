@@ -60,6 +60,29 @@ public class Item {
     }
 
     /**
+     * Constructor for the Item
+     * 
+     * @param name name of the item
+     * @param image image of the item given as ImageIcon object
+     * @param weight weight of the item
+     * @param currentRoom current room of the item
+     * @param pickable pickable state of the item
+     * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
+     */
+    public Item(String name, ImageIcon image, int weight, int currentRoom, boolean pickable)
+    {
+        icon = image;
+        setName(name);
+        setRoom(currentRoom);
+        this.PICKABLE = pickable;
+
+        if(weight >= 0)
+            this.WEIGHT = weight;
+        else
+            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
+    }
+
+    /**
      * Retrurns the icon of the image
      * 
      * @return icon of the image
@@ -121,5 +144,16 @@ public class Item {
     private void setName(String name)
     {
         this.name = name;
+    }
+
+    /**
+     * Clone the item
+     * 
+     * @return a clone of the item
+     */
+    @Override
+    public Item clone()
+    {
+        return new Item(name, icon, WEIGHT, currentRoom, PICKABLE);
     }
 }

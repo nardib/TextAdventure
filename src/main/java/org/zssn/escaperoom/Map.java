@@ -384,4 +384,39 @@ public class Map
         else
             throw new IllegalArgumentException("Room index out of bounds.");
     }
+
+    /**
+     * Clone the map
+     * 
+     * @return the cloned map
+     */
+    @Override
+    public Map clone()
+    {
+        Map map = new Map();
+        for (int i = 0; i < MAPSIZE; i++)
+        {
+            map.rooms[i] = this.rooms[i].clone();
+        }
+        return map;
+    }
+
+    /**
+     * Clone the map with a deep copy of the room given as argument
+     * 
+     * @param room the room to deep copy
+     * @return the cloned map
+     */
+    public Map clone(int room)
+    {
+        Map map = new Map();
+        for (int i = 0; i < MAPSIZE; i++)
+        {
+            if(i == room)
+                map.rooms[i] = this.rooms[i].clone();
+            else
+                map.rooms[i] = this.rooms[i];
+        }
+        return map;
+    }
 }

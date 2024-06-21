@@ -1,5 +1,7 @@
 package org.zssn.escaperoom;
 
+import javax.swing.ImageIcon;
+
 /**
  * ItemContainer class that contains other items used in the game
  * The items in the container can be removed, but can't be added back
@@ -52,6 +54,32 @@ public class ItemContainer extends Item{
      * @param ID ID of the lock
      */
     public ItemContainer (String name, String image, int currentRoom, Item[] items, LockType lock, int ID) {
+        super(name, image, WEIGHT, currentRoom, PICKABLE);
+
+        ArrayIndexCount = items.length;
+        this.items = new Item[ArrayIndexCount];
+        for (int i = 0; i < ArrayIndexCount; i++) {
+            this.items[i] = items[i];
+        }
+        setUsingMessage();
+        this.lock = lock;
+        locked = false;
+        if (lock != LockType.NONE)
+            locked = true;
+        this.ID = ID;
+    }
+
+    /**
+     * Constructor for the CluesItem class
+     * 
+     * @param name name of the item
+     * @param image image of the item given as ImageIcon object
+     * @param currentRoom current room of the item
+     * @param items items in the container
+     * @param lock lock of the container
+     * @param ID ID of the lock
+     */
+    public ItemContainer (String name, ImageIcon image, int currentRoom, Item[] items, LockType lock, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
 
         ArrayIndexCount = items.length;
@@ -199,5 +227,18 @@ public class ItemContainer extends Item{
      */
     public int getID() {
         return ID;
+    }
+
+    /**
+     * Clone the item container
+     * 
+     * @return a new item container with the same attributes
+     */
+    @Override
+    public ItemContainer clone() {
+        Item[] items = new Item[ArrayIndexCount];
+        for (int i = 0; i < ArrayIndexCount; i++)
+            items[i] = this.items[i].clone();
+        return new ItemContainer(this.getName(), this.icon, this.currentRoom, items, this.lock, this.ID);
     }
 }

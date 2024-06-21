@@ -196,4 +196,21 @@ public class Wall {
             items[i] = items[i + 1];
         lastItem--;
     }
+
+    /**
+     * Clone the wall
+     * 
+     * @return the cloned wall
+     */
+    @Override
+    public Wall clone(){
+        Item[] items = new Item[this.items.length];
+        for (int i = 0; i < this.items.length; i++)
+            items[i] = this.items[i].clone();
+        Wall w = new Wall(deepCopy(wall), hasDoor, items);
+        for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet())
+            w.addItemImages(deepCopy(entry.getValue()), new Point(entry.getKey()));
+        lastItem = items.length;
+        return w;
+    }
 }

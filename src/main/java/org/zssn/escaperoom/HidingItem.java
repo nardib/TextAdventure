@@ -1,5 +1,6 @@
 package org.zssn.escaperoom;
 
+import javax.swing.ImageIcon;
 /**
  * HidingItem class is a subclass of Item class. It represents a hiding item that can be used to hide the player from the enemy.
  */
@@ -25,6 +26,30 @@ public class HidingItem extends Item {
     public HidingItem(String name, String image, int currentRoom)
     {
         super (name, image, currentRoom, currentRoom, false);
-        usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.\"";
+        usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
+    }
+
+    /**
+     * Constructor for the HidingItem
+     * 
+     * @param name name of the hiding item
+     * @param image image of the hiding item given as a ImageIcon object
+     * @param currentRoom current room of the hiding item
+    */
+    public HidingItem(String name, ImageIcon image, int currentRoom)
+    {
+        super (name, image, currentRoom, currentRoom, false);
+        usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
     }    
+
+    /**
+     * Clone the hiding item
+     * 
+     * @return a new hiding item with the same attributes
+     */
+    @Override
+    public HidingItem clone()
+    {
+        return new HidingItem(name, icon, currentRoom);
+    }
 }

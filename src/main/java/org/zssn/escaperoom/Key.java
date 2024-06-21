@@ -1,5 +1,7 @@
 package org.zssn.escaperoom;
 
+import javax.swing.ImageIcon;
+
 /**
  * Key class is a subclass of Item. It is used to unlock doors in the game.
  */
@@ -33,5 +35,32 @@ public class Key extends Item {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.ID = id;
         usingMessage = "To use the key, face the wall with the item container to unlock and use the item with 'use <itemContainer>'";
+    }
+
+    /**
+     * Constructor for the Key
+     * 
+     * @param name name of the key
+     * @param id id of the key
+     * @param image image of the key given as an ImageIcon object
+     * @param currentRoom current room of the key
+     * @throws IllegalArgumentException if the room is not between 0 and 9
+     */
+    public Key(String name, int id, ImageIcon image, int currentRoom)
+    {
+        super(name, image, WEIGHT, currentRoom, PICKABLE);
+        this.ID = id;
+        usingMessage = "To use the key, face the wall with the item container to unlock and use the item with 'use <itemContainer>'";
+    }
+
+    /**
+     * Clone the key
+     * 
+     * @return a new key with the same attributes
+     */
+    @Override
+    public Key clone()
+    {
+        return new Key(name, ID, icon, currentRoom);
     }
 }

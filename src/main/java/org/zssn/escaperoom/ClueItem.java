@@ -1,5 +1,6 @@
 package org.zssn.escaperoom;
 
+import javax.swing.ImageIcon;
 /**
  * Item class for all the clues items in the game
  * Each item has a clue necessary for completing the game
@@ -28,5 +29,29 @@ public class ClueItem extends Item{
     public ClueItem(String name, String image, int currentRoom, String usingMessage) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.usingMessage = usingMessage;
+    }
+
+    /**
+     * Constructor for the CluesItem class
+     * 
+     * @param name name of the item
+     * @param image image of the item given as a ImageIcon object
+     * @param currentRoom current room of the item
+     * @param usingMessage message to show when the item is used
+     */
+    public ClueItem(String name, ImageIcon image, int currentRoom, String usingMessage) {
+        super(name, image, WEIGHT, currentRoom, PICKABLE);
+        this.usingMessage = usingMessage;
+    }
+
+    /**
+     * Clone the item
+     * 
+     * @return a new item with the same attributes
+     */
+    @Override
+    public ClueItem clone()
+    {
+        return new ClueItem(name, icon, currentRoom, usingMessage);
     }
 }

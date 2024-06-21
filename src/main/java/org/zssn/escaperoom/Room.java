@@ -370,4 +370,26 @@ public class Room
     {
         return crossableWest;
     }
+
+    /**
+     * Clone the room
+     * 
+     * @return a clone of the room
+     */
+    @Override
+    public Room clone() {
+        Item[] NItems = new Item[NWall.getItemsLength()];
+        Item[] EItems = new Item[EWall.getItemsLength()];
+        Item[] SItems = new Item[SWall.getItemsLength()];
+        Item[] WItems = new Item[WWall.getItemsLength()];
+        for (int i = 0; i < NWall.getItemsLength(); i++)
+            NItems[i] = NWall.getItem(i).clone();
+        for (int i = 0; i < EWall.getItemsLength(); i++)
+            EItems[i] = EWall.getItem(i).clone();
+        for (int i = 0; i < SWall.getItemsLength(); i++)
+            SItems[i] = SWall.getItem(i).clone();
+        for (int i = 0; i < WWall.getItemsLength(); i++)
+            WItems[i] = WWall.getItem(i).clone();
+        return new Room(roomNumber, doors, name, NItems, EItems, SItems, WItems);
+    }
 }

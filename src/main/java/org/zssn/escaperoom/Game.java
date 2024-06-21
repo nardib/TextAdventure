@@ -124,60 +124,42 @@ public class Game {
             if(input.length() == 5){
                 if(player.getCurrentDirection() == Direction.NORTH && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
-                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.SOUTH && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
-                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.EAST && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
-                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
                 }
                 else if(player.getCurrentDirection() == Direction.WEST && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
-                    return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
                 }
             }
             else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
-                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
-                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
-                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
             }
             else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
-                return player.getName() + " moved to the: " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
             }
             throw new IllegalArgumentException(player.getName() + " can't cross in that direction");
-        }
-        
-        //command to check the items in the room
-        else if (input.equalsIgnoreCase("look")) {
-            try {
-                Item[] items = getItemsInWall();
-                if (items.length == 0)
-                    return "There are no items in this room";
-
-                String out = "In this room there are the following items:\n";
-                for (int i = 0; i < items.length; i++)
-                    out += "·" + items[i].getName().toLowerCase() + "\n";
-                return out.substring(0, out.length() - 1);
-            } catch (IllegalAccessException e) {
-                return e.getMessage();
-            } catch (IllegalStateException e) {
-                return e.getMessage();
-            }
         }
         
         //command to take an item in the room
@@ -254,7 +236,7 @@ public class Game {
             } catch (IllegalStateException e) {
                 return e.getMessage();
             }
-                
+
             for (int i = 0; i < items.length; i++) {
                 if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
                     Item item = items[i];
@@ -341,11 +323,6 @@ public class Game {
             }
             return player.getName() + " can't use this item";
         }
-
-        //command to check the items in the inventory (probably should be in nextMove)
-        else if (input.equalsIgnoreCase("inventory")) {
-            return "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
-        }
         
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }
@@ -399,11 +376,31 @@ public class Game {
             return "\nGame saved";
 
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
-
             if (undo()) 
                 return "\nUndo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
             
             return "\nNo previous moves to undo";
+        }
+        //command to check the items in the inventory (probably should be in nextMove)
+        if (input.equalsIgnoreCase("inventory")) {
+            return "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
+        }
+        //command to check the items in the room
+        if (input.equalsIgnoreCase("look")) {
+            try {
+                Item[] items = getItemsInWall();
+                if (items.length == 0)
+                    return "There are no items in this room";
+
+                String out = "In this room there are the following items:\n";
+                for (int i = 0; i < items.length; i++)
+                    out += "·" + items[i].getName().toLowerCase() + "\n";
+                return out.substring(0, out.length() - 1);
+            } catch (IllegalAccessException e) {
+                return e.getMessage();
+            } catch (IllegalStateException e) {
+                return e.getMessage();
+            }
         }
 
         String out = "\n";

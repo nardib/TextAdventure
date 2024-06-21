@@ -1,5 +1,6 @@
 package org.zssn.escaperoom;
 
+import javax.swing.ImageIcon;
 /**
  * Item class for all the hider items in the game
  * An hider item hides another item in the room
@@ -43,6 +44,22 @@ public class HiderItem extends Item{
     }
 
     /**
+     * Constructor for the HiderItem class
+     * 
+     * @param name name of the hider item
+     * @param image image of the hider item given as a ImageIcon object
+     * @param currentRoom current room of the hider item
+     * @param hiddenItem item hidden by the hider item
+     */
+    public HiderItem (String name, ImageIcon image, int currentRoom, Item hiddenItem) {
+        super(name, image, WEIGHT, currentRoom, PICKABLE);
+        this.hiddenItem = hiddenItem;
+        this.usingMessage = this.name + " was hiding a " + hiddenItem.getName();
+        //when created, the item is hiding an element
+        hiding = true;
+    }
+
+    /**
      * Method to get the hiding state of the item
      * 
      * @return true if the item is hiding, false otherwise
@@ -59,5 +76,15 @@ public class HiderItem extends Item{
     public Item reveal() {
         hiding = false;
         return hiddenItem;
+    }
+
+    /**
+     * Clone the hider item
+     * 
+     * @return a new hider item with the same attributes
+     */
+    @Override
+    public HiderItem clone() {
+        return new HiderItem(name, icon, currentRoom, hiddenItem.clone());
     }
 }
