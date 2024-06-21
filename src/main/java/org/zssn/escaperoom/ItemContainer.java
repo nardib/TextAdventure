@@ -100,7 +100,7 @@ public class ItemContainer extends Item{
     /**
      * Method to unlock the container with a key
      * 
-     * @param obj object to unlock the container (Key or combination)
+     * @param k object to unlock the container (Key or combination)
      * @return true if the container was succesfully unlocked, flase instead
      * 
      * @throws IllegalArgumentException if this container can't be unlocked with a key

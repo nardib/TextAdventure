@@ -1,13 +1,13 @@
 package org.zssn.escaperoom;
 
 import javax.swing.SwingUtilities;
-
 /**
- * Class Main - Create an instance of GameFrame and show the graphical interface
+ * The Main class is the entry point of the application.
  */
-public class Main{
+public class Main {
     /**
-     * Main method of the application
+     * Main method of the application.
+     * 
      * @param args Command line arguments
      */
     public static void main(String[] args) {
