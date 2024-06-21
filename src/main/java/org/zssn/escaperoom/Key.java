@@ -32,6 +32,6 @@ public class Key extends Item {
     {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.ID = id;
-        usingMessage = "You used the " + name;
+        usingMessage = "To use the key, face the wall with the item container to unlock and use the item with 'use <itemContainer>'";
     }
 }

@@ -264,9 +264,90 @@ Game class creates the istances of Player, Enemy, Map classes ...
 
 ### Internal Sequence Diagrams
 
+#### Player Configuration Sequence Diagram
+
+![Player Configuration Sequence Diagram](docs/uml/PlayerConfigurationInternalSequenceDiagram.png)
+
+#### Command Sequence Diagram
+
+![Command Sequence Diagram](docs/uml/CommandInternalSequenceDiagram.png)
+
 #### Back Sequence Diagram
 
 ![Undo Sequence Diagram](docs/uml/UndoInternalSequenceDiagram.png)
 
+#### Save Sequence Diagram
+
 ## System Test Reports
 
+All the system tests where executed on Windows 10, Windows 11 and Fedora 40
+
+### Start
+
+| Summary | The game starts with the player in the correct position |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |
+
+### Player Configuration
+
+| Summary | After pressing `New Game` in the main menu you configure the Player with a proper name and gender |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |
+
+
+### Commands
+
+| Summary | Given a specific command the game returns an output that matches with the inserted input |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |
+
+
+### Win
+
+| Summary | After having solved the final puzzle the game shows the win screen |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |
+
+
+### Back
+
+| Summary | When inserted `back` (or `undo`) as command the game returns in the previous state |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |
+
+
+### Save and Exit
+
+| Summary | When inserting `save` ad command the game saves its actual state and when pressing `exit` it returns to the main menu |
+| --- | --- |
+| Test Case Design |  |
+| Requirements |  |
+| Pre-Condition |  |
+| Post-Condition |  |
+| Test Scripts |  |
+| Test Case Execution Report |  |

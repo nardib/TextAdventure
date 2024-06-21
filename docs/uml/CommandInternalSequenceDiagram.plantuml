@@ -1,0 +1,59 @@
+@startuml Command Internal Sequence Diagram
+
+title Commands - Intenal Sequence Diagram
+
+actor User
+participant GameFrame
+participant Game
+participant Player
+participant Enemy
+participant Wall
+
+activate GameFrame
+User -> GameFrame : submit a valid command
+
+activate Game
+GameFrame -> Game : "<command>"
+
+Game -> Game : nextMove()
+Game -> Game : playerMove()
+
+activate Player
+alt <command> is "<direction>"
+    Game -> Player : changeDirection(<direction>)
+else <command> is "cross <direction>"
+    Game -> Player : crossDoor(<direction>)
+else <command> is "look"
+    activate Wall
+    Game -> Wall : getItems() 
+else <command> is "take <item>"
+    Game -> Wall : removeItem(<item>)
+    Game -> Player : insertItem(<item>)
+else <command> is "use <item>"
+    alt <item> is in player's inventory
+        Game -> Player : uses the item in the proper manner
+    else <item> is in the facing wall
+        Game -> Wall : use the item in the proper manner
+    end
+    deactivate Wall
+else <command> is "status"
+    Game -> Player : getHealth() and getInventory()
+else <command> is "inventory"
+    Game -> Player : getInventory()
+end
+
+Game -> Game : enemyMove()
+alt player is in the same room as an enemy
+    activate Enemy
+    Game -> Player: decreaseHealth()
+else player is not in the same room as the enemy
+    Game -> Enemy : move()
+    deactivate Enemy
+end
+
+Game -> GameFrame : return updated game state
+GameFrame -> User : display updated game state
+
+deactivate GameFrame
+
+@enduml
