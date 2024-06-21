@@ -118,7 +118,7 @@ public class Item {
      * 
      * @param name name of the item
      */
-    public void setName(String name)
+    private void setName(String name)
     {
         this.name = name;
     }

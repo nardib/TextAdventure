@@ -27,6 +27,16 @@ public class Game {
     private boolean isGameOn;
 
     /**
+     * Number of player turns before the enemy moves
+     */
+    private final int enemycount;
+
+    /**
+     * Counter for the number of player turns before the enemy moves
+     */
+    private int count = 0;
+
+    /**
      * Stack of mementos to implement the undo function
      */
     private Stack<GameMemento> mementos = new Stack<>();
@@ -53,14 +63,18 @@ public class Game {
      * @param pg the gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
      * @param en name of the enemy
      * @param eg the gender of the enemy given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
+     * @param count the number of player turns before the enemy moves (it should be a positive integer)
      * 
-     * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format
+     * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format or if the count is not a positive integer
      */
-    public Game(String pn, String pg, String en, String eg) {
+    public Game(String pn, String pg, String en, String eg, int count) {
         player = new Player(capitalizeFistLetter(pn), pg);
         map = new Map();
         enemy = new Enemy(capitalizeFistLetter(en), eg);
         isGameOn = true;
+        if (count <= 0)
+            throw new IllegalArgumentException("The count must be a positive integer");
+        this.enemycount = count;
         mementos.push(new GameMemento(player, enemy, map, isGameOn));
     }
 
@@ -276,7 +290,7 @@ public class Game {
                         ItemContainer itemContainer = (ItemContainer) item;
                         if (itemContainer.isLocked()){
                             if (itemContainer.getLockType() == LockType.NONE)
-                                itemContainer.unlock(null);
+                                return "The " + itemContainer.getName() + " was already unlocked";
                             else if (itemContainer.getLockType() == LockType.KEY) {
                                 for (int j = 0; j < player.getInventoryCount(); j++) {
                                     if (player.getItem(j) instanceof Key) {
@@ -284,11 +298,11 @@ public class Game {
                                         if (key.ID == itemContainer.getID()) {
                                             itemContainer.unlock(key);
                                             player.removeItem(i);
-                                            return "You unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase();
+                                            return player.getName() + " unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase();
                                         }
                                     }
                                 }
-                                return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in your inventry";
+                                return "The container is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
                             }
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
                                 String newInput = "";
@@ -296,13 +310,13 @@ public class Game {
                                     newInput = input.substring(5 + itemContainer.getName().length());
                                 } catch (StringIndexOutOfBoundsException e) {}
                                 if (newInput.length() == 0)
-                                    return "The container is locked, you must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
+                                    return "The container is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
-                                        return "You unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput;
+                                        return player.getName() + " unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput;
                                     }
-                                    return "The combination is not correct";
+                                    return "The combination is not correct, try again!";
                                 }
                             }
                         }
@@ -317,7 +331,6 @@ public class Game {
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
                                     Item removedItem = itemContainer.removeItem(j);
                                     player.insertItem(removedItem);
-                                    itemContainer.setUsingMessage();
                                     return player.getName() + " took the item: " + removedItem.getName().toLowerCase();
                                 }
                             }
@@ -403,7 +416,10 @@ public class Game {
         }
 
         // enemy turn
-        out +="\n" + enemyTurn();
+        if (count % enemycount == 0)
+            out +="\n" + enemyTurn();
+        count++;
+        
         if(isGameOver())
             return "\nGame Over! " + enemy.getName() + " killed you!";
         

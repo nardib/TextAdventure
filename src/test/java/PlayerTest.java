@@ -105,4 +105,15 @@ public class PlayerTest {
         p.increaseHealth(((HealingItem)i).HEALING_POINTS);
         Assert.assertEquals(4, p.getHealth());
     }
+
+    //test if the player change hidden state correctly
+    @Test
+    public void testHidden() {
+        Player p = new Player("Filippo", "n");
+        Assert.assertFalse(p.isHidden());
+        p.setHidden();
+        Assert.assertTrue(p.isHidden());
+        p.setHidden();
+        Assert.assertFalse(p.isHidden());
+    }
 }

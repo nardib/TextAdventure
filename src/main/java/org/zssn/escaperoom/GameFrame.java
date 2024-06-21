@@ -14,7 +14,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Game object
      */
-    private Game game = new Game("Cristina", "f", "Giancarlo", "neutral"); // Oggetto del gioco
+    private Game game = new Game("Cristina", "f", "Giancarlo", "neutral", 1); // Oggetto del gioco
     //int x = 0; // Coordinata X del mouse
     //int y = 0; // Coordinata Y del mouse
     /**

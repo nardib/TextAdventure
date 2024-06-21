@@ -1,10 +1,5 @@
 package org.zssn.escaperoom;
 
-enum LockType {
-    KEY,
-    COMBINATION,
-    NONE
-}
 /**
  * ItemContainer class that contains other items used in the game
  * The items in the container can be removed, but can't be added back
@@ -98,44 +93,52 @@ public class ItemContainer extends Item{
             }
         }
         ArrayIndexCount--;
+        this.setUsingMessage();
         return removedItem;
     }
 
     /**
-     * Method to unlock the container
+     * Method to unlock the container with a key
      * 
      * @param obj object to unlock the container (Key or combination)
+     * @return true if the container was succesfully unlocked, flase instead
      * 
-     * @throws IllegalArgumentException if the container is already unlocked
+     * @throws IllegalArgumentException if this container can't be unlocked with a key
      */
-    public void unlock(Object obj) {
-        switch (lock) {
-            case KEY:
-                if (obj instanceof Key) {
-                    Key key = (Key) obj;
-                    if (key.ID == this.ID)
-                        locked = false;
-                }
-            break;
-            case COMBINATION:
-                if (obj instanceof Integer) {
-                    int combination = (Integer) obj;
-                    if (combination == this.ID)
-                        locked = false;
-                }
-            break;
-        case NONE:
-            locked = false;
-        break;
-        default:
-            throw new IllegalArgumentException("Invalid lock type");
+    public boolean unlock(Key k) {
+        if (lock == LockType.KEY){
+            if (k.ID == this.ID)
+                locked = false;
+            return !locked;
         }
+        throw new IllegalArgumentException("This containter can't be unlocked with a key");
+    }
+
+    /**
+     * Method to unlock the container with a numeric combination
+     * 
+     * @param comb numeric combination to unlock the container
+     * @return true if the container was successfully unlocked, false instead
+     * 
+     * @throws IllegalArgumentException if this container can't be unlocked with a combination
+     */
+    public boolean unlock(int comb) {
+        if (lock == LockType.COMBINATION) {
+            if (comb == this.ID)
+                locked = false;
+            return !locked;
+        }
+        throw new IllegalArgumentException("This container can't be unlocked with a combination");
     }
 
     /**
      * Method to set the using message of the container
      */
     public void setUsingMessage() {
+        if (ArrayIndexCount == 0){
+            usingMessage = "There are no items in " + this.getName();
+            return;
+        }
         usingMessage = "In this container you find: \n";
         for (int i = 0; i < ArrayIndexCount; i++)
             usingMessage += "· " + items[i].getName() + "\n";

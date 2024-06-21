@@ -3,10 +3,9 @@ import org.junit.*;
 
 public class GameTest {
 
-    //i verify that all the commands to change the direction are correct
     @Test
     public void playerDirectionChange() {
-        var g = new Game("Player", "f", "Enemy", "m");
+        var g = new Game("Player", "f", "Enemy", "m", 7);
         g.nextMove("north");
         Assert.assertEquals(Direction.NORTH, g.getPlayer().getCurrentDirection());
         g.nextMove("south");
@@ -20,7 +19,7 @@ public class GameTest {
     //i verify that the player moves in the rooms with a specified command
     @Test
     public void playerMove() {
-        var g = new Game("Player", "f", "Enemy", "m");
+        var g = new Game("Player", "f", "Enemy", "m", 1);
         //player is in the room 5
         Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
         //test passage number 9
@@ -65,7 +64,7 @@ public class GameTest {
     //i verify that the game returns to a previous state after calling the undo method
     @Test
     public void undoTest() {
-        var g = new Game("Player", "f", "Enemy", "m");
+        var g = new Game("Player", "f", "Enemy", "m", 1);
         var initP = g.getPlayer().clone();
         var initE = g.getEnemy().clone();
 
