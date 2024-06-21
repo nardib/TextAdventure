@@ -35,21 +35,4 @@ public class HealingItem extends Item {
         this.HEALING_POINTS = healthPoints;
         usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
     }
-
-    /**
-     * Method to check if two healing items are equal
-     * 
-     * @param obj object to compare
-     * @return true if the two healing items are equal, false otherwise
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-            return false;
-        if (!(obj instanceof HealingItem))
-            return false;
-        HealingItem item = (HealingItem) obj;
-        return super.equals(obj) && item.HEALING_POINTS == this.HEALING_POINTS;
-    }
 }

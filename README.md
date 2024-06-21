@@ -164,11 +164,7 @@ mvn compile test exec:java
 
 #### Memento
 
-We used memento design pattern to implement the undo functionality in Game class. We used an inner class inside Game called GameMemento, which takes a snapshot of the state of the game manking a copy of every object relevant for the state of the game: in this way is easy to implement a list of all the snapshots, and every time the game insert "undo" (or "back") as input, it change the state of the game to previous one, removing it form the list. The list is make in order to be able to go back several time.
-
-#### Template Method Pattern
-
-The Item class is extended by other subclasses which define the characteristics for each single item.
+Memento design pattern is used to implement the `undo` function in Game class. There is an inner class inside Game called GameMemento, which takes a snapshot of the state of the game manking a copy of every object relevant for the state of the game: in this way is easy to implement a stack of all the snapshots, and every time the game insert `undo` (or `back`) as input, it changes the state of the game to previous one, removing it form the stack. The stack is made in order to be able to go back several time.
 
 ### GRASP
 
@@ -190,47 +186,87 @@ Game class creates the istances of Player, Enemy, Map classes ...
 
 ## Specifications
 
+![Use Case Diagram](docs/uml/UseCaseDiagram.png)
+
 | Use case | Start |
 | --- | --- |
-| Brief description | User can start the game |
+| Brief description | User can start the game. |
 | Actor | User |
-| Basic flow | User presses Start button. |
-| Alternative flow | An error message is displyed. |
+| Basic flow | User presses `Start` button or `Load Game` button. |
+| Alternative flow | If there are no saved game, it returns an error |
 | Precondition | The game was succesfully installed. |
-| Postcondition | Player settings page is shown. |
+| Postcondition | Game configuration page is shown. |
 | Extensions points | - |
 
-| Use case | Player configuration |
+| Use case | Player Configuration |
 | --- | --- |
-| Brief description | User can choose the name and sex of the player. |
+| Brief description | User can choose the name and gender of the player. |
 | Actor | User |
-| Basic flow | User writes the name and select the gender between the aveilable optios. |
+| Basic flow | User writes the name and select the gender between the available options. |
 | Alternative flow | No errors because pre-selected values are provided by default. |
 | Precondition | User has started the game. |
-| Postcondition | The game begins in its essence and the player finds itself in the first room, where the game will also end. |
+| Postcondition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Extensions points | - |
 
-| Use case | Coomands |
+| Use case | Commands |
 | --- | --- |
-| Brief description | User can play the game interacting throw the command shell. |
+| Brief description | User can play the game interacting through the command shell. |
 | Actor | User |
-| Basic flow | User interacts with the game, moving between the rooms, collecting objects and knowledge in the scope of solving the quizs and the riddles. |
+| Basic flow | User interacts with the game, moving between the rooms, collecting objects in order to win the game solving the final puzzle. |
 | Alternative flow | • The player is either killed by the enemy = LOSS or the player as solved the game = WIN • |
-| Precondition | Game must be correctly started |
-| Postcondition | GUI updates at pretty every move |
-| Extensions points | The enemy also makes a move every time the player does one |
+| Precondition | Game must be correctly started. |
+| Postcondition | GUI updates at pretty every move. |
+| Extensions points | The enemy also makes a move every time the player does one (or more) |
 
 | Use case | Win |
 | --- | --- |
 | Brief description | User wins the game. |
 | Actor | User |
-| Basic flow | User unlocks the door at in the room where all started. |
+| Basic flow | User unlocks the door in the room where all started. |
 | Alternative flow | The player is killed. |
 | Precondition | The player must have used all the items and must have visited all the rooms. |
-| Postcondition | The enemy dissapears and a win window is shown |
+| Postcondition | The enemy dissapears and a win screen is shown |
+| Extensions points | If the player was killed, then he has lost the game. |
+
+| Use case | Back |
+| --- | --- |
+| Brief description | The user goes back of a move in the game. |
+| Actor | User |
+| Basic flow | User types `back` or `undo` as command and the game goes back of a move. |
+| Alternative flow | The game returns an error message if there are no previous snapshots to restore. |
+| Precondition | The user must have done at least one move. |
+| Postcondition | The game is restored one move back. |
+| Extensions points | - |
+
+| Use case | Save and Exit |
+| --- | --- |
+| Brief description | User saves the state of the game and can resume the game later. |
+| Actor | User |
+| Basic flow | User types `save` and then the game can be closed via `exit` command. |
+| Alternative flow | The game was already saved, so it can't be saved twice. The last progress of the game was not saved, so the game asks if the user wants to save the state of leave the game without saving. |
+| Precondition | The user must have done at least one move. |
+| Postcondition | The game is saved and the user can leave and resume the game later. |
 | Extensions points | - |
 
 ## Design Documents
 
+### Domain Model
+
+![Domain Model](docs/uml/DomainModel.png)
+
+### Design Class Model
+
+![Design Class Model](docs/uml/DesignClassModel.png)
+
+### System Sequence Diagram
+
+![System Sequence Diagram](docs/uml/SystemSequenceDiagram.png)
+
+### Internal Sequence Diagrams
+
+#### Back Sequence Diagram
+
+![Undo Sequence Diagram](docs/uml/UndoInternalSequenceDiagram.png)
 
 ## System Test Reports
+

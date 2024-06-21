@@ -47,7 +47,6 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     JTextField inputField;
     /**
      * JPanel object for the buttons
-     
      */
     JPanel buttonPanel;
     /**

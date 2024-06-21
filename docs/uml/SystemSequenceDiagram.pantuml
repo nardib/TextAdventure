@@ -7,7 +7,7 @@ Game --> Player : Shows the start page
 
 alt click on "New Game"
     Player -> Game : New Game
-else click on "Resume Game"
+else click on "Load Game"
     Player -> Game : Load Game
 end
 
@@ -28,35 +28,39 @@ alt insert an input in the TextField
     else command is "cross"
         Game --> Player : moves player in the room in the direction he is facing
     else command is "look"
-        Game --> Player : Returns a list of the items in the room
+        Game --> Player : Returns a list of the usable items in the wall the player is facing
     else command is "take <item>"
         alt the item is in the room and can fit the inventory
-            Game --> Player : Add the item to player inventory
+            Game --> Player : Add the item to player's inventory
         else the item can't be taken
             Game --> Player : Return an error message
         end
     else command is "use <item>"
-        alt the item is in the inventory or can be used
+        alt the item is in the inventory or can be used in the room
             Game --> Player : Let the player use the object
         else the object is not in the inventory or can't be used 
             Game --> Player : Return an error message
         end
+    else command is "inventory"
+        Game --> Player : Shows all the items in player's inventory
+    else command is "status"
+        Game --> Player : Shows the status of the player (health, room and invenotry)
     end
-else use on "Back" button or submit "undo"/"back" command
-    Player -> Game : triggers "back" button
+else submit "undo"/"back" command
     Game --> Player : returns the state of the game one step back
-else clicks on "Intruction" button
-    Player -> Game : clicks on instruction Button
-    Game --> Player : shows the instruction page with all the instructions
-else clicks on "Save and Exit"
-    Player -> Game : Save and Exit
-    Game --> Player : Save the game and returns to home page
+else submit "help" command
+    Game --> Player : shows the instruction page with all the commands the player can use
+else submit "save" command
+    Game --> Player : Save the state of the game
 else clicks on "Exit"
     Player -> Game : Exit
-    Game --> Player : Returns to the home page without saving
-else clicks on "New Game"
-    Player -> Game : New Game
-    Game --> Player : Start a new game without saving the previous one
+        alt the game was saved
+            Game --> Player : Exit the game saving changes
+        else the game was not saved
+            Game --> Player : Asks if the user wants to save the game
+            Player -> Game : Says "yes" or "no"
+            Game --> Player : Exit the game saving or not saving the progress of the game
+        end
 end
 
 @enduml

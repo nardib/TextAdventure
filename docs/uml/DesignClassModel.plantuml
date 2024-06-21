@@ -2,9 +2,9 @@
 
     class Player {
         -health : int
-        -score : int
         -arrayIndexCount : int
         -weightCount : int
+        -hidden : boolean
         -inventory : Item[]
         -currentuDirection : Direction
 
@@ -15,17 +15,32 @@
         +getInventory()
         +insertItem()
         +removeItem()
+        +getItem()
+        +getInventoryCount()
+        +getWeight()
+        +printInventory()
         +crossDoor()
         +changeDirection()
+        +getPronoun()
         +getCurrentDirection()
+        +isHidden()
+        +setHidden()
+        +equals()
+        +clone()
+        -compactedInventory()
     }
 
     class GameMemento{
+        -player : Player
+        -map : Map
+        -enemy : Enemy
+        -isGameOn : boolean
+
         GameMemento()
         +getPlayer()
         +getMap()
         +getEnemy()
-        +getGameIsOn()
+        +getIsGameOn()
     }
 
     enum Gender {
@@ -33,35 +48,60 @@
         FEMALE
         NEUTRAL
     }
+
     enum Direction {
         NORTH
         SOUTH
         EAST
         WEST
     }
-    class Enemy{
-        -rooms : boolean[];
 
+    enum LockType {
+        KEY
+        COMBINATION
+        NONE
+    }
+
+    class Enemy{
         +move()
         +Enemy()
+        +equals()
+        +clone()
+        -generateStartingPoint()
     }
+
     class GameFrame {
-        x : int
-        y : int
-        game : Game
+        -game : Game
+        -wallcount : int
+        -images : Image[]
+        -isFullscreen : boolean
+        - gd : GraphicsDevice
+        -frame : JFrame
+        -terminal : JTextPane
+        inputField : JTextField
+        buttonPanel : JPanel
+        gameStatusLabel : JLabel
+        playerHealthLabel : JLabel
         +GameFrame()
+        -updatePlayerHealthLabel()
+        -toggleFullscreen()
+        -writeToTerminal()
+        -clearTerminal()
     }
+
     class Game {
         -player : Player
         -map : Map
         -enemy : Enemy
-        -gameIsOn : boolean
-        -mementos : ArrayList
+        -enemycount: int
+        -count : int
+        -isGameOn : boolean
+        -mementos : Stack
 
         +Game()
-       
-        +nextmove()
+        +nextMove()
         +isGameOver()
+        +isGameOn()
         +getPlayer()
         +getMap()
         +getEnemy()
@@ -69,27 +109,67 @@
         -saveCurrentState()
         -playerTurn()
         -enemyTurn()
+        -capitalizeFirstLetter()
+        -getItemsInWall()
     }
+
     class Main {
         +main()
     }
+
     class Item{
+        #name : String
         #icon : ImageIcon
-        #weight : int
-        #weight : int
-        #pickable : boolean
+        #WEIGHT : int
+        #PICKABLE : boolean
         #currentRoom : int
+        #usingMessage : String
 
         +Item()
         +getIcon()
-        +getWeight()
         +getRoom()
         +getName()
-        +isPickable()
+        +getUsingMessage()
+        +setRoom()
+        -setName()
     }
 
-    class Hammer{
-        +Hammer()
+    class ClueItem{
+        +ClueItem()
+    }
+
+    class HiderItem{
+        -hiding : boolean
+        -hiddenItem : Item
+
+        +HiderItem()
+        +isHiding()
+        +reveal()
+    }
+
+    class ItemContainer{
+        -items : Item[]
+        -arrayIndexCount : int
+        -locked : boolean
+        -lockType : LockType
+        -ID : int
+
+        +ItemContainer()
+        +removeItem()
+        +unlock()
+        +setUsingMessage()
+        +getItem()
+        +getItemsLength()
+        +isLocked()
+        +getLockType()
+        +getID()
+    }
+
+    class CustomOutputStream{
+        -textPane : JTextPane
+        
+        +CustomOutputStream()
+        +write()
     }
 
     class HidingItem{
@@ -97,38 +177,24 @@
     }
 
     class HealingItem{
-        -healthPoints : int
+        +HEALING_POINTS : int
 
-        +getHealthPoints()
         +HealingItem()
     }
 
-    class Notes {
+    class Note {
         -message : String
 
         +Notes()
-        +getMessage()
     }
 
     class Key {
-        -id : int
+        +ID : int
 
         +Key()
-        +getId()
-    }
-
-    class Lock{
-        -id : int
-        -locked : boolean
-
-        +Lock()
-        +getId()
-        +isLocked()
-        +unlock()
     }
 
     class Map {
-        -walls : BufferedImage[]
         -DoorWall : Wall[]
         -PlainWall : Wall[]
         -rooms : Room[]
@@ -136,8 +202,10 @@
         +Map()
         +getRoom()
     }
+
     class Room {
         -roomNumber : int
+        -doors : int
         -name : String
         -NWall : Wall
         -SWall : Wall
@@ -150,6 +218,7 @@
         -Walls : Wall[]
 
         +Room()
+        +loadImages()
         +getName()
         +getRoomNumber()
         +getDoors()
@@ -186,30 +255,40 @@
     {
         -wall : BufferedImage
         -hasDoor : boolean
-        -items : HashMap
+        -itemsImages : HashMap
         -combined : BufferedImage
+        -items : Item[]
+        -lastItem : int
         
         +Wall()
-        +addItem()
+        +addItemImages()
         +hasDoor()
-        +removeItem()
+        +removeItemImage()
         +getCombinedImage()
         +setDoor()
+        +getItem()
+        +getItemsLength()
+        +hasItems()
+        +setItems()
+        +removeItem()
         -deepCopy()
         -drawItems()
     }
 
     Player ..|> Gender
+    LockType ..|> ItemContainer
     Map ..o Room
     Room ..o Wall
     Player ..|> Item
+    Wall ..|> Item
     Player ..|> Direction
     Key --|> Item
-    Lock --|> Item
+    HiderItem --|> Item
+    ItemContainer --|> Item
     HealingItem --|> Item
-    Hammer --|> Item
+    ClueItem --|> Item
     HidingItem --|> Item
-    Notes --|> Item
+    Note --|> Item
     Enemy ..|> Gender
     Character <|-- Player
     Character <|-- Enemy
@@ -219,5 +298,6 @@
     GameMemento --* Game
     Game --o GameFrame
     GameFrame <|-- Main
+    CustomOutputStream --* GameFrame
 
 @enduml

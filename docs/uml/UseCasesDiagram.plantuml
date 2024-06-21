@@ -1,19 +1,17 @@
 @startuml Use Case Diagram
 
 (Start: starts the game) as (start)
-(Play: player submit text commands) as (play)
-(Player wins the game) as (win)
-(revert the last move) as (undo)
-(starts a new game) as (reset)
-(saves the actual state) as (save)
-(loads an already started game) as (load)
+(Player Configuration: user select the name and the gender of the player) as (config)
+(Command: user intetract with the game) as (command)
+(Win: user wins the game completing the final puzzle) as (win)
+(Undo: revert the last move) as (undo)
+(Save: saves the actual state of the game) as (save)
 
-Player -up-> (start)
-Player -up-> (play)
-Player -up-> (win)
-Player -down-> (undo)
-Player -down-> (reset)
-Player -down-> (save)
-Player -down-> (load)
+User -up-> (start)
+User -up-> (config)
+User -up-> (command)
+User -down-> (win)
+User -down-> (undo)
+User -down-> (save)
 
 @enduml

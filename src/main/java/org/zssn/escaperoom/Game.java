@@ -387,7 +387,7 @@ public class Game {
             return HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return "\n" + player.getName() +" is in room " + player.getCurrentRoom() + " and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
+            return "\n" + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
                     + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory() + "\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         

@@ -4,7 +4,6 @@
         name
         gender
         health
-        score
         inventory
     }
 

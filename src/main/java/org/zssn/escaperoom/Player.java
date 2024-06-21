@@ -10,11 +10,6 @@ public class Player extends Character{
     private int health;
 
     /**
-     * The score of the Player
-     */
-    private int score;
-
-    /**
      * The number of items in the inventory
      */
     private int ArrayIndexCount;
@@ -65,7 +60,6 @@ public class Player extends Character{
     {
         super(n, g, STARTING_ROOM);
         health = MAX_HEALTH;
-        score = 0;
         ArrayIndexCount = 0;
         WeightCount = 0;
         inventory = new Item[MAX_WEIGHT]; 
@@ -83,7 +77,6 @@ public class Player extends Character{
     {
         super(n, g, STARTING_ROOM);
         health = MAX_HEALTH;
-        score = 0;
         ArrayIndexCount = 0;
         WeightCount = 0;
         inventory = new Item[MAX_WEIGHT]; 
@@ -303,7 +296,7 @@ public class Player extends Character{
             if (!inventory[i].equals(p.inventory[i]))
                 return false;
         }*/    
-        return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && score == p.score && WeightCount == p.WeightCount && currentDirection == p.currentDirection;
+        return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && WeightCount == p.WeightCount && currentDirection == p.currentDirection;
     }
 
     /**
@@ -317,7 +310,6 @@ public class Player extends Character{
         Player p = new Player(this.name, this.gender);
         p.currentRoom = this.currentRoom;
         p.health = this.health;
-        p.score = this.score;
         p.ArrayIndexCount = this.ArrayIndexCount;
         p.WeightCount = this.WeightCount;
         if (this.ArrayIndexCount > 0)
