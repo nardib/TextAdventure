@@ -85,6 +85,22 @@ public class HiderItem extends Item{
      */
     @Override
     public HiderItem clone() {
-        return new HiderItem(name, icon, currentRoom, hiddenItem.clone());
+        HiderItem h = new HiderItem(name, icon, currentRoom, hiddenItem.clone());
+        h.hiding = hiding;
+        return h;
+    }
+
+    /**
+     * Check if two hider items are equal
+     * 
+     * @param other the hider item to compare
+     * @return true if the two hider items are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof HiderItem || other == null))
+            return false;
+        HiderItem h = (HiderItem) other;
+        return this.name.equals(h.name) && this.currentRoom == h.currentRoom && this.hiding == h.hiding && this.hiddenItem.equals(h.hiddenItem);
     }
 }

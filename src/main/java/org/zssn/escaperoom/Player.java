@@ -30,6 +30,21 @@ public class Player extends Character{
     private Item[] inventory;
 
     /**
+     * The inventory for the notes of the player
+     */
+    private Note[] notesInventory;
+
+    /**
+     * Counter for the notes in the inventory
+     */
+    private int notesCount;
+
+    /**
+     * Max number of notes in the map
+     */
+    private final int MAX_NOTES = 10;
+
+    /**
      * The direction the player is facing
      */
     private Direction currentDirection;
@@ -62,8 +77,10 @@ public class Player extends Character{
         health = MAX_HEALTH;
         ArrayIndexCount = 0;
         WeightCount = 0;
-        inventory = new Item[MAX_WEIGHT]; 
+        inventory = new Item[MAX_WEIGHT];
         currentDirection = Direction.NORTH;
+        notesInventory = new Note[MAX_NOTES];
+        notesCount = 0;
         hidden = false;
     }
 
@@ -81,6 +98,9 @@ public class Player extends Character{
         WeightCount = 0;
         inventory = new Item[MAX_WEIGHT]; 
         currentDirection = Direction.NORTH;
+        notesInventory = new Note[MAX_NOTES];
+        notesCount = 0;
+        hidden = false;
     }
 
     /**
@@ -128,8 +148,16 @@ public class Player extends Character{
     {
         if (!i.PICKABLE)
             throw new IllegalArgumentException("The item is not pickable");
+        if (i instanceof Note)
+        {
+            if (notesCount == MAX_NOTES)
+                throw new IllegalStateException("The notes inventory is full");
+            notesInventory[notesCount] = (Note) i;
+            notesCount++;
+            return;
+        }
         if (WeightCount + i.WEIGHT > 10)
-            throw new IllegalStateException("The item weigth exiding the max carriable weigth");
+            throw new IllegalStateException("The item weight exceeds the max carriable weight");
         WeightCount += i.WEIGHT;
         inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
@@ -207,12 +235,49 @@ public class Player extends Character{
      * @return a String containing all the items in the inventory, each one in a new line
      */
     public String printInventory(){
-        if (ArrayIndexCount == 0)
+        if (ArrayIndexCount == 0 && notesCount == 0)
             return "no items";
         String out = "\n";
         for (int i = 0; i < ArrayIndexCount; i++)
             out += "· " + inventory[i].getName() + "\n";
+        for (int i = 0; i < notesCount; i++)
+            out += "· " + notesInventory[i].getName() + "\n";
         return out;
+    }
+
+    /**
+     * Returns the notes inventory
+     * 
+     * @return the notes inventory
+     */
+    public Note[] getNotesInventory()
+    {
+        return notesInventory;
+    }
+
+    /**
+     * Returns the number of notes in the inventory
+     * 
+     * @return the number of notes in the inventory
+     */
+    public int getNotesCount()
+    {
+        return notesCount;
+    }
+
+    /**
+     * Returns the note at index i
+     * 
+     * @param i the index of the note
+     * @return the note at index i
+     * 
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
+     */
+    public Note getNoteAt(int i)
+    {
+        if (i < 0 || i >= notesCount)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+        return notesInventory[i];
     }
 
     /**
@@ -288,15 +353,22 @@ public class Player extends Character{
         if (!(other instanceof Player || other == null))
             return false;
         Player p = (Player) other;
-        //i also check the inventory
-        if (ArrayIndexCount != p.ArrayIndexCount)
+        // Check the inventory
+        if (ArrayIndexCount != p.ArrayIndexCount || notesCount != p.notesCount)
             return false;
-        /*
-        for (int i = 0; i < ArrayIndexCount; i++){
-            if (!inventory[i].equals(p.inventory[i]))
-                return false;
-        }*/    
-        return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && WeightCount == p.WeightCount && currentDirection == p.currentDirection;
+        if (ArrayIndexCount > 0) {
+            for (int i = 0; i < ArrayIndexCount; i++) {
+                if (!inventory[i].equals(p.inventory[i]))
+                    return false;
+            }
+        }
+        if (notesCount > 0) {
+            for (int i = 0; i < notesCount; i++) {
+                if (!notesInventory[i].equals(p.notesInventory[i]))
+                    return false;
+            }
+        }
+        return this.name.equals(p.name) && this.gender == p.gender && this.currentRoom == p.currentRoom && health == p.health && WeightCount == p.WeightCount && currentDirection == p.currentDirection && hidden == p.hidden;
     }
 
     /**
@@ -310,15 +382,27 @@ public class Player extends Character{
         Player p = new Player(this.name, this.gender);
         p.currentRoom = this.currentRoom;
         p.health = this.health;
-        p.ArrayIndexCount = this.ArrayIndexCount;
-        p.WeightCount = this.WeightCount;
-        if (this.ArrayIndexCount > 0)
-            for (int i = 0; i < ArrayIndexCount; i++)
-                p.insertItem(this.inventory[i]);
-        else 
-            p.inventory = new Item[MAX_WEIGHT];
         p.currentDirection = this.currentDirection;
         p.hidden = this.hidden;
+        p.ArrayIndexCount = this.ArrayIndexCount;
+        p.WeightCount = this.WeightCount;
+        p.notesCount = this.notesCount;
+        if (this.ArrayIndexCount > 0) {
+            p.inventory = new Item[MAX_WEIGHT];
+            for (int i = 0; i < ArrayIndexCount; i++) {
+                p.inventory[i] = this.inventory[i].clone();
+            }
+        } else {
+            p.inventory = new Item[MAX_WEIGHT];
+        }
+        if (this.notesCount > 0) {
+            p.notesInventory = new Note[MAX_NOTES];
+            for (int i = 0; i < notesCount; i++) {
+                p.notesInventory[i] = this.notesInventory[i].clone();
+            }
+        } else {
+            p.notesInventory = new Note[MAX_NOTES];
+        }
         return p;
     }
 

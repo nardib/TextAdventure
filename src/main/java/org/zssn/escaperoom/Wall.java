@@ -204,6 +204,8 @@ public class Wall {
      */
     @Override
     public Wall clone(){
+        if (items == null)
+            return new Wall(deepCopy(wall), hasDoor, null);
         Item[] items = new Item[this.items.length];
         for (int i = 0; i < this.items.length; i++)
             items[i] = this.items[i].clone();
@@ -212,5 +214,30 @@ public class Wall {
             w.addItemImages(deepCopy(entry.getValue()), new Point(entry.getKey()));
         lastItem = items.length;
         return w;
+    }
+
+    /**
+     * Verify if the wall is equal to another wall
+     * 
+     * @param obj the wall to compare
+     * @return true if the walls are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null || !(obj instanceof Wall))
+            return false;
+        Wall w = (Wall) obj;
+        if (hasDoor != w.hasDoor || lastItem != w.lastItem)
+            return false;
+        if (items != null && w.items != null)
+        {
+            for (int i = 0; i < lastItem; i++)
+                if (!items[i].equals(w.items[i]))
+                    return false;
+        }
+        else if (items != null || w.items != null)
+            return false;
+        return wall.equals(w.wall) && itemsImages.equals(w.itemsImages);
     }
 }

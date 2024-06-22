@@ -133,4 +133,33 @@ public class ItemTest {
         Assert.assertFalse(h.isHiding());
         Assert.assertEquals(i, hidden);
     }
+
+    //test for deep clone
+    @Test
+    public void CloneTest() {
+        var i = new Item("Item", "test.png", 1, 1, true);
+        var c = new ClueItem("Clue", "test.png", 1, "You found a clue!");
+        var n = new Note("Note", "test.png", 2, "You found a note!");
+        ItemContainer ic = new ItemContainer("safe", "test.png", 1, new Item[]{n, c}, LockType.NONE, 0);
+        var h = new HiderItem("Hider", "test.png", 1, i);
+        var hiding = new HidingItem("Hiding", "test.png", 0);
+        var k = new Key ("key", 1234, "test.png", 0);
+        var heal = new HealingItem("Heal", "test.png", 1, 0, 2);
+        var iClone = i.clone();
+        var cClone = c.clone();
+        var nClone = n.clone();
+        var icClone = ic.clone();
+        var hClone = h.clone();
+        var hidingClone = hiding.clone();
+        var kClone = k.clone();
+        var healClone = heal.clone();
+        Assert.assertEquals(i, iClone);
+        Assert.assertEquals(c, cClone);
+        Assert.assertEquals(n, nClone);
+        Assert.assertEquals(ic, icClone);
+        Assert.assertEquals(h, hClone);
+        Assert.assertEquals(hiding, hidingClone);
+        Assert.assertEquals(k, kClone);
+        Assert.assertEquals(heal, healClone);
+    }
 }

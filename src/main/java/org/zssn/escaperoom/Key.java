@@ -63,4 +63,19 @@ public class Key extends Item {
     {
         return new Key(name, ID, icon, currentRoom);
     }
+
+    /**
+     * Check if two keys are equal
+     * 
+     * @param other the key to compare
+     * @return true if the two keys are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof Key || other == null))
+            return false;
+        Key k = (Key) other;
+        return this.name.equals(k.name) && this.ID == k.ID && this.currentRoom == k.currentRoom && this.usingMessage.equals(k.usingMessage) && this.icon.equals(k.icon);
+    }
 }

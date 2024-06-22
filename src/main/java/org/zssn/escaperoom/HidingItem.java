@@ -52,4 +52,19 @@ public class HidingItem extends Item {
     {
         return new HidingItem(name, icon, currentRoom);
     }
+
+    /**
+     * Check if two hiding items are equal
+     * 
+     * @param obj hiding item to compare
+     * @return true if the hiding items are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof HidingItem || obj == null))
+            return false;
+        HidingItem other = (HidingItem) obj;
+        return name.equals(other.name) && currentRoom == other.currentRoom;
+    }
 }

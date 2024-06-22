@@ -5,12 +5,18 @@ public class PlayerTest {
     @Test
     public void testEquality() {
         Player p = new Player("Filippo", "n");
-        var p1 = p; //shallow copy of p
-        Player p2 = p.clone();  //deep copy of p
-        boolean deepCopy = p1.equals(p2);
-        boolean shallowCopy = p1 == p2;
-        Assert.assertTrue(deepCopy);
+        var item1 = new Note("Note", "test.png", 1, "You found a note!");
+        var item2 = new Key("key", 1, "test.png", 1);
+        var item3 = new HealingItem("Heal", "test.png", 5, 0, 3);
+        p.insertItem(item1);
+        p.insertItem(item2);
+        var p1 = p.clone();
+        boolean deepCopy = p1.equals(p);
+        boolean shallowCopy = p1 == p;
         Assert.assertFalse(shallowCopy);
+        Assert.assertTrue(deepCopy);
+        p.insertItem(item3);
+        Assert.assertFalse(p1.equals(p));
     }
 
     @Test

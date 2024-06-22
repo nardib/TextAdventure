@@ -63,4 +63,19 @@ public class Note extends Item {
     {
         return new Note(name, icon, currentRoom, message);
     }
+
+    /**
+     * Check if two notes are equal
+     * 
+     * @param obj note to compare
+     * @return true if the notes are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof Note || obj == null))
+            return false;
+        Note other = (Note) obj;
+        return name.equals(other.name) && message.equals(other.message) && currentRoom == other.currentRoom && icon.equals(other.icon);
+    }
 }

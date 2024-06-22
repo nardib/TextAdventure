@@ -32,14 +32,19 @@ public class Game {
     private final int enemycount;
 
     /**
+     * Tells if the enemey attacks the player
+     */
+    private final boolean enemyAttacks;
+
+    /**
      * Counter for the number of player turns before the enemy moves
      */
     private int count = 0;
 
     /**
-     * Stack of mementos to implement the undo function
+     * Object to save the mementos
      */
-    private Stack<GameMemento> mementos = new Stack<>();
+    private GameCaretaker caretaker;
 
     /**
      * The help message
@@ -64,10 +69,11 @@ public class Game {
      * @param en name of the enemy
      * @param eg the gender of the enemy given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
      * @param count the number of player turns before the enemy moves (it should be a positive integer)
+     * @param enemyAttacks tells if the enemy attacks the player
      * 
      * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format or if the count is not a positive integer
      */
-    public Game(String pn, String pg, String en, String eg, int count) {
+    public Game(String pn, String pg, String en, String eg, int count, boolean enemyAttacks) {
         player = new Player(capitalizeFistLetter(pn), pg);
         map = new Map();
         enemy = new Enemy(capitalizeFistLetter(en), eg);
@@ -75,7 +81,9 @@ public class Game {
         if (count <= 0)
             throw new IllegalArgumentException("The count must be a positive integer");
         this.enemycount = count;
-        mementos.push(new GameMemento(player, enemy, map, isGameOn));
+        caretaker = new GameCaretaker();
+        saveCurrentState();
+        this.enemyAttacks = enemyAttacks;
     }
 
     /**
@@ -211,10 +219,6 @@ public class Game {
                             //i have to check if there is a lock in the room
                             return key.getUsingMessage();
                         }
-                        else if (item instanceof Note) {
-                            Note note = (Note) item;
-                            return note.getUsingMessage();
-                        }
                         else if (item instanceof HealingItem) {
                             if (player.getHealth() == 5)
                                 return player.getName() + " already has full health";
@@ -225,6 +229,13 @@ public class Game {
                         }
                     }
                 }
+            }
+            if (player.getNotesCount() != 0) {
+                for (int i = 0; i < player.getNotesCount(); i++) {
+                        if (player.getNoteAt(i).getName().equalsIgnoreCase(input.substring(4))) {
+                            return player.getNoteAt(i).getUsingMessage();
+                        }
+                    }
             }
 
             //if there is no item in the inventory i have to check if there is an hiding item in the room
@@ -284,7 +295,7 @@ public class Game {
                                         }
                                     }
                                 }
-                                return "The container is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
+                                return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
                             }
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
                                 String newInput = "";
@@ -292,7 +303,7 @@ public class Game {
                                     newInput = input.substring(5 + itemContainer.getName().length());
                                 } catch (StringIndexOutOfBoundsException e) {}
                                 if (newInput.length() == 0)
-                                    return "The container is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
+                                    return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
@@ -316,7 +327,7 @@ public class Game {
                                     return player.getName() + " took the item: " + removedItem.getName().toLowerCase();
                                 }
                             }
-                            return "The item is not in the container";
+                            return "The item is not in the " + itemContainer.getName().toLowerCase();
                         }
                     }
                 }
@@ -333,7 +344,7 @@ public class Game {
      * @return the output of the enemy's turn in a String format
      */
     private String enemyTurn() {
-        if (enemy.getCurrentRoom() == player.getCurrentRoom() && !player.isHidden()){
+        if (enemy.getCurrentRoom() == player.getCurrentRoom() && !player.isHidden() && enemyAttacks){
             player.decreaseHealth(enemy.DAMAGE);
             if (player.getHealth() == 0){
                 isGameOn = false;
@@ -364,8 +375,9 @@ public class Game {
             return HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return "\n" + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
+            return "\n" + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
                     + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory() + "\n"
+                    + "The total weight of the items " + player.getName() + " is " + player.getWeight() + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
@@ -378,21 +390,20 @@ public class Game {
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) 
                 return "\nUndo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
-            
             return "\nNo previous moves to undo";
         }
         //command to check the items in the inventory (probably should be in nextMove)
         if (input.equalsIgnoreCase("inventory")) {
-            return "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
+            return "\nIn " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
         //command to check the items in the room
         if (input.equalsIgnoreCase("look")) {
             try {
                 Item[] items = getItemsInWall();
                 if (items.length == 0)
-                    return "There are no items in this room";
+                    return "\nThere are no items in this room";
 
-                String out = "In this room there are the following items:\n";
+                String out = "\nIn this room there are the following items:\n";
                 for (int i = 0; i < items.length; i++)
                     out += "·" + items[i].getName().toLowerCase() + "\n";
                 return out.substring(0, out.length() - 1);
@@ -422,6 +433,7 @@ public class Game {
         
         //i save the state of the game after each move
         saveCurrentState();
+
         return out;
     }
 
@@ -489,9 +501,9 @@ public class Game {
         private final Enemy enemy;
 
         /**
-         * Map of the game
+         * The wall the player is facing
          */
-        private final Map map;
+        private final Wall wall;
 
         /**
          * Tells if the game is on or not
@@ -509,7 +521,7 @@ public class Game {
         public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn) {
             this.player = player.clone();
             this.enemy = enemy.clone();
-            this.map = map;
+            this.wall = map.getWall(player.getCurrentRoom(), player.getCurrentDirection()).clone();
             this.isGameOn = isGameOn;
         }
 
@@ -532,12 +544,12 @@ public class Game {
         }
 
         /**
-         * Method to get the map
+         * Method to get the wall
          * 
-         * @return the map of the current memento
+         * @return the wall of the current memento
          */
-        public Map getMap() {
-            return map;
+        public Wall getWall() {
+            return wall;
         }
 
         /**
@@ -554,7 +566,7 @@ public class Game {
      * Method to save the current state of the game and add it to the stack of mementos
      */
     private void saveCurrentState() {
-        mementos.push(new GameMemento(player, enemy, map, isGameOn));
+        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn));
     }
 
     /**
@@ -563,17 +575,63 @@ public class Game {
      * @return true if undo is successful, false otherwise
      */
     public boolean undo() {
-        if (mementos.size() > 0) {
-            //i remove the current state from the stack and i return the previous one
-            mementos.pop();
-            GameMemento memento = mementos.peek();
+        if (caretaker.size() > 0) {
+            //i remove the current state from the stack and i return the previous one;
+            GameMemento memento = caretaker.getMemento();
             player = memento.getPlayer().clone();
             enemy = memento.getEnemy().clone();
-            map = memento.getMap();
+            map.setWall(player.getCurrentRoom(), player.getCurrentDirection(), memento.getWall().clone());
             isGameOn = memento.getisGameOn();
             return true;
         }
         return false;
+    }
+
+    /**
+     * Class to save the mementos of the game
+     */
+    private class GameCaretaker {
+        /**
+         * Stack to save the mementos
+         */
+        private Stack<GameMemento> mementos;
+
+        /**
+         * Constructor
+         */
+        public GameCaretaker() {
+            mementos = new Stack<>();
+        }
+
+        /**
+         * Add a memento to the stack
+         * 
+         * @param memento the memento to add
+         */
+        public void addMemento(GameMemento memento) {
+            mementos.push(memento);
+        }
+
+        /**
+         * Get the last memento from the stack
+         * 
+         * @return the last memento
+         
+        */
+        public GameMemento getMemento() {
+            if (!mementos.isEmpty())
+                return mementos.pop();
+            return null;
+        }
+
+        /**
+         * Get the size of the stack
+         * 
+         * @return the size of the stack
+         */
+        public int size() {
+            return mementos.size()-1;
+        }  
     }
 
     /**

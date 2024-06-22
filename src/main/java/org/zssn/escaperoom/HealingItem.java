@@ -69,4 +69,20 @@ public class HealingItem extends Item {
     {
         return new HealingItem(name, icon, WEIGHT, currentRoom, HEALING_POINTS);
     }
+
+    /** 
+     * Check if two healing items are equal
+     * 
+     * @param other the healing item to compare
+     * @return true if the two healing items are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof HealingItem || other == null))
+            return false;
+        HealingItem i = (HealingItem) other;
+        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.HEALING_POINTS == i.HEALING_POINTS && this.usingMessage.equals(i.usingMessage) && this.icon.equals(i.icon);
+    }
+    
 }

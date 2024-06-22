@@ -332,6 +332,46 @@ public class Room
     }
 
     /**
+     * Set the north wall of the room
+     * 
+     * @param wall north wall of the room
+     */
+    public void setNWall(Wall wall)
+    {
+        NWall = wall;
+    }
+
+    /**
+     * Set the south wall of the room
+     * 
+     * @param wall south wall of the room
+     */
+    public void setSWall(Wall wall)
+    {
+        SWall = wall;
+    }
+
+    /**
+     * Set the east wall of the room
+     * 
+     * @param wall east wall of the room
+     */
+    public void setEWall(Wall wall)
+    {
+        EWall = wall;
+    }
+
+    /**
+     * Set the west wall of the room
+     * 
+     * @param wall west wall of the room
+     */
+    public void setWWall(Wall wall)
+    {
+        WWall = wall;
+    }
+
+    /**
      * Get the crossable state of the room on the north side
      * 
      * @return true if the room is crossable on the north side, false otherwise
@@ -391,5 +431,19 @@ public class Room
         for (int i = 0; i < WWall.getItemsLength(); i++)
             WItems[i] = WWall.getItem(i).clone();
         return new Room(roomNumber, doors, name, NItems, EItems, SItems, WItems);
+    }
+
+    /**
+     * Check if the room is equal to another room
+     * 
+     * @param other room to compare
+     * @return true if the rooms are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Room || other == null))
+            return false;
+        Room r = (Room) other;
+        return this.roomNumber == r.roomNumber && this.name.equals(r.name) && this.doors == r.doors && this.NWall.equals(r.NWall) && this.EWall.equals(r.EWall) && this.SWall.equals(r.SWall) && this.WWall.equals(r.WWall);
     }
 }

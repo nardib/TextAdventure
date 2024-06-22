@@ -194,7 +194,7 @@ public class Map
     /**
      * items in the room 8 wall S
      */
-    private final Item[] itemsS8 = {new ItemContainer("Bed Safe", "test.png", 8, safe3Items, LockType.COMBINATION, 777)};
+    private final Item[] itemsS8 = {new ItemContainer("Bed Safe", "test.png", 8, safe3Items, LockType.KEY, 777)};
     /**
      * items in the room 8 wall W
      */
@@ -402,21 +402,79 @@ public class Map
     }
 
     /**
-     * Clone the map with a deep copy of the room given as argument
+     * Check if the map is equal to the object given as argument
      * 
-     * @param room the room to deep copy
-     * @return the cloned map
+     * @param obj the object to compare
+     * @return true if the maps are equal, false otherwise
      */
-    public Map clone(int room)
+    public boolean equals(Object obj)
     {
-        Map map = new Map();
+        if (!(obj instanceof Map || obj == null))
+            return false;
+        Map m = (Map) obj;
         for (int i = 0; i < MAPSIZE; i++)
         {
-            if(i == room)
-                map.rooms[i] = this.rooms[i].clone();
-            else
-                map.rooms[i] = this.rooms[i];
+            if (!this.rooms[i].equals(m.rooms[i]))
+                return false;
         }
-        return map;
+        return true;
     }
+
+    /**
+     * Returns a copy of the wall given as argument
+     * 
+     * @param room the room index
+     * @param direction the direction of the wall
+     * @return the wall
+     * 
+     * @throws IllegalArgumentException if the room index is out of bounds
+     */
+    public Wall getWall(int room, Direction direction)
+    {
+        if (room < 1 || room > MAPSIZE)
+            throw new IllegalArgumentException("Room index out of bounds.");
+        switch(direction) {
+            case NORTH:
+                return rooms[room-1].getNWall().clone();
+            case EAST:
+                return rooms[room-1].getEWall().clone();
+            case SOUTH:
+                return rooms[room-1].getSWall().clone();
+            case WEST:
+                return rooms[room-1].getWWall().clone();
+            default:
+                throw new IllegalArgumentException("Direction not valid.");
+        }
+    }
+
+    /**
+     * Set the wall of the room given as argument
+     * 
+     * @param room the room index
+     * @param direction the direction of the wall
+     * @param wall the wall to set
+     * 
+     * @throws IllegalArgumentException if the room index is out of bounds
+     */
+    public void setWall(int room, Direction direction, Wall wall) {
+        if (room < 1 || room > MAPSIZE)
+            throw new IllegalArgumentException("Room index out of bounds.");
+        switch(direction) {
+            case NORTH:
+                rooms[room-1].setNWall(wall);
+                break;
+            case EAST:
+                rooms[room-1].setEWall(wall);
+                break;
+            case SOUTH:
+                rooms[room-1].setSWall(wall);
+                break;
+            case WEST:
+                rooms[room-1].setWWall(wall);
+                break;
+            default:
+                throw new IllegalArgumentException("Direction not valid.");
+        }
+    }
+    
 }

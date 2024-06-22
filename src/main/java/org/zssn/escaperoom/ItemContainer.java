@@ -236,9 +236,34 @@ public class ItemContainer extends Item{
      */
     @Override
     public ItemContainer clone() {
+        if (ArrayIndexCount == 0)
+            return new ItemContainer(this.getName(), this.icon, this.currentRoom, new Item[]{}, this.lock, this.ID);
         Item[] items = new Item[ArrayIndexCount];
         for (int i = 0; i < ArrayIndexCount; i++)
             items[i] = this.items[i].clone();
         return new ItemContainer(this.getName(), this.icon, this.currentRoom, items, this.lock, this.ID);
+    }
+
+    /**
+     * Check if two item containers are equal
+     * 
+     * @param obj the object to compare
+     * @return true if the objects are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ItemContainer || obj == null))
+            return false;
+        ItemContainer i = (ItemContainer) obj;
+        i.setUsingMessage();
+        this.setUsingMessage();
+        if (i.ArrayIndexCount != this.ArrayIndexCount)
+            return false;
+        if (ArrayIndexCount == 0)
+            return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.currentRoom == i.currentRoom && icon.equals(i.icon) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
+        for (int j = 0; j < ArrayIndexCount; j++)
+            if (!i.items[j].equals(this.items[j]))
+                return false;
+        return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.currentRoom == i.currentRoom && icon.equals(i.icon) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
     }
 }

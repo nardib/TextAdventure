@@ -156,4 +156,19 @@ public class Item {
     {
         return new Item(name, icon, WEIGHT, currentRoom, PICKABLE);
     }
+
+    /**
+     * Check if two items are equal
+     * 
+     * @param obj the object to compare
+     * @return true if the objects are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof Item || obj == null))
+            return false;
+        Item i = (Item) obj;
+        return name.equals(i.name) && icon.equals(i.icon) && WEIGHT == i.WEIGHT && currentRoom == i.currentRoom && PICKABLE == i.PICKABLE;
+    }
 }

@@ -54,4 +54,19 @@ public class ClueItem extends Item{
     {
         return new ClueItem(name, icon, currentRoom, usingMessage);
     }
+
+    /**
+     * Check if two items are equal
+     * 
+     * @param other the item to compare
+     * @return true if the two items are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof ClueItem || other == null))
+            return false;
+        ClueItem i = (ClueItem) other;
+        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.usingMessage.equals(i.usingMessage);
+    }
 }
