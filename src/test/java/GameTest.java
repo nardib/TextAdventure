@@ -117,7 +117,7 @@ public class GameTest {
         g.nextMove("unhide");
         Assert.assertFalse(g.getPlayer().isHidden());
 
-        //i test if i can pick the key in the board games in the second room wall east (key)
+        //i test if i can pick the key in the board games in the second room wall east (hider item test)
         g.nextMove("cross east");
         g.nextMove("cross north");
         g.nextMove("cross west");
@@ -125,11 +125,11 @@ public class GameTest {
         Assert.assertEquals(g.getPlayer().getCurrentDirection(), Direction.EAST);
         Assert.assertEquals(g.getPlayer().getCurrentRoom(), 2);
         g.nextMove("use board games");
-        g.nextMove("take bed safe key");
+        g.nextMove("take bedroom safe key");
         Assert.assertTrue(g.getPlayer().getInventoryCount() == 1);
-        Assert.assertTrue(g.getPlayer().getItem(0).getName().equals("Bed safe key"));
+        Assert.assertTrue(g.getPlayer().getItem(0).getName().equals("Bedroom safe key"));
 
-        //i test if using the key i can unlock the safe in room 8 wall south
+        //i test if using the key i can unlock the safe in room 8 wall south (item container and key test)
         g.nextMove("cross");
         g.nextMove("cross south");
         g.nextMove("cross w");
@@ -137,7 +137,69 @@ public class GameTest {
         Assert.assertEquals(g.getPlayer().getCurrentDirection(), Direction.SOUTH);
         Assert.assertEquals(g.getPlayer().getCurrentRoom(), 8);
         Assert.assertTrue(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use bed safe key");
+        Assert.assertEquals(g.getPlayer().getItem(0).getName(), "Bedroom safe key");
+        Assert.assertTrue(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
         g.nextMove("use bed safe");
-        //Assert.assertFalse(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
+        Assert.assertEquals(0, g.getPlayer().getInventoryCount());
+        Assert.assertFalse(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use bed safe key");
+        Assert.assertEquals(g.getPlayer().getItem(0).getName(), "Key");
+
+        //i test if i can increase the player's health using a healing item (healing item test)
+        g.nextMove("cross w");
+        g.nextMove("cross n");
+        g.nextMove("east");
+        Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
+        Assert.assertEquals(Direction.EAST, g.getPlayer().getCurrentDirection());
+        g.nextMove("take bendage");
+        Assert.assertEquals("Bendage", g.getPlayer().getItem(1).getName());
+        g.getPlayer().decreaseHealth(2);
+        Assert.assertEquals(3, g.getPlayer().getHealth());
+        g.nextMove("use bendage");
+        Assert.assertEquals(5, g.getPlayer().getHealth());
+        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
+
+        //i test if a note goes in the note inventory and not in the inventory (note test)
+        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(0, g.getPlayer().getNotesCount());
+        g.nextMove("cross");
+        g.nextMove("cross");
+        g.nextMove("s");
+        Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
+        Assert.assertEquals(Direction.SOUTH, g.getPlayer().getCurrentDirection());
+        g.nextMove("take note in the coat");
+        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(1, g.getPlayer().getNotesCount());
+
+        //i test if a clue item returns it's clue
+        g.nextMove("e");
+        String message = g.nextMove("use television").substring(1, 62);
+        Assert.assertEquals("The television turns on and shows the code \"0563\" on a pinpad", message);
+
+        //i test an item container with a combination
+        g.nextMove("cross south");
+        Assert.assertEquals(g.getPlayer().getCurrentDirection(), Direction.SOUTH);
+        Assert.assertEquals(g.getPlayer().getCurrentRoom(), 9);
+        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use lock");
+        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use lock 1234");
+        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use lock Key");
+        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use lock 1313");
+        Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use lock Key");
+        Assert.assertEquals("Key", g.getPlayer().getItem(1).getName());
+
+        // i test an item container with no lock
+        g.nextMove("noRth");
+        Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        g.nextMove("use mirror cabinet");
+        g.nextMove("use mirror cabinet KEY");
+        Assert.assertEquals("Key", g.getPlayer().getItem(2).getName());
+        Assert.assertEquals(3, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(1, g.getPlayer().getNotesCount());
     }
 }

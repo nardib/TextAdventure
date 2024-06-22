@@ -94,7 +94,7 @@ public class Map
     /**
      * items in the room 2 wall E
      */
-    private final Item[] itemsE2 = {new ItemContainer("Dice", "test.png", 2, diceItems, LockType.COMBINATION, 143), new HiderItem("Board games", "test.png", 2, new Key ("Bed safe key", 777, "test.png", 2))};
+    private final Item[] itemsE2 = {new ItemContainer("Dice", "test.png", 2, diceItems, LockType.COMBINATION, 143), new HiderItem("Board games", "test.png", 2, new Key ("Bedroom safe key", 777, "test.png", 2))};
     /**
      * items in the room 2 wall S
      */
@@ -435,13 +435,13 @@ public class Map
             throw new IllegalArgumentException("Room index out of bounds.");
         switch(direction) {
             case NORTH:
-                return rooms[room-1].getNWall().clone();
+                return rooms[room-1].getNWall();
             case EAST:
-                return rooms[room-1].getEWall().clone();
+                return rooms[room-1].getEWall();
             case SOUTH:
-                return rooms[room-1].getSWall().clone();
+                return rooms[room-1].getSWall();
             case WEST:
-                return rooms[room-1].getWWall().clone();
+                return rooms[room-1].getWWall();
             default:
                 throw new IllegalArgumentException("Direction not valid.");
         }

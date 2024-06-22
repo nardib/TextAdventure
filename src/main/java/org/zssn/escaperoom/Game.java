@@ -282,9 +282,13 @@ public class Game {
                     else if (item instanceof ItemContainer) {
                         ItemContainer itemContainer = (ItemContainer) item;
                         if (itemContainer.isLocked()){
-                            if (itemContainer.getLockType() == LockType.NONE)
-                                return "The " + itemContainer.getName() + " was already unlocked";
-                            else if (itemContainer.getLockType() == LockType.KEY) {
+                            String newInput = "";
+                            try {
+                                newInput = input.substring(5 + itemContainer.getName().length());
+                            } catch (StringIndexOutOfBoundsException e) {}
+                            if (itemContainer.getLockType() == LockType.KEY && newInput.length() == 0) {
+                                if (player.getInventoryCount() == 0)
+                                    return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventory";
                                 for (int j = 0; j < player.getInventoryCount(); j++) {
                                     if (player.getItem(j) instanceof Key) {
                                         Key key = (Key) player.getItem(j);
@@ -298,10 +302,6 @@ public class Game {
                                 return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
                             }
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
-                                String newInput = "";
-                                try {
-                                    newInput = input.substring(5 + itemContainer.getName().length());
-                                } catch (StringIndexOutOfBoundsException e) {}
                                 if (newInput.length() == 0)
                                     return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
