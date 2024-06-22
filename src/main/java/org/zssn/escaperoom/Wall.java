@@ -228,7 +228,7 @@ public class Wall {
         if (obj == null || !(obj instanceof Wall))
             return false;
         Wall w = (Wall) obj;
-        if (hasDoor != w.hasDoor || lastItem != w.lastItem)
+        if (lastItem != w.lastItem)
             return false;
         if (items != null && w.items != null)
         {
@@ -238,6 +238,6 @@ public class Wall {
         }
         else if (items != null || w.items != null)
             return false;
-        return wall.equals(w.wall) && itemsImages.equals(w.itemsImages);
+        return hasDoor == w.hasDoor;
     }
 }

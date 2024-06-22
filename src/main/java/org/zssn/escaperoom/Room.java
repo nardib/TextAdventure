@@ -444,6 +444,6 @@ public class Room
         if (!(other instanceof Room || other == null))
             return false;
         Room r = (Room) other;
-        return this.roomNumber == r.roomNumber && this.name.equals(r.name) && this.doors == r.doors && this.NWall.equals(r.NWall) && this.EWall.equals(r.EWall) && this.SWall.equals(r.SWall) && this.WWall.equals(r.WWall);
+        return this.roomNumber == r.roomNumber && this.name.equals(r.name) && this.doors == r.doors && this.NWall.equals(r.NWall) && this.EWall.equals(r.EWall) && this.SWall.equals(r.SWall) && this.WWall.equals(r.WWall) && this.crossableNorth == r.crossableNorth && this.crossableEast == r.crossableEast && this.crossableSouth == r.crossableSouth && this.crossableWest == r.crossableWest;
     }
 }

@@ -71,26 +71,36 @@ public class GameTest {
         var initW = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
 
         //i do some random moves to change the state of the game
-        g.nextMove("south");
-        g.nextMove("cross east");
-        g.nextMove("cross north");
+        g.nextMove("cross w");
+        g.nextMove("cross n");
+        g.nextMove("use drawer note");
         var p = g.getPlayer().clone();
         var e = g.getEnemy().clone();
         var w = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
-        //Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
-        //i should implement a way to check the map state
-        g.nextMove("cross west");
+        Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+        g.nextMove("south");
         g.nextMove("cross");
+        g.nextMove("e");
+        var p1 = g.getPlayer().clone();
+        var e1 = g.getEnemy().clone();
+        var w1 = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
+        g.nextMove("take bendage");
 
         g.nextMove("undo");
+        Assert.assertEquals(p1, g.getPlayer());
+        Assert.assertEquals(e1, g.getEnemy());
+        Assert.assertEquals(w1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+        
         g.nextMove("back");
+        g.nextMove("undo");
+        g.nextMove("undo");
 
         //i check the single parameters so that i can avoid the check by copy
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
-        //Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+        Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
 
         //now i go back to the initial state to see if the state is diffrent
         g.nextMove("undo");
@@ -99,7 +109,9 @@ public class GameTest {
 
         Assert.assertEquals(initP, g.getPlayer());
         Assert.assertEquals(initE, g.getEnemy());
-        //Assert.assertEquals(initW, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+        Assert.assertEquals(initW, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+
+
     }
 
     //i test the dynamics of picking the items in the map (i test one item for each type)
