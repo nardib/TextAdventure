@@ -1,11 +1,15 @@
 @startuml DesignClassModel
 
+    Title Design Class Model
+
     class Player {
         -health : int
-        -arrayIndexCount : int
-        -weightCount : int
+        -ArrayIndexCount : int
+        -WeightCount : int
         -hidden : boolean
         -inventory : Item[]
+        -notesInventory : Note[]
+        -notesCount : int
         -currentuDirection : Direction
 
         +Player()
@@ -17,11 +21,13 @@
         +removeItem()
         +getItem()
         +getInventoryCount()
+        +getNotesInventory()
+        +getNotesCount()
+        +getNoteAt()
         +getWeight()
         +printInventory()
         +crossDoor()
         +changeDirection()
-        +getPronoun()
         +getCurrentDirection()
         +isHidden()
         +setHidden()
@@ -32,15 +38,26 @@
 
     class GameMemento{
         -player : Player
-        -map : Map
+        -wall : Wall
         -enemy : Enemy
         -isGameOn : boolean
+        -count : int
 
         GameMemento()
         +getPlayer()
         +getMap()
         +getEnemy()
         +getIsGameOn()
+        +getCount()
+    }
+
+    class GameCaretaker{
+        -mementos : Stack
+
+        +GameCaretaker()
+        +addMemento()
+        +getMemento()
+        +size()
     }
 
     enum Gender {
@@ -96,8 +113,10 @@
         -enemycount: int
         -count : int
         -isGameOn : boolean
-        -mementos : Stack
-
+        -caretaker : GameCaretaker
+        -enemycount : int {final}
+        -enemyAttacks : boolean {final}
+        
         +Game()
         +nextMove()
         +isGameOver()
@@ -120,8 +139,8 @@
     class Item{
         #name : String
         #icon : ImageIcon
-        #WEIGHT : int
-        #PICKABLE : boolean
+        #WEIGHT : int {final}
+        #PICKABLE : boolean {final}
         #currentRoom : int
         #usingMessage : String
 
@@ -132,10 +151,14 @@
         +getUsingMessage()
         +setRoom()
         -setName()
+        +clone()
+        +equals()
     }
 
     class ClueItem{
         +ClueItem()
+        +clone()
+        +equals()
     }
 
     class HiderItem{
@@ -145,11 +168,13 @@
         +HiderItem()
         +isHiding()
         +reveal()
+        +clone()
+        +equals()
     }
 
     class ItemContainer{
         -items : Item[]
-        -arrayIndexCount : int
+        -ArrayIndexCount : int
         -locked : boolean
         -lockType : LockType
         -ID : int
@@ -163,6 +188,8 @@
         +isLocked()
         +getLockType()
         +getID()
+        +clone()
+        +equals()
     }
 
     class CustomOutputStream{
@@ -180,18 +207,24 @@
         +HEALING_POINTS : int
 
         +HealingItem()
+        +clone()
+        +equals()
     }
 
     class Note {
         -message : String
 
         +Notes()
+        +clone()
+        +equals()
     }
 
     class Key {
         +ID : int
 
         +Key()
+        +clone()
+        +equals()
     }
 
     class Map {
@@ -201,6 +234,9 @@
 
         +Map()
         +getRoom()
+        +clone()
+        +getWall()
+        +setWall()
     }
 
     class Room {
@@ -235,6 +271,8 @@
         +getCrossableSouth()
         +getCrossableEast()
         +getCrossableWest()
+        +clone()
+        +equals()
     }
     
     class Character {
@@ -249,6 +287,7 @@
         +setCurrentRoom()
         +setName()
         +setGender()
+        +getPronoun()
     }
 
     class Wall
@@ -271,31 +310,35 @@
         +hasItems()
         +setItems()
         +removeItem()
+        +clone()
+        +equals()
         -deepCopy()
         -drawItems()
     }
 
     Player ..|> Gender
-    LockType ..|> ItemContainer
-    Map ..o Room
-    Room ..o Wall
-    Player ..|> Item
-    Wall ..|> Item
+    LockType <|.. ItemContainer
+    Map ..o "9" Room : has
+    Room ..o "4" Wall :has
+    Player ..|> "0...*"Item : uses 
+    Wall ..|> "0...*" Item : has
     Player ..|> Direction
-    Key --|> Item
-    HiderItem --|> Item
-    ItemContainer --|> Item
-    HealingItem --|> Item
-    ClueItem --|> Item
-    HidingItem --|> Item
-    Note --|> Item
+    Key --|> Item : extends
+    HiderItem --|> Item : extends
+    ItemContainer --|> Item : extends
+    HealingItem --|> Item : extends
+    ClueItem --|> Item : extends
+    HidingItem --|> Item : extends
+    Note --|> Item : extends
     Enemy ..|> Gender
-    Character <|-- Player
-    Character <|-- Enemy
-    Player --o Game
-    Map --o Game
-    Enemy --o Game
+    Character <|-- Player : extends
+    Character <|-- Enemy : extends
+    Player --o "1" Game
+    Map --o "1" Game
+    Enemy --o "1" Game
     GameMemento --* Game
+    GameCaretaker --* GameMemento
+    Game ..|> GameCaretaker : uses
     Game --o GameFrame
     GameFrame <|-- Main
     CustomOutputStream --* GameFrame

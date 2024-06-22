@@ -49,17 +49,17 @@ public class Game {
     /**
      * The help message
      */
-    public final String HELP = "The commands are:\n"
-            + "· <direction> : allows face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
-            + "· cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the current facing direction\n"
-            + "· look : returns a list of the items in the current room\n"
-            + "· inventory : shows the items in the player's inventory\n"
-            + "· take <item> : allows to pick an item in the facing wall given it's name as argument\n"
-            + "· use <item> : allows to use an item in the inventory or in the facing wall\n"
-            + "· status : give the status of the player, in particular it returns the health of the player and the items in the inventory\n"
-            + "· undo/back : goes back of a move in the game\n"
-            + "· save : save the current state of the game\n"
-            + "· quit/exit : exit the game without saving the changes\n";
+    public final static String HELP = "The commands are:\n"
+            + "- <direction> : allows face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
+            + "- cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the current facing direction\n"
+            + "- look : returns a list of the items in the current room\n"
+            + "- inventory : shows the items in the player's inventory\n"
+            + "- take <item> : allows to pick an item in the facing wall given it's name as argument\n"
+            + "- use <item> : allows to use an item in the inventory or in the facing wall\n"
+            + "- status : give the status of the player, in particular it returns the health of the player and the items in the inventory\n"
+            + "- undo/back : goes back of a move in the game\n"
+            + "- save : save the current state of the game\n"
+            + "- quit/exit : exit the game without saving the changes\n";
 
     /**
      * Constructor to initialize the game variables. It automatically capitalizes the first letter of the names given as argument.
@@ -568,6 +568,11 @@ public class Game {
             return isGameOn;
         }
 
+        /**
+         * Method to get the count of the move
+         * 
+         * @return the count of the move
+         */
         public int getCount() {
             return count;
         }
@@ -670,28 +675,28 @@ public class Game {
         switch (player.getCurrentDirection()) {
             case NORTH:
                 if (!map.getRoom(player.getCurrentRoom()).getNWall().hasItems())
-                    throw new IllegalAccessException("There are no items in this wall");
+                    throw new IllegalAccessException("\nThere are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getNWall().getItem(i);
                 return items;
             case EAST:
                 if (!map.getRoom(player.getCurrentRoom()).getEWall().hasItems())
-                    throw new IllegalAccessException("There are no items in this wall");
+                    throw new IllegalAccessException("\nThere are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
                     return items;
             case SOUTH:
                 if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
-                    throw new IllegalAccessException("There are no items in this wall");
+                    throw new IllegalAccessException("\nThere are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getSWall().getItem(i);
                 return items;
             case WEST:
                 if (!map.getRoom(player.getCurrentRoom()).getWWall().hasItems())
-                    throw new IllegalAccessException("There are no items in this wall");
+                    throw new IllegalAccessException("\nThere are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getWWall().getItem(i);

@@ -8,14 +8,14 @@ participant Game
 participant Player
 participant Enemy
 participant Wall
+participant Item
 
 activate GameFrame
 User -> GameFrame : submit a valid command
 
 activate Game
-GameFrame -> Game : "<command>"
+GameFrame -> Game : nextMove(<command>)
 
-Game -> Game : nextMove()
 Game -> Game : playerMove()
 
 activate Player
@@ -25,17 +25,29 @@ else <command> is "cross <direction>"
     Game -> Player : crossDoor(<direction>)
 else <command> is "look"
     activate Wall
-    Game -> Wall : getItems() 
+    Game -> Wall : getItems()
 else <command> is "take <item>"
     Game -> Wall : removeItem(<item>)
     Game -> Player : insertItem(<item>)
+deactivate Wall
 else <command> is "use <item>"
-    alt <item> is in player's inventory
-        Game -> Player : uses the item in the proper manner
-    else <item> is in the facing wall
-        Game -> Wall : use the item in the proper manner
+    activate Item
+    alt <item> is a Key, a Note or a ClueItem
+        Game -> Item : getUsingMessage()
+    else <item> is a Healing Item
+        Game -> Player : increaseHealth() and removeItem(<item>)
+    else <item> is a Hiding Item
+        Game -> Player : setHidden()
+    else <item> is a Hider Item
+        Game -> Item : reveal()
+    else <item> is Item Container
+        alt <item> is locked
+            Game -> Item : unlock()
+        else <item> is unlocked
+            Game -> Item : getItem()
+        end
+    deactivate Item
     end
-    deactivate Wall
 else <command> is "status"
     Game -> Player : getHealth() and getInventory()
 else <command> is "inventory"

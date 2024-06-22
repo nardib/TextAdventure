@@ -1,5 +1,0 @@
-Information expert : game class has the responsability to manage the information about player, enemy and map class (?)
-Creator : game class creates the istances of player, enemy and map classes (?)
-High Cohesion : each class has a single, well defined responsability
-Low Coupuling : Game class interacts with Player, Enemy and Map but the interaction are limited to the methods of theese object
-Memento : Game class has an undo method which use Memento design pattern

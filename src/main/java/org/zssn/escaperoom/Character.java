@@ -139,4 +139,22 @@ public class Character {
     {
         return currentRoom;
     }
+
+    /**
+     * Returns the pronoun of the character. If not specified it just returns "they".
+     * 
+     * @return a string containing the pronoun of the character ("he", "she" or "they")
+     */
+    public String getPronoun() {
+        switch (gender) {
+            case MALE:
+                return "he";
+            case FEMALE:
+                return "she";
+            case NEUTRAL:
+                return "they";
+            default:
+                return "they";
+        }
+    }
 }

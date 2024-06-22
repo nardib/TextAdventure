@@ -1,5 +1,7 @@
 @startuml DomainModel
 
+    TItle Domain Model
+
     object Player{
         name
         gender

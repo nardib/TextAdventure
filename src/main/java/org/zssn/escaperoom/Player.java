@@ -299,24 +299,6 @@ public class Player extends Character{
     }
 
     /**
-     * Returns the pronoun of the player. If not specified it just returns "they".
-     * 
-     * @return a string containing the pronoun of the player ("he", "she" or "they")
-     */
-    public String getPronoun() {
-        switch (gender) {
-            case MALE:
-                return "he";
-            case FEMALE:
-                return "she";
-            case NEUTRAL:
-                return "they";
-            default:
-                return "they";
-        }
-    }
-
-    /**
      * Returns the current direction the player is facing
      * 
      * @return the current direction of the player

@@ -1,4 +1,6 @@
-@startuml Use Case Diagram
+@startuml UseCasesDiagram
+
+title Use Cases Diagram
 
 (Start: starts the game) as (start)
 (Player Configuration: user select the name and the gender of the player) as (config)
