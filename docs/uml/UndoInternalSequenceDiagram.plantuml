@@ -6,6 +6,7 @@ actor User
 participant GameFrame
 participant Game
 participant GameMemento
+participant GameCaretaker
 
 activate GameFrame
 User -> GameFrame : insert "undo"/"back" as a command
@@ -14,11 +15,22 @@ activate Game
 GameFrame -> Game : "undo" or "back"
 
 Game -> Game : undo()
-GameMemento -> Game : gives the state of the previous move
+activate GameCaretaker
+Game -> GameCaretaker : getMemento()
+GameCaretaker --> Game : Returns the last mememnto he has saved 
+deactivate GameCaretaker
+
 alt "game has no previous moves" 
     Game -> GameFrame : notify "No previous moves to undo"
 else "game has previous moves"
-    Game -> Game : update the state of the game with the previous move
+    activate GameMemento
+    Game -> GameMemento : getPlayer()
+    GameMemento --> Game : Returns the player
+    Game -> GameMemento : getEnemy()
+    GameMemento --> Game : Returns the enemy
+    Game -> GameMemento : getWall()
+    GameMemento --> Game : Returns the wall
+    deactivate GameMemento
 
     Game -> GameFrame : notify "Undo successful"
 deactivate Game

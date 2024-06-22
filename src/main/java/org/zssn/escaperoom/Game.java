@@ -511,18 +511,25 @@ public class Game {
         private final boolean isGameOn;
 
         /**
+        * Count of the move
+        */
+        private final int count;
+
+        /**
          * Constructor to initialize the memento
          * 
          * @param player the player
          * @param enemy the enemy
          * @param map the map
          * @param isGameOn tells if the game is on or not
+         * @param count tells the number of the move
          */
-        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn) {
+        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn, int count) {
             this.player = player.clone();
             this.enemy = enemy.clone();
             this.wall = map.getWall(player.getCurrentRoom(), player.getCurrentDirection()).clone();
             this.isGameOn = isGameOn;
+            this.count = count;
         }
 
         /**
@@ -560,13 +567,17 @@ public class Game {
         public boolean getisGameOn() {
             return isGameOn;
         }
+
+        public int getCount() {
+            return count;
+        }
     }
 
     /**
      * Method to save the current state of the game and add it to the stack of mementos
      */
     private void saveCurrentState() {
-        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn));
+        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count));
     }
 
     /**
@@ -582,6 +593,7 @@ public class Game {
             enemy = memento.getEnemy().clone();
             map.setWall(player.getCurrentRoom(), player.getCurrentDirection(), memento.getWall().clone());
             isGameOn = memento.getisGameOn();
+            count = memento.getCount();
             return true;
         }
         return false;
