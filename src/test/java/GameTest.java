@@ -63,12 +63,12 @@ public class GameTest {
     }
 
     //i verify that the game returns to a previous state after calling the undo method
-    @Ignore
     @Test
     public void undoTest() {
         g = new Game("Player", "f", "Enemy", "m", 1, true);
         var initP = g.getPlayer().clone();
         var initE = g.getEnemy().clone();
+        var initW = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
 
         //i do some random moves to change the state of the game
         g.nextMove("south");
@@ -76,8 +76,10 @@ public class GameTest {
         g.nextMove("cross north");
         var p = g.getPlayer().clone();
         var e = g.getEnemy().clone();
+        var w = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
+        //Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
         //i should implement a way to check the map state
         g.nextMove("cross west");
         g.nextMove("cross");
@@ -88,15 +90,17 @@ public class GameTest {
         //i check the single parameters so that i can avoid the check by copy
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
+        //Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
 
         //now i go back to the initial state to see if the state is diffrent
         g.nextMove("undo");
-        g.nextMove("undo");
+        g.nextMove("back");
         g.nextMove("undo");
 
         Assert.assertEquals(initP, g.getPlayer());
         Assert.assertEquals(initE, g.getEnemy());
-        }
+        //Assert.assertEquals(initW, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+    }
 
     //i test the dynamics of picking the items in the map (i test one item for each type)
     @Test

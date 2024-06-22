@@ -303,7 +303,7 @@ public class Game {
                             }
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
                                 if (newInput.length() == 0)
-                                    return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
+                                    return "The " + itemContainer.getName().toLowerCase() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
@@ -619,8 +619,10 @@ public class Game {
          
         */
         public GameMemento getMemento() {
-            if (!mementos.isEmpty())
-                return mementos.pop();
+            if (!mementos.isEmpty()){
+                mementos.pop();
+                return mementos.peek();
+            }
             return null;
         }
 
