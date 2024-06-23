@@ -1,6 +1,10 @@
 package org.zssn.escaperoom;
 
 import javax.swing.ImageIcon;
+
+/**
+ * StarHole class that represents a star hole in the game that can be filled with a star to complete the final puzzle
+ */
 public class StarHole extends Item {
 
     /**
@@ -29,6 +33,7 @@ public class StarHole extends Item {
      * @param name name of the starHole
      * @param image image of the starHole
      * @param currentRoom current room of the starHole
+     * @param ID ID of the starHole
      */
     public StarHole (String name, String image, int currentRoom, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
@@ -43,6 +48,7 @@ public class StarHole extends Item {
      * @param name name of the starHole
      * @param image image of the starHole given as a ImageIcon object
      * @param currentRoom current room of the starHole
+     * @param ID ID of the starHole
      */
     public StarHole (String name, ImageIcon image, int currentRoom, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);

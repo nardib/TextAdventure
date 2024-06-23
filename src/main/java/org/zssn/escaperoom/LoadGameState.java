@@ -1,6 +1,8 @@
-package main.java.org.zssn.escaperoom;
+package org.zssn.escaperoom;
 
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.S3Client;
+
 
 public class LoadGameState {
     private static final String BUCKET_NAME = "znnsproject";
