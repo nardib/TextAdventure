@@ -25,27 +25,27 @@ public class Map
     /**
      * items in the drawer
      */
-    private final Item[] drawerItems = {new Note("Note", "test.png", 1, "Message"), new Key("Key", 123, "test.png", 1)};
+    private final Item[] drawerItems = {new Note("Note", "test.png", 1, "Message"), new Key("Key", 123, "test.png", 1), new Star ("Star 1", "test.png", 1, 1)};
     /**
      * items in the safe
      */
-    private final Item[] safeItems = {new Key("Key", 111, "test.png", 1)};
+    private final Item[] safeItems = {new Key("Key", 111, "test.png", 1), new Star ("Star 2", "test.png", 1, 2)};
     /**
      * items in the item chest
      */
-    private final Item[] itemChestItems = {new Key("Key", 222, "test.png", 1)};
+    private final Item[] itemChestItems = {new Key("Key", 222, "test.png", 1), new Star ("Star 3", "test.png", 2, 3)};
     /**
      * items in the dice
      */
-    private final Item[] diceItems = {new Key("Key", 333, "test.png", 1)};
+    private final Item[] diceItems = {new Key("Key", 333, "test.png", 1), new Star ("Star 4", "test.png", 2, 4)};
     /**
      * items in the fridge
      */
-    private final Item[] fridgeItems = {new Key("Key", 444, "test.png", 1)};
+    private final Item[] fridgeItems = {new Key("Key", 444, "test.png", 1), new Star ("Star 5", "test.png", 3, 5)};
     /**
      * items in the safe2
      */
-    private final Item[] safe2Items = {new Key("Key", 555, "test.png", 1)};
+    private final Item[] LivingRoomSafeItems = {new Key("Key", 555, "test.png", 1), new Star ("Star 6", "test.png", 6, 6)};
     /**
      * items in the chess drawer
      */
@@ -53,7 +53,7 @@ public class Map
     /**
      * items in the safe3
      */
-    private final Item[] safe3Items = {new Key("Key", 777, "test.png", 1)};
+    private final Item[] BedRoomSafeItems = {new Key("Key", 777, "test.png", 1), new Star ("Star 9", "test.png", 8, 9)};
     /**
      * items in the mirror cabinet
      */
@@ -61,7 +61,7 @@ public class Map
     /**
      * items in the pinpad
      */
-    private final Item[] pinpadItems = {new Key("Key", 999, "test.png", 1)};
+    private final Item[] pinpadItems = {new Key("Key", 999, "test.png", 1), new Star ("Star 8", "test.png", 7, 8)};
     /**
      * items in the clock drawer
      */
@@ -69,7 +69,7 @@ public class Map
     /**
      * items in the lock
      */
-    private final Item[] lockItems = {new Key("Key", 000, "test.png", 9)};
+    private final Item[] lockItems = {new Key("Key", 000, "test.png", 9), new Star ("Star 10", "test.png", 9, 10)};
 
     /**
      * items in the room 1 wall N
@@ -138,23 +138,23 @@ public class Map
     /**
      * items in the room 5 wall N
      */
-    private final Item[] itemsN5 = {new HidingItem("Hiding chest", "test.png", 5)};
+    private final Item[] itemsN5 = {new HidingItem("Hiding chest", "test.png", 5), new StarHole("Star hole 3", "test.png", 5, 3), new StarHole("Star hole 4", "test.png", 5, 4), new StarHole("Star hole 5", "test.png", 5, 5), new StarHole("Star hole 6", "test.png", 5, 6)};
     /**
      * items in the room 5 wall E
      */
-    private final Item[] itemsE5 = null;
+    private final Item[] itemsE5 = {new StarHole("Star hole 7", "test.png", 5, 7), new StarHole("Star hole 8", "test.png", 5, 8)};
     /**
      * items in the room 5 wall S
      */
-    private final Item[] itemsS5 = null;
+    private final Item[] itemsS5 = {new StarHole("Star hole 9", "test.png", 5, 9), new StarHole("Star hole 10", "test.png", 5, 10)};
     /**
      * items in the room 5 wall W
      */
-    private final Item[] itemsW5 = null;
+    private final Item[] itemsW5 = {new StarHole("Star hole 1", "test.png", 5, 1), new StarHole("Star hole 2", "test.png", 5, 2)};
     /**
      * items in the room 6 wall N
      */
-    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, safe2Items, LockType.KEY, 3)};
+    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, LivingRoomSafeItems, LockType.KEY, 3)};
     /**
      * items in the room 6 wall E
      */
@@ -170,7 +170,7 @@ public class Map
     /**
      * items in the room 7 wall N
      */
-    private final Item[] itemsN7 = {new HiderItem("Vase", "test.png", 7, new Item("Name", "test.png", 7, 7, false))};
+    private final Item[] itemsN7 = {new HiderItem("Vase", "test.png", 7, new Star ("Star 7", "test.png", 7, 7))};
     /**
      * items in the room 7 wall E
      */
@@ -194,7 +194,7 @@ public class Map
     /**
      * items in the room 8 wall S
      */
-    private final Item[] itemsS8 = {new ItemContainer("Bed Safe", "test.png", 8, safe3Items, LockType.KEY, 777)};
+    private final Item[] itemsS8 = {new ItemContainer("Bed Safe", "test.png", 8, BedRoomSafeItems, LockType.KEY, 777)};
     /**
      * items in the room 8 wall W
      */

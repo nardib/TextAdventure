@@ -47,22 +47,27 @@ public class Game {
     private GameCaretaker caretaker;
 
     /**
+     * Number of star holes filled
+     */
+    private int filledStarHoles;
+
+    /**
      * The help message
      */
     public final static String HELP = "The commands are:\n"
-            + "- <direction> : allows face a specified direction given the cardinal points; it can be either \"north\" or \"n\"\n"
+            + "- <direction> : allows to face a specified direction given a cardinal points; it can be either \"north\" or \"n\"\n"
             + "- cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the current facing direction\n"
             + "- look : returns a list of the items in the current room\n"
             + "- inventory : shows the items in the player's inventory\n"
             + "- take <item> : allows to pick an item in the facing wall given it's name as argument\n"
             + "- use <item> : allows to use an item in the inventory or in the facing wall\n"
-            + "- status : give the status of the player, in particular it returns the health of the player and the items in the inventory\n"
+            + "- status : gives the status of the player, in particular it returns the health of the player and the items in the inventory\n"
             + "- undo/back : goes back of a move in the game\n"
             + "- save : save the current state of the game\n"
-            + "- quit/exit : exit the game without saving the changes\n";
+            + "- quit/exit : exit the game\n";
 
     /**
-     * Constructor to initialize the game variables. It automatically capitalizes the first letter of the names given as argument.
+     * Constructor to initialize the game variables.
      * 
      * @param pn name of the player
      * @param pg the gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
@@ -74,9 +79,9 @@ public class Game {
      * @throws IllegalArgumentException if either the gender of the player or the gender of the enemy is not given in a valid format or if the count is not a positive integer
      */
     public Game(String pn, String pg, String en, String eg, int count, boolean enemyAttacks) {
-        player = new Player(capitalizeFistLetter(pn), pg);
+        player = new Player(pn, pg);
         map = new Map();
-        enemy = new Enemy(capitalizeFistLetter(en), eg);
+        enemy = new Enemy(en, eg);
         isGameOn = true;
         if (count <= 0)
             throw new IllegalArgumentException("The count must be a positive integer");
@@ -84,6 +89,7 @@ public class Game {
         caretaker = new GameCaretaker();
         saveCurrentState();
         this.enemyAttacks = enemyAttacks;
+        filledStarHoles = 0;
     }
 
     /**
@@ -217,7 +223,6 @@ public class Game {
                         Item item = player.getItem(i);
                         if (item instanceof Key) {
                             Key key = (Key) item;
-                            //i have to check if there is a lock in the room
                             return key.getUsingMessage();
                         }
                         else if (item instanceof HealingItem) {
@@ -227,6 +232,10 @@ public class Game {
                             player.increaseHealth(healingItem.HEALING_POINTS);
                             player.removeItem(i);
                             return healingItem.getUsingMessage();
+                        }
+                        else if (item instanceof Star) {
+                            Star star = (Star) item;
+                            return star.getUsingMessage();
                         }
                     }
                 }
@@ -256,7 +265,7 @@ public class Game {
                 } catch (StringIndexOutOfBoundsException e) {}
                 if (items[i].getName().equalsIgnoreCase(itemInput) || items[i].getName().equalsIgnoreCase(input.substring(4))) {
                     Item item = items[i];
-                    if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
+                    if (item instanceof Key || item instanceof Note || item instanceof HealingItem || item instanceof Star)
                         return player.getName() + " must pick the " + item.getName().toLowerCase() + " before using it!";
                     else if (item instanceof ClueItem) {
                         ClueItem clueItem = (ClueItem) item;
@@ -339,6 +348,24 @@ public class Game {
                             return "The item is not in the " + itemContainer.getName().toLowerCase();
                         }
                     }
+                    else if (item instanceof StarHole)
+                    {
+                        StarHole starHole = (StarHole) item;
+                        if (player.getInventoryCount() == 0)
+                            return player.getName() + " must have a star in the inventory to fill the star hole";
+                        for (int j = 0; j < player.getInventoryCount(); j++) {
+                            if (player.getItem(j) instanceof Star) {
+                                Star star = (Star) player.getItem(j);
+                                if (star.ID == starHole.ID) {
+                                    player.removeItem(j);
+                                    filledStarHoles++;
+                                    return player.getName() + " filled the " + starHole.getName().toLowerCase() + " with the " + star.getName().toLowerCase();
+                                }
+                            }
+                        }
+                        return player.getName() + " must have a star with the same ID of the star hole in the inventory to fill the star hole";
+                    
+                    }
                 }
             }
             return player.getName() + " can't use this item";
@@ -416,7 +443,7 @@ public class Game {
 
                 out += "In this room there are the following items:\n";
                 for (int i = 0; i < items.length; i++)
-                    out += "·" + items[i].getName() + "\n";
+                    out += "-" + items[i].getName() + "\n";
                 return out.substring(0, out.length() - 1);
             } catch (IllegalAccessException e) {
                 return out + e.getMessage();
@@ -437,8 +464,10 @@ public class Game {
             out += "\n" + enemyTurn();
         count++;
         
-        if(isGameOver())
+        if(isGameOver() && player.getHealth() == 0)
             return "Game Over! " + enemy.getName() + " killed you!";
+        if(isGameOver() && filledStarHoles == 10)
+            return "You win! You filled all the star holes!";
         
         //i save the state of the game after each move
         saveCurrentState();
@@ -455,7 +484,9 @@ public class Game {
         if (player.getHealth() == 0)
             isGameOn = false;
 
-        //i should probably add a win condition here
+        if (filledStarHoles == 10)
+            isGameOn = false;
+
         return !isGameOn;
     }
 
@@ -525,6 +556,11 @@ public class Game {
         private final int count;
 
         /**
+         * Number of star holes filled
+         */
+        private final int filledStarHoles;
+
+        /**
          * Constructor to initialize the memento
          * 
          * @param player the player
@@ -532,13 +568,15 @@ public class Game {
          * @param map the map
          * @param isGameOn tells if the game is on or not
          * @param count tells the number of the move
+         * @param filledStarHoles tells the number of star holes filled
          */
-        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn, int count) {
+        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn, int count, int filledStarHoles) {
             this.player = player.clone();
             this.enemy = enemy.clone();
             this.wall = map.getWall(player.getCurrentRoom(), player.getCurrentDirection()).clone();
             this.isGameOn = isGameOn;
             this.count = count;
+            this.filledStarHoles = filledStarHoles;
         }
 
         /**
@@ -585,13 +623,22 @@ public class Game {
         public int getCount() {
             return count;
         }
+
+        /**
+         * Method to get the number of star holes filled
+         * 
+         * @return the number of star holes filled
+         */
+        public int getFilledStarHoles() {
+            return filledStarHoles;
+        }
     }
 
     /**
      * Method to save the current state of the game and add it to the stack of mementos
      */
     private void saveCurrentState() {
-        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count));
+        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count, filledStarHoles));
     }
 
     /**
@@ -608,6 +655,7 @@ public class Game {
             map.setWall(player.getCurrentRoom(), player.getCurrentDirection(), memento.getWall().clone());
             isGameOn = memento.getisGameOn();
             count = memento.getCount();
+            filledStarHoles = memento.getFilledStarHoles();
             return true;
         }
         return false;

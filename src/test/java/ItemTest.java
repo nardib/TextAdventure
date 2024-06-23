@@ -134,6 +134,16 @@ public class ItemTest {
         Assert.assertEquals(i, hidden);
     }
 
+    //test for Star and StarHole
+    @Test
+    public void StarTest () {
+        var s = new Star("Star", "test.png", 1, 1);
+        var sh = new StarHole("StarHole", "test.png", 1, 1);
+        Assert.assertFalse(sh.isFilled());
+        sh.fill(s);
+        Assert.assertTrue(sh.isFilled());
+    }
+
     //test for deep clone
     @Test
     public void CloneTest() {
@@ -145,6 +155,8 @@ public class ItemTest {
         var hiding = new HidingItem("Hiding", "test.png", 0);
         var k = new Key ("key", 1234, "test.png", 0);
         var heal = new HealingItem("Heal", "test.png", 1, 0, 2);
+        var s = new Star("Star", "test.png", 1, 1);
+        var sh = new StarHole("StarHole", "test.png", 1, 1);
         var iClone = i.clone();
         var cClone = c.clone();
         var nClone = n.clone();
@@ -153,6 +165,8 @@ public class ItemTest {
         var hidingClone = hiding.clone();
         var kClone = k.clone();
         var healClone = heal.clone();
+        var sClone = s.clone();
+        var shClone = sh.clone();
         Assert.assertEquals(i, iClone);
         Assert.assertEquals(c, cClone);
         Assert.assertEquals(n, nClone);
@@ -161,5 +175,7 @@ public class ItemTest {
         Assert.assertEquals(hiding, hidingClone);
         Assert.assertEquals(k, kClone);
         Assert.assertEquals(heal, healClone);
+        Assert.assertEquals(s, sClone);
+        Assert.assertEquals(sh, shClone);
     }
 }
