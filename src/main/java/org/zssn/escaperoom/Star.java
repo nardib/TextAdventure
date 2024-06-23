@@ -57,7 +57,7 @@ public class Star extends Item {
     /**
      * Check if the star is the same as another star
      * 
-     * @param star the star to compare
+     * @param other the star to compare
      * @return true if the stars are the same, false otherwises
      */
     @Override

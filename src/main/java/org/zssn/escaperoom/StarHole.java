@@ -93,7 +93,7 @@ public class StarHole extends Item {
     /**
      * Check if the starHole is the same as another starHole
      * 
-     * @param starHole the starHole to compare
+     * @param other the starHole to compare
      * @return true if the starHoles are the same, false otherwises
      */
     @Override

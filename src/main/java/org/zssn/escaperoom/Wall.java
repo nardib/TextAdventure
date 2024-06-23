@@ -36,9 +36,9 @@ public class Wall {
     private Item[] items;
 
     /**
-     * Last element of the items array
+     * Length of the array of items
      */
-    private int lastItem;
+    private int itemsLength;
 
     /**
      * Constructor for the Wall
@@ -134,9 +134,13 @@ public class Wall {
      * 
      * @param index the index of the item
      * @return the items in the room
+     * 
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
      */
     public Item getItem(int index)
     {
+        if (index < 0 || index >= itemsLength)
+            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
         return items[index];
     }
 
@@ -147,7 +151,7 @@ public class Wall {
      */
     public int getItemsLength()
     {
-        return lastItem;
+        return itemsLength;
     }
 
     /**
@@ -177,7 +181,7 @@ public class Wall {
             this.items = new Item[items.length];
             for (int i = 0; i < items.length; i++)
                 this.items[i] = items[i];
-            lastItem = items.length;
+            itemsLength = items.length;
         }
     }
 
@@ -190,11 +194,11 @@ public class Wall {
      */
     public void removeItem(int index) 
     {
-        if (index < 0 || index >= lastItem)
+        if (index < 0 || index >= itemsLength)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
-        for (int i = index; i < lastItem - 1; i++)
+        for (int i = index; i < itemsLength - 1; i++)
             items[i] = items[i + 1];
-        lastItem--;
+        itemsLength--;
     }
 
     /**
@@ -212,7 +216,7 @@ public class Wall {
         Wall w = new Wall(deepCopy(wall), hasDoor, items);
         for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet())
             w.addItemImages(deepCopy(entry.getValue()), new Point(entry.getKey()));
-        lastItem = items.length;
+        w.itemsLength = this.itemsLength;
         return w;
     }
 
@@ -228,11 +232,11 @@ public class Wall {
         if (obj == null || !(obj instanceof Wall))
             return false;
         Wall w = (Wall) obj;
-        if (lastItem != w.lastItem)
+        if (itemsLength != w.itemsLength)
             return false;
         if (items != null && w.items != null)
         {
-            for (int i = 0; i < lastItem; i++)
+            for (int i = 0; i < itemsLength; i++)
                 if (!items[i].equals(w.items[i]))
                     return false;
         }

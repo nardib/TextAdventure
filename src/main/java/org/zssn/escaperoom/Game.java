@@ -188,7 +188,12 @@ public class Game {
                         if (player.getWeight() + items[i].WEIGHT > Player.MAX_WEIGHT)
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's too heavy";
                         items[i].setRoom(0);
-                        player.insertItem(items[i]);
+                        Item item = items[i].clone();
+                        player.insertItem(item);
+                        Wall w = map.getWall(player.getCurrentRoom(), player.getCurrentDirection());
+                        w.removeItem(i);
+                        map.setWall(player.getCurrentRoom(), player.getCurrentDirection(), w);
+                        /*
                         switch (player.getCurrentDirection()) {
                             case NORTH:
                                 map.getRoom(player.getCurrentRoom()).getNWall().removeItem(i);
@@ -202,8 +207,8 @@ public class Game {
                             case WEST:
                                 map.getRoom(player.getCurrentRoom()).getWWall().removeItem(i);
                                 break;
-                        }
-                        return player.getName() + " took the item: " + items[i].getName();
+                        }*/
+                        return player.getName() + " took the item: " + item.getName().toLowerCase();
                     }
                 }
             
@@ -444,9 +449,9 @@ public class Game {
             try {
                 Item[] items = getItemsInWall();
                 if (items.length == 0)
-                    return out + "There are no items in this room";
+                    return out + "There are no items in this wall";
 
-                out += "In this room there are the following items:\n";
+                out += "In this wall there are the following items:\n";
                 for (int i = 0; i < items.length; i++)
                     out += "-" + items[i].getName() + "\n";
                 return out.substring(0, out.length() - 1);
@@ -776,7 +781,7 @@ public class Game {
                 return items;
             case WEST:
                 if (!map.getRoom(player.getCurrentRoom()).getWWall().hasItems())
-                    throw new IllegalAccessException("\nThere are no items in this wall");
+                    throw new IllegalAccessException("There are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getWWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getWWall().getItem(i);

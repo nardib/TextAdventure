@@ -141,7 +141,9 @@ public class GameTest {
         Assert.assertEquals(g.getPlayer().getCurrentDirection(), Direction.EAST);
         Assert.assertEquals(g.getPlayer().getCurrentRoom(), 2);
         g.nextMove("use board games");
+        int wallElem = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength();
         g.nextMove("take bedroom safe key");
+        Assert.assertEquals(wallElem - 1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength());
         Assert.assertTrue(g.getPlayer().getInventoryCount() == 1);
         Assert.assertTrue(g.getPlayer().getItem(0).getName().equals("Bedroom safe key"));
 
@@ -168,7 +170,9 @@ public class GameTest {
         g.nextMove("east");
         Assert.assertEquals(4, g.getPlayer().getCurrentRoom());
         Assert.assertEquals(Direction.EAST, g.getPlayer().getCurrentDirection());
+        wallElem = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength();
         g.nextMove("take bendage");
+        Assert.assertEquals(wallElem - 1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength());
         Assert.assertEquals("Bendage", g.getPlayer().getItem(1).getName());
         g.getPlayer().decreaseHealth(2);
         Assert.assertEquals(3, g.getPlayer().getHealth());
@@ -184,7 +188,9 @@ public class GameTest {
         g.nextMove("s");
         Assert.assertEquals(6, g.getPlayer().getCurrentRoom());
         Assert.assertEquals(Direction.SOUTH, g.getPlayer().getCurrentDirection());
+        wallElem = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength();
         g.nextMove("take note in the coat");
+        Assert.assertEquals(wallElem - 1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength());
         Assert.assertEquals(1, g.getPlayer().getInventoryCount());
         Assert.assertEquals(1, g.getPlayer().getNotesCount());
 
