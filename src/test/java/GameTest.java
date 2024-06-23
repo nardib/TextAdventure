@@ -218,4 +218,76 @@ public class GameTest {
         Assert.assertEquals(3, g.getPlayer().getInventoryCount());
         Assert.assertEquals(1, g.getPlayer().getNotesCount());
     }
+
+    //i test a win condition
+    @Test
+    public void winTest() {
+        g = new Game("Player", "f", "Enemy", "m", 1, false);
+        g.nextMove("cross w");
+        g.nextMove("cross n");
+        g.nextMove("use drawer star 1");
+        g.nextMove("e");
+        g.nextMove("use painting");
+        g.nextMove("use safe 352");
+        g.nextMove("use safe star 2");
+        g.nextMove("take key on pinboard");
+        g.nextMove("cross");
+        g.nextMove("use dice 143");
+        g.nextMove("use dice star 4");
+        g.nextMove("use board games");
+        g.nextMove("take bedroom safe key");
+        g.nextMove("cross");
+        g.nextMove("n");
+        g.nextMove("use fridge 151");
+        g.nextMove("use fridge star 5");
+        g.nextMove("cross s");
+        g.nextMove("n");
+        g.nextMove("use safe");
+        g.nextMove("use safe star 6");
+        g.nextMove("s");
+        g.nextMove("cross");
+        g.nextMove("use lock 1313");
+        g.nextMove("use lock star 10");
+        g.nextMove("cross n");
+        g.nextMove("cross w");
+        g.nextMove("use star hole 1");
+        g.nextMove("use star hole 2");
+        g.nextMove("n");
+        g.nextMove("use star hole 4");
+        g.nextMove("use star hole 5");
+        g.nextMove("use star hole 6");
+        g.nextMove("s");
+        g.nextMove("use star hole 10");
+        g.nextMove("cross");
+        g.nextMove("use bed safe");
+        g.nextMove("use bed safe star 9");
+        g.nextMove("e");
+        g.nextMove("use chess drawer 358");
+        g.nextMove("use chess drawer key for games chest");
+        g.nextMove("cross w");
+        g.nextMove("n");
+        g.nextMove("use vase");
+        g.nextMove("take star 7");
+        g.nextMove("s");
+        g.nextMove("use vase with wheels");
+        g.nextMove("use pinpad 1563");
+        g.nextMove("use pinpad star 8");
+        g.nextMove("cross n");
+        g.nextMove("cross n");
+        g.nextMove("cross e");
+        g.nextMove("n");
+        g.nextMove("use games chest");
+        g.nextMove("use games chest star 3");
+        g.nextMove("cross w");
+        g.nextMove("cross s");
+        g.nextMove("cross e");
+        g.nextMove("use star hole 7");
+        g.nextMove("use star hole 8");
+        g.nextMove("s");
+        g.nextMove("use star hole 9");
+        g.nextMove("n");
+        g.nextMove("use star hole 3");
+        Assert.assertFalse(g.isLost());
+        Assert.assertTrue(g.isWin());
+    }
 }

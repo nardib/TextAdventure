@@ -64,8 +64,7 @@ public class StarHole extends Item {
             throw new IllegalArgumentException("StarHole already filled");
         }
         if (star.ID == this.ID) {
-            this.filled = true; 
-            this.name += " (filled)";
+            this.filled = true;
             return true;
         }
         return false;

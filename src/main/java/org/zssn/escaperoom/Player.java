@@ -174,7 +174,7 @@ public class Player extends Character{
     public Item removeItem(int i)
     {
         if (i < 0 || i >= ArrayIndexCount)
-            throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
+            throw new IllegalArgumentException("Invalid index, it must be in the range of 0-(maxIndex-1)");
         Item out = inventory[i];
         //i remove the item i and i shift all the other items to the left
         inventory[i] = null;
@@ -200,10 +200,12 @@ public class Player extends Character{
      * @param i the index of the item to return
      * @return the item at index i
      * 
-     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1) or if the inventory is empty
      */
     public Item getItem(int i)
     {
+        if (inventory == null || inventory.length == 0)
+            throw new IllegalStateException("The inventory is empty");
         if (i < 0 || i >= ArrayIndexCount)
             throw new IllegalArgumentException("invalid index, it must be in the range of 0-(maxIndex-1)");
         return inventory[i];
