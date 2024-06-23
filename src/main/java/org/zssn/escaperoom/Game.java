@@ -197,7 +197,7 @@ public class Game {
                                 map.getRoom(player.getCurrentRoom()).getWWall().removeItem(i);
                                 break;
                         }
-                        return player.getName() + " took the item: " + items[i].getName().toLowerCase();
+                        return player.getName() + " took the item: " + items[i].getName();
                     }
                 }
             
@@ -206,6 +206,7 @@ public class Game {
             } catch (IllegalStateException e) {
                 return e.getMessage();
             }
+            return player.getName() + " can't take this item";
         }
 
         //command to use an item in the inventory
@@ -249,7 +250,11 @@ public class Game {
             }
 
             for (int i = 0; i < items.length; i++) {
-                if (items[i].getName().equalsIgnoreCase(input.substring(4, 4 + items[i].getName().length()))) {
+                String itemInput = "";
+                try {
+                    itemInput = input.substring(4, 4 + items[i].getName().length());
+                } catch (StringIndexOutOfBoundsException e) {}
+                if (items[i].getName().equalsIgnoreCase(itemInput) || items[i].getName().equalsIgnoreCase(input.substring(4))) {
                     Item item = items[i];
                     if (item instanceof Key || item instanceof Note || item instanceof HealingItem)
                         return player.getName() + " must pick the " + item.getName().toLowerCase() + " before using it!";
@@ -265,12 +270,16 @@ public class Game {
                         switch (player.getCurrentDirection()) {
                             case NORTH:
                                 map.getRoom(player.getCurrentRoom()).getNWall().setItems(items);
+                                break;
                             case EAST:
                                 map.getRoom(player.getCurrentRoom()).getEWall().setItems(items);
+                                break;
                             case SOUTH:
                                 map.getRoom(player.getCurrentRoom()).getSWall().setItems(items);
+                                break;
                             case WEST:
                                 map.getRoom(player.getCurrentRoom()).getWWall().setItems(items);
+                                break;
                         }
                         return hiderItem.getUsingMessage();
                     }
@@ -368,68 +377,68 @@ public class Game {
 
         input = input.trim(); //remove leading and trailing whitespaces
 
+        String out = "\n-------------------------- Input : " + input + " --------------------------\n\n";
+
         if (!isGameOn)
-            return "\nGame is Over!";
+            return out + "Game is Over!";
 
         if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
-            return HELP;
+            return out + HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return "\n" + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
-                    + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory() + "\n"
-                    + "The total weight of the items " + player.getName() + " is " + player.getWeight() + "/10\n"
+            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
+                    + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory()
+                    + "\nThe total weight of the items " + player.getName() + " is " + player.getWeight() + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
             isGameOn = false;
-            return "\nGame over";
+            return out + "Game over";
        }
         if (input.equalsIgnoreCase("save"))
-            return "\nGame saved";
+            return out + "Game saved";
 
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) 
-                return "\nUndo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
-            return "\nNo previous moves to undo";
+                return out + "Undo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
+            return out + "No previous moves to undo";
         }
         //command to check the items in the inventory (probably should be in nextMove)
         if (input.equalsIgnoreCase("inventory")) {
-            return "\nIn " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
+            return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
         //command to check the items in the room
         if (input.equalsIgnoreCase("look")) {
             try {
                 Item[] items = getItemsInWall();
                 if (items.length == 0)
-                    return "\nThere are no items in this room";
+                    return out + "There are no items in this room";
 
-                String out = "\nIn this room there are the following items:\n";
+                out += "In this room there are the following items:\n";
                 for (int i = 0; i < items.length; i++)
-                    out += "·" + items[i].getName().toLowerCase() + "\n";
+                    out += "·" + items[i].getName() + "\n";
                 return out.substring(0, out.length() - 1);
             } catch (IllegalAccessException e) {
-                return e.getMessage();
+                return out + e.getMessage();
             } catch (IllegalStateException e) {
-                return e.getMessage();
+                return out + e.getMessage();
             }
         }
-
-        String out = "\n";
 
         // player turn
         try {
             out += playerTurn(input);
         } catch (IllegalArgumentException e) {
-            return "\n" + e.getMessage();
+            return out + e.getMessage();
         }
 
         // enemy turn
         if (count % enemycount == 0)
-            out +="\n" + enemyTurn();
+            out += "\n" + enemyTurn();
         count++;
         
         if(isGameOver())
-            return "\nGame Over! " + enemy.getName() + " killed you!";
+            return "Game Over! " + enemy.getName() + " killed you!";
         
         //i save the state of the game after each move
         saveCurrentState();
@@ -686,7 +695,7 @@ public class Game {
                 items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
-                    return items;
+                return items;
             case SOUTH:
                 if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
                     throw new IllegalAccessException("\nThere are no items in this wall");

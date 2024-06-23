@@ -209,7 +209,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         JButton attackButton = new JButton("Attack");
         attackButton.setFont(new Font("Monospaced", Font.BOLD, 20));
-        writeToTerminal("Prova per il funzionamento del terminale, scrivi qualcosa");
+        writeToTerminal("Welcome to the Text Adventure! Type 'help' for a list of commands and start to play.");
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String mex = inputField.getText();

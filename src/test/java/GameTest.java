@@ -190,7 +190,7 @@ public class GameTest {
 
         //i test if a clue item returns it's clue
         g.nextMove("e");
-        String message = g.nextMove("use television").substring(1, 62);
+        String message = g.nextMove("use television").substring(79, 140);
         Assert.assertEquals("The television turns on and shows the code \"0563\" on a pinpad", message);
 
         //i test an item container with a combination

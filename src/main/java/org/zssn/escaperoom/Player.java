@@ -239,10 +239,10 @@ public class Player extends Character{
             return "no items";
         String out = "\n";
         for (int i = 0; i < ArrayIndexCount; i++)
-            out += "· " + inventory[i].getName() + "\n";
+            out += "- " + inventory[i].getName() + "\n";
         for (int i = 0; i < notesCount; i++)
-            out += "· " + notesInventory[i].getName() + "\n";
-        return out;
+            out += "- " + notesInventory[i].getName() + "\n";
+        return out.substring(0, out.length()-1);
     }
 
     /**
