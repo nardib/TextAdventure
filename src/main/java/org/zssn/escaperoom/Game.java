@@ -249,7 +249,7 @@ public class Game {
             }
 
             //if there is no item in the inventory i have to check if there is an hiding item in the room
-            Item[] items = null;            
+            Item[] items = null;
             try {
                 items = getItemsInWall();
             } catch (IllegalAccessException e) {
@@ -312,8 +312,8 @@ public class Game {
                                         Key key = (Key) player.getItem(j);
                                         if (key.ID == itemContainer.getID()) {
                                             itemContainer.unlock(key);
-                                            player.removeItem(i);
-                                            return player.getName() + " unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase();
+                                            player.removeItem(j);
+                                            return player.getName() + " unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase() + ".\n" + itemContainer.getUsingMessage();
                                         }
                                     }
                                 }
@@ -325,7 +325,7 @@ public class Game {
                                 else {
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
-                                        return player.getName() + " unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput;
+                                        return player.getName() + " unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput + ".\n" + itemContainer.getUsingMessage();
                                     }
                                     return "The combination is not correct, try again!";
                                 }
@@ -335,6 +335,7 @@ public class Game {
                         try {
                             newInput = input.substring(5 + itemContainer.getName().length());
                         } catch (StringIndexOutOfBoundsException e) {}
+
                         if (newInput.length() == 0)
                             return itemContainer.getUsingMessage();
                         else {
@@ -351,15 +352,18 @@ public class Game {
                     else if (item instanceof StarHole)
                     {
                         StarHole starHole = (StarHole) item;
+                        if (starHole.isFilled())
+                            return player.getName() + " can't fill the " + starHole.getName().toLowerCase() + ", it's already filled";
                         if (player.getInventoryCount() == 0)
                             return player.getName() + " must have a star in the inventory to fill the star hole";
                         for (int j = 0; j < player.getInventoryCount(); j++) {
                             if (player.getItem(j) instanceof Star) {
                                 Star star = (Star) player.getItem(j);
                                 if (star.ID == starHole.ID) {
+                                    starHole.fill(star);
                                     player.removeItem(j);
                                     filledStarHoles++;
-                                    return player.getName() + " filled the " + starHole.getName().toLowerCase() + " with the " + star.getName().toLowerCase();
+                                    return player.getName() + " filled the star hole " + starHole.ID + " with the " + star.getName().toLowerCase();
                                 }
                             }
                         }
@@ -416,6 +420,7 @@ public class Game {
             return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
                     + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory()
                     + "\nThe total weight of the items " + player.getName() + " is " + player.getWeight() + "/10\n"
+                    + "The number of star holes filled is " + filledStarHoles + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
@@ -497,6 +502,24 @@ public class Game {
      */
     public boolean isGameOn() {
         return isGameOn;
+    }
+
+    /**
+     * Method to get if the game is win
+     * 
+     * @return true if the game is win, false otherwise
+     */
+    public boolean isWin() {
+        return filledStarHoles == 10 && !isGameOn;
+    }
+
+    /**
+     * Method to get if the game is lost
+     * 
+     * @return true if the game is lost, false otherwise
+     */
+    public boolean isLost() {
+        return player.getHealth() == 0 && !isGameOn;
     }
 
     /**

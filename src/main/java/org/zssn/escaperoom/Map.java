@@ -49,7 +49,7 @@ public class Map
     /**
      * items in the chess drawer
      */
-    private final Item[] chessDrawerItems = {new Key("Key", 666, "test.png", 1)};
+    private final Item[] chessDrawerItems = {new Key("Key for games chest", 666, "test.png", 1)};
     /**
      * items in the safe3
      */
@@ -69,7 +69,7 @@ public class Map
     /**
      * items in the lock
      */
-    private final Item[] lockItems = {new Key("Key", 000, "test.png", 9), new Star ("Star 10", "test.png", 9, 10)};
+    private final Item[] lockItems = {new Key("Key", 100, "test.png", 9), new Star ("Star 10", "test.png", 9, 10)};
 
     /**
      * items in the room 1 wall N
@@ -82,7 +82,7 @@ public class Map
     /**
      * items in the room 1 wall S
      */
-    private final Item[] itemsS1 = {new ClueItem("Clock", "test.png", 1, "It's 07:35"), new ClueItem("Phone", "test.png", 1, "You have called the number 0335212 and you heard someone sayng: \"To unlock the lock in the bathroom type: 1313\"")};
+    private final Item[] itemsS1 = {new ClueItem("Clock", "test.png", 1, "It's 7:35"), new ClueItem("Phone", "test.png", 1, "You have called the number 0335212 and you heard someone sayng: \"To unlock the lock in the bathroom type: 1313\"")};
     /**
      * items in the room 1 wall W
      */
@@ -90,7 +90,7 @@ public class Map
     /**
      * items in the room 2 wall N
      */
-    private final Item[] itemsN2 = {new ItemContainer("Item chest", "test.png", 2, itemChestItems, LockType.KEY, 1)};
+    private final Item[] itemsN2 = {new ItemContainer("Games chest", "test.png", 2, itemChestItems, LockType.KEY, 666)};
     /**
      * items in the room 2 wall E
      */
@@ -102,11 +102,11 @@ public class Map
     /**
      * items in the room 2 wall W
      */
-    private final Item[] itemsW2 = {new ClueItem("game poster", "test.png", 2, "In the poster there is a safe with the code 352")};
+    private final Item[] itemsW2 = {new ClueItem("Game poster", "test.png", 2, "In the poster there is a safe with the code 352")};
     /**
      * items in the room 3 wall N
      */
-    private final Item[] itemsN3 = {new ItemContainer("Fridge", "test.png", 3, fridgeItems, LockType.KEY, 151)};
+    private final Item[] itemsN3 = {new ItemContainer("Fridge", "test.png", 3, fridgeItems, LockType.COMBINATION, 151)};
     /**
      * items in the room 3 wall E
      */
@@ -154,7 +154,7 @@ public class Map
     /**
      * items in the room 6 wall N
      */
-    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, LivingRoomSafeItems, LockType.KEY, 3)};
+    private final Item[] itemsN6 = {new ItemContainer("Safe", "test.png", 6, LivingRoomSafeItems, LockType.KEY, 151)};
     /**
      * items in the room 6 wall E
      */
@@ -178,7 +178,7 @@ public class Map
     /**
      * items in the room 7 wall S
      */
-    private final Item[] itemsS7 = {new HiderItem("Vase with wheels", "test.png", 7, new ItemContainer("Pinpad", "test.png", 7, pinpadItems, LockType.COMBINATION, 0563))};
+    private final Item[] itemsS7 = {new HiderItem("Vase with wheels", "test.png", 7, new ItemContainer("Pinpad", "test.png", 7, pinpadItems, LockType.COMBINATION, 1563))};
     /**
      * items in the room 7 wall W
      */
@@ -198,7 +198,7 @@ public class Map
     /**
      * items in the room 8 wall W
      */
-    private final Item[] itemsW8 = {new ItemContainer("Clock drawer", "test.png", 8, clockDrawerItems, LockType.COMBINATION, 0735)};
+    private final Item[] itemsW8 = {new ItemContainer("Clock drawer", "test.png", 8, clockDrawerItems, LockType.COMBINATION, 735)};
     /**
      * items in the room 9 wall N
      */
