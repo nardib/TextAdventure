@@ -158,7 +158,7 @@ public class Map
     /**
      * items in the room 6 wall E
      */
-    private final Item[] itemsE6 = {new ClueItem("Television", "test.png", 6, "The television turns on and shows the code \"0563\" on a pinpad")};
+    private final Item[] itemsE6 = {new ClueItem("Television", "test.png", 6, "The television turns on and shows the code \"1563\" on a pinpad")};
     /**
      * items in the room 6 wall S
      */

@@ -324,6 +324,8 @@ public class Game {
                                 }
                                 return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
                             }
+                            else if (itemContainer.getLockType() == LockType.KEY)
+                                return "The " + itemContainer.getName() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + "' with the correct key in the inventry";
                             else if (itemContainer.getLockType() == LockType.COMBINATION) {
                                 if (newInput.length() == 0)
                                     return "The " + itemContainer.getName().toLowerCase() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
@@ -345,6 +347,8 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
+                                if (itemContainer.getItem(j).WEIGHT + player.getWeight() > Player.MAX_WEIGHT)
+                                    return player.getName() + " can't take the item, it's too heavy";
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
                                     Item removedItem = itemContainer.removeItem(j);
                                     player.insertItem(removedItem);
@@ -446,20 +450,7 @@ public class Game {
         }
         //command to check the items in the room
         if (input.equalsIgnoreCase("look")) {
-            try {
-                Item[] items = getItemsInWall();
-                if (items.length == 0)
-                    return out + "There are no items in this wall";
-
-                out += "In this wall there are the following items:\n";
-                for (int i = 0; i < items.length; i++)
-                    out += "-" + items[i].getName() + "\n";
-                return out.substring(0, out.length() - 1);
-            } catch (IllegalAccessException e) {
-                return out + e.getMessage();
-            } catch (IllegalStateException e) {
-                return out + e.getMessage();
-            }
+            return out + printLook();
         }
 
         // player turn
@@ -475,9 +466,9 @@ public class Game {
         count++;
         
         if(isGameOver() && player.getHealth() == 0)
-            return "Game Over! " + enemy.getName() + " killed you!";
+            return out + "Game Over! " + enemy.getName() + " killed you!";
         if(isGameOver() && filledStarHoles == 10)
-            return "You win! You filled all the star holes!";
+            return out + "You win! You filled all the star holes!";
         
         //i save the state of the game after each move
         saveCurrentState();
@@ -760,21 +751,21 @@ public class Game {
         switch (player.getCurrentDirection()) {
             case NORTH:
                 if (!map.getRoom(player.getCurrentRoom()).getNWall().hasItems())
-                    throw new IllegalAccessException("\nThere are no items in this wall");
+                    throw new IllegalAccessException("There are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getNWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getNWall().getItem(i);
                 return items;
             case EAST:
                 if (!map.getRoom(player.getCurrentRoom()).getEWall().hasItems())
-                    throw new IllegalAccessException("\nThere are no items in this wall");
+                    throw new IllegalAccessException("There are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getEWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getEWall().getItem(i);
                 return items;
             case SOUTH:
                 if (!map.getRoom(player.getCurrentRoom()).getSWall().hasItems())
-                    throw new IllegalAccessException("\nThere are no items in this wall");
+                    throw new IllegalAccessException("There are no items in this wall");
                 items = new Item[map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength()];
                 for (int i = 0; i < map.getRoom(player.getCurrentRoom()).getSWall().getItemsLength(); i++)
                     items[i] = map.getRoom(player.getCurrentRoom()).getSWall().getItem(i);
@@ -788,6 +779,35 @@ public class Game {
                 return items;
             default:
                 throw new IllegalStateException("You are not facing any wall");
+        }
+    }
+
+    /**
+     * Method to print the items in the wall the player is facing
+     * 
+     * @return the items in the wall the player is facing
+     */
+    private String printLook() {
+        try {
+            Item[] items = getItemsInWall();
+            if (items.length == 0)
+                return "There are no items in this wall";
+
+            String out = "In this wall there are the following items:\n";
+            for (int i = 0; i < items.length; i++) {
+                Item item = items[i];
+                out += "-" + items[i].getName();
+                if (item instanceof ItemContainer && !((ItemContainer) item).isLocked())
+                    out += " (unlocked)";
+                if (item instanceof StarHole && ((StarHole) item).isFilled())
+                    out += " (filled)";
+                out += "\n";
+            }
+            return out.substring(0, out.length() - 1);
+        } catch (IllegalAccessException e) {
+            return e.getMessage();
+        } catch (IllegalStateException e) {
+            return e.getMessage();
         }
     }
 }
