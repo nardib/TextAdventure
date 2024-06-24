@@ -1,16 +1,10 @@
-/*package main.java.org.zssn.escaperoom;
-
-import org.zssn.escaperoom.Enemy;
-import org.zssn.escaperoom.Game;
-import org.zssn.escaperoom.Map;
-import org.zssn.escaperoom.Player;
-import org.zssn.escaperoom.Room;
-
+package org.zssn.escaperoom;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 
@@ -24,7 +18,7 @@ import java.nio.file.StandardOpenOption;
 public class GameManager {
     private static final String BUCKET_NAME = "znnsproject"; //name of the bucket
     private static final String KEY_NAME = "game-state.json"; //name of the file to save the data in
-    private final Region REGION = Region.US_EST_1; // regione del Bucket
+    private final Region REGION = Region.US_EAST_1; // regione del Bucket
 
     public void saveProgress(Game game) { //fuction to be used for saving status
         String message = serialize(game);
@@ -35,7 +29,7 @@ public class GameManager {
         String message = downLoad();
         Game game = deserialize(message);
         return game;
-    } 
+    }
 
     private String serialize(Game game) { //converts object in string format, eg: "{\"name\":\"John",\"age\":\"30"}"
         ObjectMapper objectMapper = new ObjectMapper();
@@ -46,6 +40,7 @@ public class GameManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private Game deserialize(String gameString) { //converts string format into Game object
@@ -57,6 +52,7 @@ public class GameManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private void upLoad(String message) { //loads the string into the bucket
@@ -68,7 +64,7 @@ public class GameManager {
         try {
             // Crea un file temporaneo e scrivi il contenuto
             Path tempFile = Files.createTempFile("temp", ".json");
-            Files.write(tempFile, content.getBytes(), StandardOpenOption.WRITE);
+            Files.write(tempFile, message.getBytes(), StandardOpenOption.WRITE);    //Nardi: i changed contet with message (now compile, but not sure if it's correct)
 
             // Crea una richiesta PutObjectRequest
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -114,6 +110,6 @@ public class GameManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
-*/
