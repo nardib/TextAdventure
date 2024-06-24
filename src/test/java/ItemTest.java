@@ -64,7 +64,7 @@ public class ItemTest {
         });
         String usingMessage = "In this container you find: \n";
         for (int i = 0; i < ic.getItemsLength(); i++)
-            usingMessage += "· " + ic.getItem(i).getName() + "\n";
+            usingMessage += "- " + ic.getItem(i).getName() + "\n";
         usingMessage += "If you want to pick an item from the container, type 'use " + ic.getName() + " <item_name>'";
         Assert.assertEquals(usingMessage, ic.getUsingMessage());
         ic.removeItem(0);

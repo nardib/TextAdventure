@@ -169,7 +169,7 @@ public class ItemContainer extends Item{
         }
         usingMessage = "In this container you find: \n";
         for (int i = 0; i < ArrayIndexCount; i++)
-            usingMessage += "· " + items[i].getName() + "\n";
+            usingMessage += "- " + items[i].getName() + "\n";
         usingMessage += "If you want to pick an item from the container, type 'use " + this.getName() + " <item_name>'";
     }
 

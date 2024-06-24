@@ -330,6 +330,11 @@ public class Game {
                                 if (newInput.length() == 0)
                                     return "The " + itemContainer.getName().toLowerCase() + " is locked, " + player.getName() + " must unlock it first!\nTo unlock type 'use " + itemContainer.getName().toLowerCase() + " <id>' where <id> is the correct combination";
                                 else {
+                                    try {
+                                        Integer.parseInt(newInput);
+                                    } catch (NumberFormatException e) {
+                                        return "The combination must be a number";
+                                    }
                                     if (Integer.parseInt(newInput) == itemContainer.getID()) {
                                         itemContainer.unlock(Integer.parseInt(newInput));
                                         return player.getName() + " unlocked the " + itemContainer.getName().toLowerCase() + " with the combination " + newInput + ".\n" + itemContainer.getUsingMessage();
@@ -449,7 +454,7 @@ public class Game {
             return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
         //command to check the items in the room
-        if (input.equalsIgnoreCase("look")) {
+        if (input.equalsIgnoreCase("look") && !player.isHidden()) {
             return out + printLook();
         }
 
@@ -466,9 +471,9 @@ public class Game {
         count++;
         
         if(isGameOver() && player.getHealth() == 0)
-            return out + "Game Over! " + enemy.getName() + " killed you!";
+            return out + "\nGame Over! " + enemy.getName() + " killed you!";
         if(isGameOver() && filledStarHoles == 10)
-            return out + "You win! You filled all the star holes!";
+            return out + "\nYou win! You filled all the star holes!";
         
         //i save the state of the game after each move
         saveCurrentState();
