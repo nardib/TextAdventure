@@ -8,13 +8,18 @@ public class HealingItem extends Item {
     /**
      * Points that the healing item heals
      */
-    public final int HEALING_POINTS;
+    private int healingPoints;
 
     /**
      * The item is pickable
      */
     public final static boolean PICKABLE = true;
     
+    /** 
+     * Default constructor for the HealingItem
+    */
+    public HealingItem() {super();}
+
     /** 
      * Constructor for the HealingItem
      * 
@@ -33,29 +38,7 @@ public class HealingItem extends Item {
         {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
         }
-        this.HEALING_POINTS = healthPoints;
-        usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
-    }
-
-    /** 
-     * Constructor for the HealingItem
-     * 
-     * @param name name of the healing item
-     * @param image image of the healing item given as ImageIcon object
-     * @param weight weight of the healing item
-     * @param currentRoom current room of the healing item
-     * @param healthPoints health points that the healing item heals
-     * 
-     * @throws IllegalArgumentException if health points are less than 0
-     */
-    public HealingItem(String name, ImageIcon image, int weight, int currentRoom, int healthPoints)
-    {
-        super(name, image, weight, currentRoom, PICKABLE);
-        if (healthPoints < 0)
-        {
-            throw new IllegalArgumentException("Health points must be greater than or equal to 0");
-        }
-        this.HEALING_POINTS = healthPoints;
+        this.healingPoints = healthPoints;
         usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
     }
 
@@ -67,7 +50,7 @@ public class HealingItem extends Item {
     @Override
     public HealingItem clone()
     {
-        return new HealingItem(name, icon, WEIGHT, currentRoom, HEALING_POINTS);
+        return new HealingItem(name, icon, weight, currentRoom, healingPoints);
     }
 
     /** 
@@ -82,7 +65,28 @@ public class HealingItem extends Item {
         if (!(other instanceof HealingItem || other == null))
             return false;
         HealingItem i = (HealingItem) other;
-        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.HEALING_POINTS == i.HEALING_POINTS && this.usingMessage.equals(i.usingMessage) && this.icon.equals(i.icon);
+        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.healingPoints == i.healingPoints && this.usingMessage.equals(i.usingMessage) && this.icon.equals(i.icon);
+    }
+
+    /**
+     * Get the healing points of the healing item
+     * 
+     * @return the healing points of the healing item
+     */
+    public int getHealingPoints() {
+        return healingPoints;
+    }
+
+    /**
+     * Set the healing points of the healing item
+     * 
+     * @param healingPoints healing points of the healing item
+     * @throws IllegalArgumentException if the healing points are less than 0
+     */
+    public void setHealingPoints(int healingPoints) {
+        if (healingPoints < 0)
+            throw new IllegalArgumentException("Health points must be greater than or equal to 0");
+        this.healingPoints = healingPoints;
     }
     
 }

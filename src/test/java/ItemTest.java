@@ -8,18 +8,18 @@ public class ItemTest {
     public void GenericItemTest() {
         var i = new Item("Item", "test.png", 1, 1, true);
         Assert.assertEquals("Item", i.getName());
-        Assert.assertEquals(1, i.WEIGHT);
-        Assert.assertEquals(1, i.getRoom());
-        Assert.assertEquals(true, i.PICKABLE);
+        Assert.assertEquals(1, i.getWeight());
+        Assert.assertEquals(1, i.getCurrentRoom());
+        Assert.assertEquals(true, i.isPickable());
 
         //i change the room of the item
-        i.setRoom(0);
-        Assert.assertEquals(0, i.getRoom());
+        i.setCurrentRoom(0);
+        Assert.assertEquals(0, i.getCurrentRoom());
         Assert.assertThrows(IllegalArgumentException.class, () -> {
-            i.setRoom(-1);
+            i.setCurrentRoom(-1);
         });
         Assert.assertThrows(IllegalArgumentException.class, () -> {
-            i.setRoom(10);
+            i.setCurrentRoom(10);
         });
     }
 
@@ -28,9 +28,9 @@ public class ItemTest {
     public void ClueItemTest() {
         var c = new ClueItem("Clue", "test.png", 1, "You found a clue!");
         Assert.assertEquals("Clue", c.getName());
-        Assert.assertEquals(11, c.WEIGHT);
-        Assert.assertEquals(1, c.getRoom());
-        Assert.assertEquals(false, c.PICKABLE);
+        Assert.assertEquals(11, c.getWeight());
+        Assert.assertEquals(1, c.getCurrentRoom());
+        Assert.assertEquals(false, c.isPickable());
         Assert.assertEquals("You found a clue!", c.getUsingMessage());
     }
 
@@ -39,9 +39,9 @@ public class ItemTest {
     public void NoteTest() {
         var n = new Note("Note", "test.png", 2, "You found a note!");
         Assert.assertEquals("Note", n.getName());
-        Assert.assertEquals(0, n.WEIGHT);
-        Assert.assertEquals(2, n.getRoom());
-        Assert.assertEquals(true, n.PICKABLE);
+        Assert.assertEquals(0, n.getWeight());
+        Assert.assertEquals(2, n.getCurrentRoom());
+        Assert.assertEquals(true, n.isPickable());
         Assert.assertEquals("This note says: You found a note!", n.getUsingMessage());
     }
 
@@ -92,9 +92,6 @@ public class ItemTest {
             ic1.getItem(0);
         });
         Assert.assertThrows(IllegalArgumentException.class, () -> {
-            ic1.getItemsLength();
-        });
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
             ic1.unlock(k);
         });
         Assert.assertFalse(ic1.unlock(1235));
@@ -107,9 +104,6 @@ public class ItemTest {
         Assert.assertEquals(ic2.getID(), 1234);
         Assert.assertThrows(IllegalArgumentException.class, () -> {
             ic2.getItem(0);
-        });
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
-            ic2.getItemsLength();
         });
         Assert.assertFalse(ic2.unlock(k1));
         Assert.assertThrows(IllegalArgumentException.class, () -> {
@@ -125,9 +119,9 @@ public class ItemTest {
         var i = new Item ("Item", "test.png", 1, 1, true);
         var h = new HiderItem("Hider", "test.png", 1, i);
         Assert.assertEquals("Hider", h.getName());
-        Assert.assertEquals(11, h.WEIGHT);
-        Assert.assertEquals(1, h.getRoom());
-        Assert.assertEquals(false, h.PICKABLE);
+        Assert.assertEquals(11, h.getWeight());
+        Assert.assertEquals(1, h.getCurrentRoom());
+        Assert.assertEquals(false, h.isPickable());
         Assert.assertTrue(h.isHiding());
         Item hidden = h.reveal();
         Assert.assertFalse(h.isHiding());

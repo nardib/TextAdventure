@@ -44,6 +44,13 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
     }
 
     /**
+     * Defualt constructor for the enemy
+     */
+    public Enemy() {
+        super();
+    }
+
+    /**
      * Constructor for the enemy
      * 
      * @param n name of the enemy

@@ -77,6 +77,11 @@ public class Room
     }
 
     /**
+     * Room class defualt constructor
+     */
+    public Room() {}
+
+    /**
      * Room class constructor
      * 
      * @param n number of the room

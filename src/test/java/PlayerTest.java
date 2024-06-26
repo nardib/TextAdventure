@@ -41,7 +41,7 @@ public class PlayerTest {
 
         //inventory should now be [key, hammer, potion]
         Assert.assertEquals(3, p.getInventoryCount());
-        Assert.assertEquals(9, p.getWeight());
+        Assert.assertEquals(9, p.getInventoryWeight());
         Assert.assertEquals("key", p.getItem(0).getName());
         Assert.assertEquals("hammer", p.getItem(1).getName());
         Assert.assertEquals("potion", p.getItem(2).getName());
@@ -49,7 +49,7 @@ public class PlayerTest {
         p.removeItem(1);
         //invenotry should now be [key, potion]
         Assert.assertEquals(2, p.getInventoryCount());
-        Assert.assertEquals(4, p.getWeight());
+        Assert.assertEquals(4, p.getInventoryWeight());
         Assert.assertEquals("key", p.getItem(0).getName());
         Assert.assertEquals("potion", p.getItem(1).getName());
         Assert.assertThrows(IllegalArgumentException.class, () -> {
@@ -63,7 +63,7 @@ public class PlayerTest {
         p.insertItem(key);
         //inventory should now be [key, potion, hammer, key]
         Assert.assertEquals(4, p.getInventoryCount());
-        Assert.assertEquals(10, p.getWeight());
+        Assert.assertEquals(10, p.getInventoryWeight());
         Assert.assertEquals("key", p.getItem(0).getName());
         Assert.assertEquals("potion", p.getItem(1).getName());
         Assert.assertEquals("hammer", p.getItem(2).getName());
@@ -77,7 +77,7 @@ public class PlayerTest {
         p.removeItem(2);
         //inventory should now be [potion, hammer]
         Assert.assertEquals(2, p.getInventoryCount());
-        Assert.assertEquals(8, p.getWeight());
+        Assert.assertEquals(8, p.getInventoryWeight());
         Assert.assertEquals("potion", p.getItem(0).getName());
         Assert.assertEquals("hammer", p.getItem(1).getName());
     }
@@ -95,9 +95,9 @@ public class PlayerTest {
         Assert.assertEquals(3, p.getHealth());
         p.decreaseHealth(e.DAMAGE);
         Assert.assertEquals(2, p.getHealth());
-        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        p.increaseHealth(((HealingItem)i).getHealingPoints());
         Assert.assertEquals(4, p.getHealth());
-        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        p.increaseHealth(((HealingItem)i).getHealingPoints());
         Assert.assertEquals(5, p.getHealth());
         p.decreaseHealth(e.DAMAGE);
         p.decreaseHealth(e.DAMAGE);
@@ -107,8 +107,8 @@ public class PlayerTest {
         Assert.assertEquals(0, p.getHealth());
         p.decreaseHealth(e.DAMAGE);
         Assert.assertEquals(0, p.getHealth());
-        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
-        p.increaseHealth(((HealingItem)i).HEALING_POINTS);
+        p.increaseHealth(((HealingItem)i).getHealingPoints());
+        p.increaseHealth(((HealingItem)i).getHealingPoints());
         Assert.assertEquals(4, p.getHealth());
     }
 

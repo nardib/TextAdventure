@@ -35,13 +35,17 @@ public class ItemContainer extends Item{
     /**
      * Lock of the container
      */
-    public final LockType lock;
+    private LockType lock;
 
     /**
      * ID of the lock
      */
     private int ID;
 
+    /**
+     * Default constructor for the ItemContainer class
+     */
+    public ItemContainer() {super();}
     
     /**
      * Constructor for the CluesItem class
@@ -54,32 +58,6 @@ public class ItemContainer extends Item{
      * @param ID ID of the lock
      */
     public ItemContainer (String name, String image, int currentRoom, Item[] items, LockType lock, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
-
-        ArrayIndexCount = items.length;
-        this.items = new Item[ArrayIndexCount];
-        for (int i = 0; i < ArrayIndexCount; i++) {
-            this.items[i] = items[i];
-        }
-        setUsingMessage();
-        this.lock = lock;
-        locked = false;
-        if (lock != LockType.NONE)
-            locked = true;
-        this.ID = ID;
-    }
-
-    /**
-     * Constructor for the CluesItem class
-     * 
-     * @param name name of the item
-     * @param image image of the item given as ImageIcon object
-     * @param currentRoom current room of the item
-     * @param items items in the container
-     * @param lock lock of the container
-     * @param ID ID of the lock
-     */
-    public ItemContainer (String name, ImageIcon image, int currentRoom, Item[] items, LockType lock, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
 
         ArrayIndexCount = items.length;
@@ -135,7 +113,7 @@ public class ItemContainer extends Item{
      */
     public boolean unlock(Key k) {
         if (lock == LockType.KEY){
-            if (k.ID == this.ID)
+            if (k.getID() == this.ID)
                 locked = false;
             return !locked;
         }
@@ -190,6 +168,15 @@ public class ItemContainer extends Item{
     }
 
     /**
+     * Method to get the items in the container
+     * 
+     * @return the items in the container
+     */
+    public Item[] getItems() {
+        return items;
+    }
+
+    /**
      * Method to get the number of items in the container
      * 
      * @return the number of items in the container
@@ -197,8 +184,6 @@ public class ItemContainer extends Item{
      * @throws IllegalArgumentException if the container is locked
      */
     public int getItemsLength() {
-        if (locked)
-            throw new IllegalArgumentException("The container is locked");
         return ArrayIndexCount;
     }
 
@@ -228,6 +213,56 @@ public class ItemContainer extends Item{
     public int getID() {
         return ID;
     }
+
+    /**
+     * Method to set the lock of the container
+     * 
+     * @param lock lock of the container
+     */
+    public void setLockType(LockType lock) {
+        this.lock = lock;
+    }
+
+    /**
+     * Method to set the ID of the lock
+     * 
+     * @param ID ID of the lock
+     */
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    /**
+     * Method to set the locked state of the container
+     * 
+     * @param locked locked state of the container
+     */
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    /**
+     * Method to set the items in the container
+     * 
+     * @param items items in the container
+     */
+    public void setItems(Item[] items) {
+        ArrayIndexCount = items.length;
+        this.items = new Item[ArrayIndexCount];
+        for (int i = 0; i < ArrayIndexCount; i++) {
+            this.items[i] = items[i];
+        }
+    }
+
+    /**
+     * Method to set the number of items in the container
+     * 
+     * @param ArrayIndexCount number of items in the container
+     */
+    public void setItemsLength(int ArrayIndexCount) {
+        this.ArrayIndexCount = ArrayIndexCount;
+    }
+
 
     /**
      * Clone the item container

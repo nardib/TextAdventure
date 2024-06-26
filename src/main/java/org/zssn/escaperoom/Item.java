@@ -2,6 +2,21 @@ package org.zssn.escaperoom;
 
 import javax.swing.ImageIcon;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = ClueItem.class, name = "clue item"),
+    @JsonSubTypes.Type(value = HealingItem.class, name = "healing item"),
+    @JsonSubTypes.Type(value = HiderItem.class, name = "hider item"),
+    @JsonSubTypes.Type(value = HidingItem.class, name = "hiding item"),
+    @JsonSubTypes.Type(value = ItemContainer.class, name = "item container"),
+    @JsonSubTypes.Type(value = Key.class, name = "key"),
+    @JsonSubTypes.Type(value = Note.class, name = "note"),
+    @JsonSubTypes.Type(value = Star.class, name = "star"),
+    @JsonSubTypes.Type(value = StarHole.class, name = "star hole"),})
+
 /**
  * Class Item - Represents an item in the game. It has a name, an image, a weight, a current room, and a pickable state.
  */
@@ -14,12 +29,12 @@ public class Item {
     /**
      * Icon of the Item
      */
-    protected ImageIcon icon;
+    protected String icon;
 
     /**
      * Weight of the Item
      */
-    public final int WEIGHT;
+    protected int weight;
 
     /**
      * Current room of the Item
@@ -29,12 +44,17 @@ public class Item {
     /**
      * Pickable state of the Item
      */
-    public final boolean PICKABLE;
+    protected boolean pickable;
 
     /**
      * Message to show when the item is used
      */
     protected String usingMessage;
+
+    /**
+     * Default constructor for the Item
+     */
+    public Item () {}
 
     /**
      * Constructor for the Item
@@ -48,103 +68,124 @@ public class Item {
      */
     public Item(String name, String image, int weight, int currentRoom, boolean pickable)
     {
-        icon = new ImageIcon(getClass().getResource("/" + image));
-        setName(name);
-        setRoom(currentRoom);
-        this.PICKABLE = pickable;
-
-        if(weight >= 0)
-            this.WEIGHT = weight;
-        else
-            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
-    }
-
-    /**
-     * Constructor for the Item
-     * 
-     * @param name name of the item
-     * @param image image of the item given as ImageIcon object
-     * @param weight weight of the item
-     * @param currentRoom current room of the item
-     * @param pickable pickable state of the item
-     * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
-     */
-    public Item(String name, ImageIcon image, int weight, int currentRoom, boolean pickable)
-    {
         icon = image;
         setName(name);
-        setRoom(currentRoom);
-        this.PICKABLE = pickable;
+        setCurrentRoom(currentRoom);
+        this.pickable = pickable;
 
         if(weight >= 0)
-            this.WEIGHT = weight;
+            this.weight = weight;
         else
             throw new IllegalArgumentException("Weight must be greater than or equal to 0");
     }
 
     /**
-     * Retrurns the icon of the image
+     * Return the name of the item
      * 
-     * @return icon of the image
+     * @return name of the item
      */
-    public ImageIcon getIcon()
-    {
-        return icon;
-    }
-
-    /**
-     * Returns the roomt of the object
-     * 
-     * @return room of the object as an integer (0 if the object is picked by the player)
-     */
-    public int getRoom()
-    {
-        return currentRoom;
-    }
-    
-    /**
-     * Returns the name of the object
-     * 
-     * @return name of the object
-     */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
-     * Returns the using message of the object
+     * Return the weight of the item
      * 
-     * @return using message of the object
+     * @return weight of the item
+     */
+    public int getWeight() {
+        return weight;
+    }
+
+    /**
+     * Return the current room of the item
+     * 
+     * @return current room of the item
+     */
+    public int getCurrentRoom() {
+        return currentRoom;
+    }
+
+    /**
+     * Return the pickable state of the item
+     * 
+     * @return pickable state of the item
+     */
+    public boolean isPickable() {
+        return pickable;
+    }
+
+    /**
+     * Return the using message of the item
+     * 
+     * @return using message of the item
      */
     public String getUsingMessage() {
         return usingMessage;
     }
 
     /**
-     * Set the current room (if 0, then it is picked by the player)
+     * Set the name of the item
      * 
-     * @param room room of the object given as an integer
+     * @param name name of the item
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Set the icon of the item
+     * 
+     * @param icon icon of the item
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * Set the weight of the item
+     * 
+     * @param weight weight of the item
+     * @throws IllegalArgumentException if the weight is less than 0
+     */
+    public void setWeight(int weight) {
+        if(weight >= 0)
+            this.weight = weight;
+        else
+            throw new IllegalArgumentException("Weight must be greater than or equal to 0");
+    }
+
+    /**
+     * Set the current room of the item
+     * 
+     * @param currentRoom current room of the item
      * @throws IllegalArgumentException if the room is not between 0 and 9
      */
-    public void setRoom(int room)
-    {
-        if(room >= 0 && room <= 9) {
-            currentRoom = room;
+    public void setCurrentRoom(int currentRoom) {
+        if(currentRoom >= 0 && currentRoom <= 9) {
+            this.currentRoom = currentRoom;
             return;
         }
         throw new IllegalArgumentException("Room must be between 0 and 9");
     }
 
     /**
-     * Method to set the name of an item
+     * Set the pickable state of the item
      * 
-     * @param name name of the item
+     * @param pickable pickable state of the item
      */
-    private void setName(String name)
-    {
-        this.name = name;
+    public void setPickable(boolean pickable) {
+        this.pickable = pickable;
     }
+
+    /**
+     * Set the using message of the item
+     * 
+     * @param usingMessage using message of the item
+     */
+    public void setUsingMessage(String usingMessage) {
+        this.usingMessage = usingMessage;
+    }   
 
     /**
      * Clone the item
@@ -154,7 +195,7 @@ public class Item {
     @Override
     public Item clone()
     {
-        return new Item(name, icon, WEIGHT, currentRoom, PICKABLE);
+        return new Item(name, icon, weight, currentRoom, pickable);
     }
 
     /**
@@ -169,6 +210,6 @@ public class Item {
         if (!(obj instanceof Item || obj == null))
             return false;
         Item i = (Item) obj;
-        return name.equals(i.name) && icon.equals(i.icon) && WEIGHT == i.WEIGHT && currentRoom == i.currentRoom && PICKABLE == i.PICKABLE;
+        return name.equals(i.name) && icon.equals(i.icon) && weight == i.weight && currentRoom == i.currentRoom && pickable == i.pickable;
     }
 }

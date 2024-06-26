@@ -5,12 +5,6 @@ import javax.swing.ImageIcon;
  * Notes class that extends Item. It represents a note that can be read by the player.
  */
 public class Note extends Item {
-
-    /**
-     * Message that the note contains
-     */
-    public final String message;
-
     /**
      * Weight of the note is 0
      */
@@ -20,6 +14,11 @@ public class Note extends Item {
      * The note is pickable
      */
     public final static boolean PICKABLE = true;
+
+    /**
+     * Default constructor for the Notes
+     */
+    public Note() {super();}
     
     /**
      * Constructor for the Notes
@@ -33,23 +32,6 @@ public class Note extends Item {
     public Note(String name, String image, int currentRoom, String message)
     {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.message = message;
-        usingMessage = "This note says: " + message;
-    }
-
-    /**
-     * Constructor for the Notes
-     * 
-     * @param name name of the note
-     * @param image image of the note given as an ImageIcon object
-     * @param currentRoom current room of the note
-     * @param message message that the note contains
-     * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
-     */
-    public Note(String name, ImageIcon image, int currentRoom, String message)
-    {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.message = message;
         usingMessage = "This note says: " + message;
     }
 
@@ -61,7 +43,7 @@ public class Note extends Item {
     @Override
     public Note clone()
     {
-        return new Note(name, icon, currentRoom, message);
+        return new Note(name, icon, currentRoom, usingMessage.substring(16));
     }
 
     /**
@@ -76,6 +58,6 @@ public class Note extends Item {
         if (!(obj instanceof Note || obj == null))
             return false;
         Note other = (Note) obj;
-        return name.equals(other.name) && message.equals(other.message) && currentRoom == other.currentRoom && icon.equals(other.icon);
+        return name.equals(other.name) && usingMessage.equals(other.usingMessage) && currentRoom == other.currentRoom && icon.equals(other.icon);
     }
 }

@@ -38,6 +38,11 @@ public class Character {
      * constants value to move the character in the west room
      */
     public final static int CROSS_WEST = -1;
+
+    /**
+     * Default constructor for the Character
+     */
+    public Character() {}
     
     /**
      * Constructior for the Character
@@ -108,6 +113,16 @@ public class Character {
     }
 
     /**
+     * Method to set the gender
+     * 
+     * @param g the gender to set
+     */
+    public void setGender(Gender g)
+    {
+        this.gender = g;
+    }
+
+    /**
      * Method to get the gender of the character as gender type
      * 
      * @return gender of the character
@@ -145,7 +160,7 @@ public class Character {
      * 
      * @return a string containing the pronoun of the character ("he", "she" or "they")
      */
-    public String getPronoun() {
+    public String returnPronoun() {
         switch (gender) {
             case MALE:
                 return "he";

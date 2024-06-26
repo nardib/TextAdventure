@@ -19,6 +19,11 @@ public class ClueItem extends Item{
     public final static boolean PICKABLE = false;
 
     /**
+     * Default constructor for the ClueItem class
+     */
+    public ClueItem() {super();}
+
+    /**
      * Constructor for the CluesItem class
      * 
      * @param name name of the item
@@ -27,19 +32,6 @@ public class ClueItem extends Item{
      * @param usingMessage message to show when the item is used
      */
     public ClueItem(String name, String image, int currentRoom, String usingMessage) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.usingMessage = usingMessage;
-    }
-
-    /**
-     * Constructor for the CluesItem class
-     * 
-     * @param name name of the item
-     * @param image image of the item given as a ImageIcon object
-     * @param currentRoom current room of the item
-     * @param usingMessage message to show when the item is used
-     */
-    public ClueItem(String name, ImageIcon image, int currentRoom, String usingMessage) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.usingMessage = usingMessage;
     }

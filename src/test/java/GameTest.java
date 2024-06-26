@@ -293,7 +293,7 @@ public class GameTest {
         g.nextMove("use star hole 9");
         g.nextMove("n");
         g.nextMove("use star hole 3");
-        Assert.assertFalse(g.isLost());
-        Assert.assertTrue(g.isWin());
+        Assert.assertFalse(g.checkLost());
+        Assert.assertTrue(g.checkWin());
     }
 }

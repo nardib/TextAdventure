@@ -9,7 +9,7 @@ public class Key extends Item {
     /**
      * Id of the key to match the correct lock
      */
-    public final int ID;
+    private int ID;
 
     /**
      * The weight of the key is 1
@@ -20,6 +20,11 @@ public class Key extends Item {
      * The key is pickable
      */
     public final static boolean PICKABLE = true;
+
+    /**
+     * Default constructor for the Key
+     */
+    public Key() {super();}
 
     /**
      * Constructor for the Key
@@ -38,19 +43,22 @@ public class Key extends Item {
     }
 
     /**
-     * Constructor for the Key
+     * Get the ID of the key
      * 
-     * @param name name of the key
-     * @param id id of the key
-     * @param image image of the key given as an ImageIcon object
-     * @param currentRoom current room of the key
-     * @throws IllegalArgumentException if the room is not between 0 and 9
-     */
-    public Key(String name, int id, ImageIcon image, int currentRoom)
+     * @return the ID of the key
+     */ 
+    public int getID()
     {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+        return ID;
+    }
+
+    /**
+     * Set the ID of the key
+     * 
+     * @param id the ID of the key
+     */
+    public void setID(int id) {
         this.ID = id;
-        usingMessage = "To use the key, face the wall with the item container to unlock and use the item with 'use <itemContainer>'";
     }
 
     /**

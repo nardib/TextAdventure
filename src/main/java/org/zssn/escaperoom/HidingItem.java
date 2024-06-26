@@ -17,6 +17,11 @@ public class HidingItem extends Item {
     public final static boolean PICKABLE = false;
 
     /**
+     * Default constructor for the HidingItem class
+     */
+    public HidingItem() {super();}
+
+    /**
      * Constructor for the HidingItem
      * 
      * @param name name of the hiding item
@@ -28,19 +33,6 @@ public class HidingItem extends Item {
         super (name, image, currentRoom, currentRoom, false);
         usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
     }
-
-    /**
-     * Constructor for the HidingItem
-     * 
-     * @param name name of the hiding item
-     * @param image image of the hiding item given as a ImageIcon object
-     * @param currentRoom current room of the hiding item
-    */
-    public HidingItem(String name, ImageIcon image, int currentRoom)
-    {
-        super (name, image, currentRoom, currentRoom, false);
-        usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
-    }    
 
     /**
      * Clone the hiding item

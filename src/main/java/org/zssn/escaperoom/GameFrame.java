@@ -14,7 +14,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Game object
      */
-    private Game game = new Game("Cristina", "f", "Giancarlo", "neutral", 1, true); // Oggetto del gioco
+    private GameManager game = new GameManager(); // Oggetto del gioco
     //int x = 0; // Coordinata X del mouse
     //int y = 0; // Coordinata Y del mouse
     /**
@@ -71,7 +71,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         // Carica le immagini dei muri
         for (int i = 0; i < 36; i++) {
-            Images[i] = (Image) Room.Walls[i].getCombinedImage();
+            Images[i] = (Image) Room.Walls[i].returnCombinedImage();
         }
 
         // Configura il pannello centrale
@@ -83,7 +83,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
-        graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+        graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
         center.add(graphic, BorderLayout.CENTER);
 
         // Configura il terminale e lo scorrimento
@@ -111,7 +111,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
-                    graphic.setIcon(new ImageIcon(Images[(game.getPlayer().getCurrentRoom() - 1) * 4 + game.getPlayer().getCurrentDirection().ordinal()]));
+                    graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                     updatePlayerHealthLabel();
                     inputField.setText("");
                 }
@@ -253,8 +253,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
-        System.setOut(printStream);
-        System.setErr(printStream);
+        //System.setOut(printStream);
+        //System.setErr(printStream);
 
         frame.setVisible(true);
         toggleFullscreen();
@@ -265,7 +265,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
      */
     private void updatePlayerHealthLabel() {
         StringBuilder heartSymbols = new StringBuilder();
-        for (int i = 0; i < game.getPlayer().getHealth(); i++) {
+        for (int i = 0; i < game.getGame().getPlayer().getHealth(); i++) {
             heartSymbols.append("♥");
         }
         playerHelthLabel.setText("SALUTE: " + heartSymbols.toString());

@@ -29,12 +29,12 @@ public class Game {
     /**
      * Number of player turns before the enemy moves
      */
-    private final int enemycount;
+    private int enemycount;
 
     /**
      * Tells if the enemey attacks the player
      */
-    private final boolean enemyAttacks;
+    private boolean enemyAttacks;
 
     /**
      * Counter for the number of player turns before the enemy moves
@@ -65,6 +65,13 @@ public class Game {
             + "- undo/back : goes back of a move in the game\n"
             + "- save : save the current state of the game\n"
             + "- quit/exit : exit the game\n";
+
+    /** 
+     * Default constructor to initialize the game variables
+     */
+    public Game() {
+        caretaker = new GameCaretaker();
+    }
 
     /**
      * Constructor to initialize the game variables.
@@ -111,7 +118,7 @@ public class Game {
             else if (input.equals("wait")) {
                 return player.getName() + " is still hidden";
             }
-            throw new IllegalArgumentException(player.getName() + " is hidden, " + player.getPronoun() + " can only \"wait\" or \"unhide\".");
+            throw new IllegalArgumentException(player.getName() + " is hidden, " + player.returnPronoun() + " can only \"wait\" or \"unhide\".");
         }
 
         //commands to change the wall the player is facing
@@ -179,35 +186,20 @@ public class Game {
         //command to take an item in the room
         else if (input.length() > 5 && input.substring(0, 4).equalsIgnoreCase("take")) {
             try {
-                Item[] items = getItemsInWall();
+                Item[] items = returnItemsInWall();
                 
                 for (int i = 0; i < items.length; i++) {
                     if (items[i].getName().equalsIgnoreCase(input.substring(5))) {
-                        if (!items[i].PICKABLE)
+                        if (!items[i].isPickable())
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's not pickable";
-                        if (player.getWeight() + items[i].WEIGHT > Player.MAX_WEIGHT)
+                        if (player.getInventoryWeight() + items[i].getWeight() > Player.MAX_WEIGHT)
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's too heavy";
-                        items[i].setRoom(0);
+                        items[i].setCurrentRoom(0);
                         Item item = items[i].clone();
                         player.insertItem(item);
                         Wall w = map.getWall(player.getCurrentRoom(), player.getCurrentDirection());
                         w.removeItem(i);
                         map.setWall(player.getCurrentRoom(), player.getCurrentDirection(), w);
-                        /*
-                        switch (player.getCurrentDirection()) {
-                            case NORTH:
-                                map.getRoom(player.getCurrentRoom()).getNWall().removeItem(i);
-                                break;
-                            case EAST:
-                                map.getRoom(player.getCurrentRoom()).getEWall().removeItem(i);
-                                break;
-                            case SOUTH:
-                                map.getRoom(player.getCurrentRoom()).getSWall().removeItem(i);
-                                break;
-                            case WEST:
-                                map.getRoom(player.getCurrentRoom()).getWWall().removeItem(i);
-                                break;
-                        }*/
                         return player.getName() + " took the item: " + item.getName().toLowerCase();
                     }
                 }
@@ -234,7 +226,7 @@ public class Game {
                             if (player.getHealth() == 5)
                                 return player.getName() + " already has full health";
                             HealingItem healingItem = (HealingItem) item;
-                            player.increaseHealth(healingItem.HEALING_POINTS);
+                            player.increaseHealth(healingItem.getHealingPoints());
                             player.removeItem(i);
                             return healingItem.getUsingMessage();
                         }
@@ -256,7 +248,7 @@ public class Game {
             //if there is no item in the inventory i have to check if there is an hiding item in the room
             Item[] items = null;
             try {
-                items = getItemsInWall();
+                items = returnItemsInWall();
             } catch (IllegalAccessException e) {
                 return e.getMessage();
             } catch (IllegalStateException e) {
@@ -315,7 +307,7 @@ public class Game {
                                 for (int j = 0; j < player.getInventoryCount(); j++) {
                                     if (player.getItem(j) instanceof Key) {
                                         Key key = (Key) player.getItem(j);
-                                        if (key.ID == itemContainer.getID()) {
+                                        if (key.getID() == itemContainer.getID()) {
                                             itemContainer.unlock(key);
                                             player.removeItem(j);
                                             return player.getName() + " unlocked the " + itemContainer.getName() + " with the " + key.getName().toLowerCase() + ".\n" + itemContainer.getUsingMessage();
@@ -352,7 +344,7 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
-                                if (itemContainer.getItem(j).WEIGHT + player.getWeight() > Player.MAX_WEIGHT)
+                                if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
                                     return player.getName() + " can't take the item, it's too heavy";
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
                                     Item removedItem = itemContainer.removeItem(j);
@@ -373,11 +365,11 @@ public class Game {
                         for (int j = 0; j < player.getInventoryCount(); j++) {
                             if (player.getItem(j) instanceof Star) {
                                 Star star = (Star) player.getItem(j);
-                                if (star.ID == starHole.ID) {
+                                if (star.getID() == starHole.getID()) {
                                     starHole.fill(star);
                                     player.removeItem(j);
                                     filledStarHoles++;
-                                    return player.getName() + " filled the star hole " + starHole.ID + " with the " + star.getName().toLowerCase();
+                                    return player.getName() + " filled the star hole " + starHole.getID() + " with the " + star.getName().toLowerCase();
                                 }
                             }
                         }
@@ -404,7 +396,7 @@ public class Game {
                 isGameOn = false;
                 return "Game Over! " + enemy.getName() + " killed " + player.getName() + "!";
             }
-            return enemy.getName() + " attacked " + player.getName() + ", now " + player.getPronoun() + " has " + player.getHealth() + " health points left";
+            return enemy.getName() + " attacked " + player.getName() + ", now " + player.returnPronoun() + " has " + player.getHealth() + " health points left";
         }
         else {
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
@@ -431,9 +423,9 @@ public class Game {
             return out + HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.getPronoun() + " has " + player.getHealth() + " health points\n"
-                    + capitalizeFistLetter(player.getPronoun()) + " has the following items in the invenotory: " + player.printInventory()
-                    + "\nThe total weight of the items " + player.getName() + " is " + player.getWeight() + "/10\n"
+            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points\n"
+                    + capitalizeFistLetter(player.returnPronoun()) + " has the following items in the invenotory: " + player.printInventory()
+                    + "\nThe total weight of the items " + player.getName() + " is " + player.getInventoryWeight() + "/10\n"
                     + "The number of star holes filled is " + filledStarHoles + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
         
@@ -457,6 +449,10 @@ public class Game {
         if (input.equalsIgnoreCase("look") && !player.isHidden()) {
             return out + printLook();
         }
+        if (input.equalsIgnoreCase("load")) {
+            saveCurrentState();
+            return out + "Game loaded";
+        }
 
         // player turn
         try {
@@ -470,9 +466,9 @@ public class Game {
             out += "\n" + enemyTurn();
         count++;
         
-        if(isGameOver() && player.getHealth() == 0)
+        if(checkGameOver() && player.getHealth() == 0)
             return out + "\nGame Over! " + enemy.getName() + " killed you!";
-        if(isGameOver() && filledStarHoles == 10)
+        if(checkGameOver() && filledStarHoles == 10)
             return out + "\nYou win! You filled all the star holes!";
         
         //i save the state of the game after each move
@@ -486,7 +482,7 @@ public class Game {
      * 
      * @return true if the game is over, false otherwise
      */
-    public boolean isGameOver() {
+    public boolean checkGameOver() {
         if (player.getHealth() == 0)
             isGameOn = false;
 
@@ -506,11 +502,20 @@ public class Game {
     }
 
     /**
+     * Method to set the game on
+     * 
+     * @param isGameOn tells if the game is on or not
+     */
+    public void setGameOn(boolean isGameOn) {
+        this.isGameOn = isGameOn;
+    }
+
+    /**
      * Method to get if the game is win
      * 
      * @return true if the game is win, false otherwise
      */
-    public boolean isWin() {
+    public boolean checkWin() {
         return filledStarHoles == 10 && !isGameOn;
     }
 
@@ -519,7 +524,7 @@ public class Game {
      * 
      * @return true if the game is lost, false otherwise
      */
-    public boolean isLost() {
+    public boolean checkLost() {
         return player.getHealth() == 0 && !isGameOn;
     }
 
@@ -533,12 +538,30 @@ public class Game {
     }
 
     /**
+     * Method to set the player of the game
+     * 
+     * @param player the player to set
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /**
      * Method to get the enemy
      * 
      * @return the enemy
      */
     public Enemy getEnemy() {
         return enemy;
+    }
+
+    /**
+     * Method to set the enemy of the game
+     * 
+     * @param enemy the enemy to set
+     */
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
     }
 
     /**
@@ -549,6 +572,86 @@ public class Game {
     public Map getMap() {
         return map;
     }
+
+    /**
+     * Method to set the map of the game
+     * 
+     * @param map the map to set
+     */
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    /**
+     * Method to get the number of player turns before the enemy moves
+     * 
+     * @return the number of player turns before the enemy moves
+     */
+    public int getEnemyCount() {
+        return enemycount;
+    }
+
+    /**
+     * Method to set the number of player turns before the enemy moves
+     * 
+     * @param enemycount the number of player turns before the enemy moves
+     */
+    public void setEnemyCount(int enemycount) {
+        this.enemycount = enemycount;
+    }
+
+    /**
+     * Method to get if the enemy attacks the player
+     * 
+     * @return true if the enemy attacks the player, false otherwise
+     */
+    public boolean getEnemyAttacks() {
+        return enemyAttacks;
+    }
+
+    /**
+     * Method to set if the enemy attacks the player
+     * 
+     * @param enemyAttacks tells if the enemy attacks the player
+     */
+    public void setEnemyAttacks(boolean enemyAttacks) {
+        this.enemyAttacks = enemyAttacks;
+    }
+
+    /**
+     * Counter for the number of player turns before the enemy moves
+     */
+    public int getCount() {
+        return count;
+    }
+
+    /**
+     * Method to set the counter for the number of player turns before the enemy moves
+     * 
+     * @param count the counter for the number of player turns before the enemy moves
+     */
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    /**
+     * Method to get the number of star holes filled
+     * 
+     * @return the number of star holes filled
+     */
+    public int getFilledStarHoles() {
+        return filledStarHoles;
+    }
+
+    /**
+     * Method to set the number of star holes filled
+     * 
+     * @param filledStarHoles the number of star holes filled
+     */
+    public void setFilledStarHoles(int filledStarHoles) {
+        this.filledStarHoles = filledStarHoles;
+    }
+
     /**
      * Class for memento pattern to implement "undo" function
      */
@@ -751,7 +854,7 @@ public class Game {
      * @throws IllegalAccessException if there are no items in the wall
      * @throws IllegalStateException if the player is not facing any wall
      */
-    public Item[] getItemsInWall() throws IllegalAccessException, IllegalStateException{
+    public Item[] returnItemsInWall() throws IllegalAccessException, IllegalStateException{
         Item[] items = new Item[0];
         switch (player.getCurrentDirection()) {
             case NORTH:
@@ -794,7 +897,7 @@ public class Game {
      */
     private String printLook() {
         try {
-            Item[] items = getItemsInWall();
+            Item[] items = returnItemsInWall();
             if (items.length == 0)
                 return "There are no items in this wall";
 

@@ -23,7 +23,12 @@ public class Star extends Item {
     /**
      * ID of the star
      */
-    public final int ID;
+    private int ID;
+
+    /** 
+     * Defualt constructor for Star item 
+    */
+    public Star() {super();}
 
     /**
      * Constructor for the Star class
@@ -40,19 +45,21 @@ public class Star extends Item {
     }
 
     /**
-     * Constructor for the Star class
+     * Returns the ID of the star
      * 
-     * @param name name of the star
-     * @param image image of the star given as a ImageIcon object
-     * @param currentRoom current room of the star
-     * @param ID ID of the star
+     * @return the ID of the star
      */
-    public Star (String name, ImageIcon image, int currentRoom, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.ID = ID;
-        usingMessage = "To use the star to fill a star hole type 'use <star_hole_name>' facing the direction of the star hole";
+    public int getID() {
+        return ID;
     }
 
+    /**
+     * Set the ID of the star
+     */
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    
     /**
      * Clone the star
      * 

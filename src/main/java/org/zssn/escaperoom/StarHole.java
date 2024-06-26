@@ -20,12 +20,17 @@ public class StarHole extends Item {
     /**
      * ID of the starHole
      */
-    public final int ID;
+    private int ID;
 
     /**
      * Filled state of the starHole
      */
     private boolean filled;
+
+    /**
+     * Default constructor for the StarHole class
+     */
+    public StarHole() {super();}
 
     /**
      * Constructor for the StarHole class
@@ -36,21 +41,6 @@ public class StarHole extends Item {
      * @param ID ID of the starHole
      */
     public StarHole (String name, String image, int currentRoom, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
-        this.filled = false;
-        this.ID = ID;
-        usingMessage = "To to fill a star hole type 'use <star_hole_name>' facing the direction of the star hole having in the inventory the star with the same ID";
-    }
-
-    /**
-     * Constructor for the StarHole class
-     * 
-     * @param name name of the starHole
-     * @param image image of the starHole given as a ImageIcon object
-     * @param currentRoom current room of the starHole
-     * @param ID ID of the starHole
-     */
-    public StarHole (String name, ImageIcon image, int currentRoom, int ID) {
         super(name, image, WEIGHT, currentRoom, PICKABLE);
         this.filled = false;
         this.ID = ID;
@@ -69,7 +59,7 @@ public class StarHole extends Item {
         if (this.filled) {
             throw new IllegalArgumentException("StarHole already filled");
         }
-        if (star.ID == this.ID) {
+        if (star.getID() == this.ID) {
             this.filled = true;
             return true;
         }
@@ -85,6 +75,31 @@ public class StarHole extends Item {
         return filled;
     }
 
+    /**
+     * Method to get the ID of the starHole
+     * 
+     * @return the ID of the starHole
+     */
+    public int getID() {
+        return ID;
+    }
+
+    /**
+     * Set the ID of the starHole
+     */
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    /**
+     * Set the filled state of the starHole
+     * 
+     * @param filled the filled state of the starHole
+     */
+    public void setFilled(boolean filled) {
+        this.filled = filled;
+    }
+    
     /**
      * Clone the starHole
      * 

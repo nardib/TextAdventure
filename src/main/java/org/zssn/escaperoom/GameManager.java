@@ -16,9 +16,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class GameManager {
-    private static final String BUCKET_NAME = "znnsproject"; //name of the bucket
+    private static final String BUCKET_NAME = "nardi-zssn-project"; //name of the bucket
     private static final String KEY_NAME = "game-state.json"; //name of the file to save the data in
-    private final Region REGION = Region.US_EAST_1; // regione del Bucket
+    private final Region REGION = Region.EU_NORTH_1; // regione del Bucket
+
+    private Game g = new Game("Filippo", "f", "Francesca", "m", 1, true);
 
     public void saveProgress(Game game) { //fuction to be used for saving status
         String message = serialize(game);
@@ -64,6 +66,7 @@ public class GameManager {
         try {
             // Crea un file temporaneo e scrivi il contenuto
             Path tempFile = Files.createTempFile("temp", ".json");
+
             Files.write(tempFile, message.getBytes(), StandardOpenOption.WRITE);    //Nardi: i changed contet with message (now compile, but not sure if it's correct)
 
             // Crea una richiesta PutObjectRequest
@@ -92,6 +95,11 @@ public class GameManager {
         try {
             // Scarica il file dal bucket S3
             Path tempFile = Files.createTempFile("temp", ".json");
+
+            if (Files.exists(tempFile)) {
+                Files.delete(tempFile);
+            }
+
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(BUCKET_NAME)
                     .key(KEY_NAME)
@@ -111,5 +119,29 @@ public class GameManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Game getGame() {
+        return g;
+    }
+
+    public String nextMove(String move) {
+        move = move.trim();
+        if (move.equals("print")){
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                System.out.println(objectMapper.writeValueAsString(g.getPlayer()));
+                System.out.println(objectMapper.writeValueAsString(g.getEnemy()));
+                System.out.println(objectMapper.writeValueAsString(g.getMap()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "printed";
+        }
+        if (move.equals("save"))
+            saveProgress(g);
+        if (move.equals("load"))
+            g = resumeProgress();
+        return g.nextMove(move);
     }
 }

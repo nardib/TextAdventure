@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Class Wall - Represents a wall in the game. It has an image, (possibly) a door, and items.
  */
@@ -41,6 +43,11 @@ public class Wall {
     private int itemsLength;
 
     /**
+     * Default constructor for the Wall
+     */
+    public Wall() {}
+
+    /**
      * Constructor for the Wall
      * @param w The image of the wall
      * @param d Tells if the wall has a door
@@ -51,6 +58,17 @@ public class Wall {
         this.wall = w;
         this.hasDoor = d;
         this.combined = deepCopy(w);  // Copy the wall image to combined
+        setItems(items);
+    }
+
+    /**
+     * Constructor for the Wall
+     * @param w The image of the wall
+     * @param d Tells if the wall has a door
+     */
+    public Wall(boolean d, Item[] items) 
+    {
+        this.hasDoor = d;
         setItems(items);
     }
 
@@ -89,7 +107,7 @@ public class Wall {
      * Get the combined image of the wall and the items
      * @return The combined image
      */
-    public BufferedImage getCombinedImage() 
+    public BufferedImage returnCombinedImage() 
     {
         return combined;
     }
@@ -115,6 +133,16 @@ public class Wall {
     public void setDoor()
     {
         hasDoor = true;
+    }
+
+    /**
+     * Set the door of the wall
+     * 
+     * @param hasDoor true if the wall has a door, false otherwise
+     */
+    public void setDoor(boolean hasDoor) 
+    {
+        this.hasDoor = hasDoor;
     }
 
     /**
@@ -155,6 +183,15 @@ public class Wall {
     }
 
     /**
+     * Set the items length of the wall
+     * 
+     * @param items the items  length of the wall
+     */
+    public void setItemsLength(int itemsLength) {
+        this.itemsLength = itemsLength;
+    }
+
+    /**
      * Check if the room has items
      * 
      * @return true if the room has items, false otherwise
@@ -162,6 +199,16 @@ public class Wall {
     public boolean hasItems()
     {
         return items != null && items.length > 0;
+    }
+
+    /**
+     * Get the items of the wall
+     * 
+     * @return the items of the wall
+     */
+    public Item[] getItems()
+    {
+        return items;
     }
 
     /**
@@ -201,11 +248,11 @@ public class Wall {
         itemsLength--;
     }
 
-    /**
+    /*
      * Clone the wall
      * 
      * @return the cloned wall
-     */
+     
     @Override
     public Wall clone(){
         if (items == null)
@@ -216,6 +263,23 @@ public class Wall {
         Wall w = new Wall(deepCopy(wall), hasDoor, items);
         for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet())
             w.addItemImages(deepCopy(entry.getValue()), new Point(entry.getKey()));
+        w.itemsLength = this.itemsLength;
+        return w;
+    }*/
+
+    /**
+     * Clone the wall
+     * 
+     * @return the cloned wall
+     */
+    @Override
+    public Wall clone(){
+        if (items == null)
+            return new Wall(hasDoor, null);
+        Item[] items = new Item[this.items.length];
+        for (int i = 0; i < this.items.length; i++)
+            items[i] = this.items[i].clone();
+        Wall w = new Wall(hasDoor, items);
         w.itemsLength = this.itemsLength;
         return w;
     }

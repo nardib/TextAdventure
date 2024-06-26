@@ -42,7 +42,7 @@ public class Player extends Character{
     /**
      * Max number of notes in the map
      */
-    private final int MAX_NOTES = 10;
+    private final static int MAX_NOTES = 10;
 
     /**
      * The direction the player is facing
@@ -52,7 +52,7 @@ public class Player extends Character{
     /**
      * The defualt value for the max health of the player
      */
-    public final int MAX_HEALTH = 5;
+    public final static int MAX_HEALTH = 5;
 
     /**
      * The defualt value for the max weigth the player can carry
@@ -63,6 +63,13 @@ public class Player extends Character{
      * The defualt value for the starting room of the player
      */
     public final static int STARTING_ROOM = 5;
+
+    /**
+     * Default constructor for the Player
+     */
+    public Player() {
+        super();
+    }
 
     /**
      * Creates a new player with the given name and a given gender. The standard position for the spawn is the room 5 and the standard direction is north. The standard health is 5
@@ -140,13 +147,26 @@ public class Player extends Character{
     }
 
     /**
+     * Set the health of the player
+     * 
+     * @param h the new health of the player
+     * @throws IllegalArgumentException if the health is not in the range of 0-5
+     */
+    public void setHealth(int h)
+    {
+        if (h < 0 || h > 5)
+            throw new IllegalArgumentException("Invalid health value, it must be in the range of 0-5");
+        health = h;
+    }
+
+    /**
      * Insert an Item in the inventory
      * 
      * @param i the item to insert
      */
     public void insertItem(Item i)
     {
-        if (!i.PICKABLE)
+        if (!i.isPickable())
             throw new IllegalArgumentException("The item is not pickable");
         if (i instanceof Note)
         {
@@ -156,9 +176,9 @@ public class Player extends Character{
             notesCount++;
             return;
         }
-        if (WeightCount + i.WEIGHT > 10)
+        if (WeightCount + i.getWeight() > 10)
             throw new IllegalStateException("The item weight exceeds the max carriable weight");
-        WeightCount += i.WEIGHT;
+        WeightCount += i.getWeight();
         inventory[ArrayIndexCount] = i;
         ArrayIndexCount++;
     }
@@ -179,7 +199,7 @@ public class Player extends Character{
         //i remove the item i and i shift all the other items to the left
         inventory[i] = null;
         inventory = compactedInventory();
-        WeightCount -= out.WEIGHT;
+        WeightCount -= out.getWeight();
         ArrayIndexCount--;
         return out;
     }
@@ -192,6 +212,15 @@ public class Player extends Character{
     public Item[] getInventory()
     {
         return inventory;
+    }
+
+    /**
+     * Set the inventory of the player
+     * 
+     * @param i the new inventory of the player
+     */
+    public void setInventory(Item[] i) {
+        inventory = i;
     }
 
     /**
@@ -222,13 +251,31 @@ public class Player extends Character{
     }
 
     /**
+     * Set the number of items in the inventory
+     *
+     * @param n the number of items in the inventory
+     */
+    public void setInventoryCount(int n) {
+        ArrayIndexCount = n;
+    }
+
+    /**
      * Returns the total weigth of the items in the inventory
      * 
      * @return the total weigth of the items in the inventory
      */
-    public int getWeight()
+    public int getInventoryWeight()
     {
         return WeightCount;
+    }
+
+    /**
+     * Set the total weigth of the items in the inventory
+     * 
+     * @param w the total weigth of the items in the inventory
+     */
+    public void setInventoryWeight(int w) {
+        WeightCount = w;
     }
 
     /**
@@ -258,6 +305,15 @@ public class Player extends Character{
     }
 
     /**
+     * Set the notes inventory 
+     * 
+     * @param n the new notes inventory
+     */
+    public void setNotesInventory(Note[] n) {
+        notesInventory = n;
+    }
+
+    /**
      * Returns the number of notes in the inventory
      * 
      * @return the number of notes in the inventory
@@ -265,6 +321,15 @@ public class Player extends Character{
     public int getNotesCount()
     {
         return notesCount;
+    }
+
+    /**
+     * Set the number of notes in the inventory
+     * 
+     * @param n the number of notes in the inventory
+     */
+    public void setNotesCount(int n) {
+        notesCount = n;
     }
 
     /**
@@ -310,12 +375,30 @@ public class Player extends Character{
     }
 
     /**
+     * Method to set the current direction of the player
+     * 
+     * @param d the new direction of the player
+     */
+    public void setCurrentDirection(Direction d) {
+        currentDirection = d;
+    }
+
+    /**
      * Returns if the player is hidden or not
      * 
      * @return true if the player is hidden, false otherwise
      */
     public boolean isHidden() {
         return hidden;
+    }
+
+    /**
+     * Set the hidden state of the player
+     * 
+     * @param h the new hidden state of the player
+     */
+    public void setHidden(boolean h) {
+        hidden = h;
     }
 
     /**
