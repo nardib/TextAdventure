@@ -182,6 +182,8 @@ region=region
 ```
 where `bucket-name` is the name of the S3 bucket you created, `file-name.json` is the name of the file to save in the bucket and `region` is the region of your bucket.
 
+**Note**: saving the game status won't keep track of all the previous moves, so when restoring the game will just go back to the last move, and the back function will work from the restored state.
+
 ## Design Patterns
 
 ### GoF

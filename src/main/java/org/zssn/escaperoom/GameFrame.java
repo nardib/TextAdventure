@@ -14,7 +14,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Game object
      */
-    private GameManager game = new GameManager(); // Oggetto del gioco
+    private GameManager game; // Oggetto del gioco
     //int x = 0; // Coordinata X del mouse
     //int y = 0; // Coordinata Y del mouse
     /**
@@ -59,20 +59,26 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     private static JLabel playerHelthLabel;
 
     /**
+     * Boolean for the wall configuration
+     */
+    private boolean wallConfigured = false;
+
+    /**
      * Constructor of the GameFrame class
      */
     public GameFrame() {
+        try {
+            game = new GameManager();
+        } catch (Exception e) {
+            writeToTerminal(e.getMessage());
+        }
+
         frame = new JFrame("TextAdventure");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setIconImage(new ImageIcon(getClass().getResource("/text-adventure-icon.png")).getImage());
         frame.setLayout(new BorderLayout());
         /*frame.addMouseMotionListener(this);
         frame.addMouseListener(this);*/
-
-        // Carica le immagini dei muri
-        for (int i = 0; i < 36; i++) {
-            Images[i] = (Image) Room.Walls[i].returnCombinedImage();
-        }
 
         // Configura il pannello centrale
         JPanel center = new JPanel();
@@ -83,7 +89,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
-        graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
+        graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
         center.add(graphic, BorderLayout.CENTER);
 
         // Configura il terminale e lo scorrimento
@@ -111,8 +117,21 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
-                    graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
-                    updatePlayerHealthLabel();
+                    if (game.getGame() != null && !wallConfigured) {
+                        // Carica le immagini dei muri
+                        for (int i = 0; i < 36; i++) {
+                            Images[i] = (Image) Room.Walls[i].returnCombinedImage();
+                        }
+                        wallConfigured = true;
+                    }
+                    if (game.getGame() != null){
+                        graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
+                        updatePlayerHealthLabel();
+                    }
+                    else {
+                        graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
+                    }
+
                     inputField.setText("");
                 }
             }
@@ -209,7 +228,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         JButton attackButton = new JButton("Attack");
         attackButton.setFont(new Font("Monospaced", Font.BOLD, 20));
-        writeToTerminal("Welcome to the Text Adventure! Type 'help' for a list of commands and start to play.");
+        writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String mex = inputField.getText();

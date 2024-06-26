@@ -398,10 +398,11 @@ public class Game {
             }
             return enemy.getName() + " attacked " + player.getName() + ", now " + player.returnPronoun() + " has " + player.getHealth() + " health points left";
         }
-        else {
+        else if (count % enemycount == 0) {
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
             return enemy.getName() + " moved to another room (for testing purposes: " + enemy.getCurrentRoom() + ")";
         }
+        return enemy.getName() + " didn't move";
     }
 
     /**
@@ -449,10 +450,6 @@ public class Game {
         if (input.equalsIgnoreCase("look") && !player.isHidden()) {
             return out + printLook();
         }
-        if (input.equalsIgnoreCase("load")) {
-            saveCurrentState();
-            return out + "Game loaded";
-        }
 
         // player turn
         try {
@@ -462,8 +459,7 @@ public class Game {
         }
 
         // enemy turn
-        if (count % enemycount == 0)
-            out += "\n" + enemyTurn();
+        out += "\n" + enemyTurn();
         count++;
         
         if(checkGameOver() && player.getHealth() == 0)

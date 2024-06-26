@@ -48,23 +48,58 @@ public class GameManager {
     private Game g;
 
     /**
+     * Tells if the game is being configured
+     */
+    private boolean configuring;
+
+    /**
+     * The turn the game is being configured
+     */
+    private int count;
+
+    /**
+     * Name of the player
+     */
+    private String playerName;
+
+    /**
+     * Gender of the player
+     */
+    private String playerGender;
+
+    /**
+     * Name of the enemy
+     */
+    private String enemyName = "Er cattivone";
+
+    /**
+     * Gender of the enemy
+     */
+    private String enemyGender = "neutral";
+
+    /**
+     * Counter of moves the player does bofore the enemy moves
+     */
+    private int movesBeforeEnemy;
+
+    /**
+     * Tells if the enemy attacks the player
+     */
+    private boolean enemyAttacks;
+
+    /**
+     * Boolean that tells if the game is running
+     */
+    private boolean gameOn;
+
+    /**
      * Defualt constructor for the GameManager class
      */
     public GameManager() {
-        g = new Game("Filippo", "M", "Er cattivone", "N", 3, true);
-        loadConfig();
-    }
-
-    /**
-     * Consructor for the GameManager class
-     * 
-     * @param name the name of the player
-     * @param gender the gender of the player
-     * @param count the number of moves made by the player before the enemy performs an action
-     * @param isEnemyAlive a boolean that indicates if the enemy is alive
-     */
-    public GameManager(String name, String gender, int count, boolean isEnemyAlive) {
-        g = new Game(name, gender, "Er cattivone", "N", count, isEnemyAlive);
+        g = null;
+        configuring = false;
+        count = 0;
+        gameOn = false;
         loadConfig();
     }
 
@@ -76,8 +111,7 @@ public class GameManager {
             InputStream input = GameManager.class.getResourceAsStream(CONFIG_FILE);
             Properties prop = new Properties();
             if (input == null) {
-                System.out.println("Sorry, unable to find " + CONFIG_FILE);
-                return;
+                throw new RuntimeException("Warning: unable to find 'config.properties' file in the classpath. Consult the README.md file for instructions.");
             }
             prop.load(input);
             BUCKET_NAME = prop.getProperty("bucketName");
@@ -85,6 +119,7 @@ public class GameManager {
             REGION = Region.of(prop.getProperty("region"));
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Warning: unable to load properly 'config.properties' file in the classpath. Consult the README.md file for instructions.");
         }
     }
 
@@ -123,8 +158,8 @@ public class GameManager {
             return jsonString; //ritorna l'oggetto string contente il JSON dell'oggetto Game
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error during serialization");
         }
-        return null;
     }
 
     /**
@@ -141,8 +176,8 @@ public class GameManager {
             return obj; //ritorna l'oggetto inizializzato
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error during deserialization");
         }
-        return null;
     }
 
     /**
@@ -150,17 +185,17 @@ public class GameManager {
      * 
      * @param message the string that contains the serialized game object
      */
-    private void upLoad(String message) { //loads the string into the bucket
-        S3Client s3 = S3Client.builder()
+    private void upLoad(String message) {
+        try {
+            S3Client s3 = S3Client.builder()
                 .region(REGION)
                 .credentialsProvider(ProfileCredentialsProvider.create())
                 .build();
 
-        try {
             // Crea un file temporaneo e scrivi il contenuto
             Path tempFile = Files.createTempFile("temp", ".json");
 
-            Files.write(tempFile, message.getBytes(), StandardOpenOption.WRITE);    //Nardi: i changed contet with message (now compile, but not sure if it's correct)
+            Files.write(tempFile, message.getBytes(), StandardOpenOption.WRITE);
 
             // Crea una richiesta PutObjectRequest
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -170,12 +205,12 @@ public class GameManager {
 
             // Carica il file nel bucket S3
             s3.putObject(putObjectRequest, tempFile);
-            System.out.println("Oggetto caricato in S3 con successo!");
 
             // Elimina il file temporaneo
             Files.delete(tempFile);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error during upload! Check the README.md file for instructions or check the error message.");
         }
     }
 
@@ -185,12 +220,12 @@ public class GameManager {
      * @return the string that contains the serialized game object
      */
     private String downLoad() { //downloads the string from the bucket
-        S3Client s3 = S3Client.builder()
-                .region(REGION)
-                .credentialsProvider(ProfileCredentialsProvider.create())
-                .build();
-
         try {
+            S3Client s3 = S3Client.builder()
+                    .region(REGION)
+                    .credentialsProvider(ProfileCredentialsProvider.create())
+                    .build();
+
             // Scarica il file dal bucket S3
             Path tempFile = Files.createTempFile("temp", ".json");
 
@@ -204,19 +239,17 @@ public class GameManager {
                     .build();
 
             s3.getObject(getObjectRequest, tempFile);
-            System.out.println("Oggetto scaricato da S3 con successo!");
 
             // Leggi il contenuto del file
             String content = new String(Files.readAllBytes(tempFile));
-            System.out.println("Contenuto del file: " + content);
 
             // Elimina il file temporaneo
             Files.delete(tempFile);
             return content;
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error during download! Check the README.md file for instructions or check the error message.");
         }
-        return null;
     }
 
     /**
@@ -236,10 +269,109 @@ public class GameManager {
      */
     public String nextMove(String move) {
         move = move.trim();
-        if (move.equals("save"))
-            saveProgress(g);
-        if (move.equals("load"))
-            g = resumeProgress();
-        return g.nextMove(move);
+
+        if (move.equals("quit")) {
+            System.exit(0);
+        }
+        
+        if (configuring) {
+            if (count == 0) {
+                playerName = move;
+                count++;
+                return "Name setted to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
+            }
+            else if (count == 1) {
+                if (move.equals("1"))
+                    playerGender = "male";
+                else if (move.equals("2"))
+                    playerGender = "female";
+                else if (move.equals("3"))
+                    playerGender = "neutral";
+                else 
+                    return "Input not valid. Valid inputs are 1, 2 or 3.";
+                count++;
+                return "Gender setted to " + playerGender + "\n\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+            }
+            else if (count == 2) {
+                if (move.equals("0")) {
+                    count += 2;
+                    return "Ok, your enemy is " + enemyName + "!\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+                }
+                enemyName = move;
+                count++;
+                return "Name setted to " + playerName +"!\n\nEnter the gender for the enemy:\n1.Male\n2.Female\n3.Neutral";
+            }
+            else if (count == 3) {
+                if (move.equals("1"))
+                    enemyGender = "m";
+                else if (move.equals("2"))
+                    enemyGender = "f";
+                else if (move.equals("3"))
+                    enemyGender = "n";
+                else
+                    return "Input not valid. Valid inputs are 1, 2 or 3.";
+                count++;
+                return "Gender setted to " + playerGender + "\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+            }
+            else if (count == 4) {
+                if (move.equals("1"))
+                    movesBeforeEnemy = 5;
+                else if (move.equals("2"))
+                    movesBeforeEnemy = 3;
+                else if (move.equals("3"))
+                    movesBeforeEnemy = 1;
+                else
+                    return "Input not valid. Valid inputs are 1, 2 or 3.";
+                count++;
+                return "\nEnter 'true' if the enemy attacks the player, 'false' otherwise.";
+            }
+            else if (count == 5) {
+                if (move.equalsIgnoreCase("true"))
+                    enemyAttacks = true;
+                else if (move.equalsIgnoreCase("false"))
+                    enemyAttacks = false;
+                else
+                    return "Input not valid. Valid inputs are 'true' or 'false'.";
+                g = new Game(playerName, playerGender, enemyName, enemyGender, movesBeforeEnemy, enemyAttacks);
+                configuring = false;
+                count = 0;
+                gameOn = true;
+                return "\nGame configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!";
+            }
+            return "Error during configuration!";
+        }
+        else if (!gameOn) {
+            if (move.equalsIgnoreCase("resume")) {
+                try {
+                    g = resumeProgress();
+                    gameOn = true;
+                    return "Game resumed!" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
+                } catch (Exception e) {
+                    return e.getMessage();
+                }
+            }
+            if (move.equalsIgnoreCase("new game"))
+            {
+                configuring = true;
+                return "\nEnter the name for the player:";
+            }
+            return "Game not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
+        }
+        else {
+            if (move.equalsIgnoreCase("save")) {
+                try {
+                    saveProgress(g);
+                } catch (Exception e) {
+                    return e.getMessage();
+                }
+            }
+            if (move.equals("exit")) {
+                gameOn = false;
+                g = null;
+                return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+            }
+
+            return g.nextMove(move);
+        }
     }
 }
