@@ -1,9 +1,10 @@
-@startuml Undo
+@startuml UndoInternalSequenceDiagram
 
 title Undo Command - Intenal Sequence Diagram
 
 actor User
 participant GameFrame
+participant GameManager
 participant Game
 participant GameMemento
 participant GameCaretaker
@@ -11,8 +12,11 @@ participant GameCaretaker
 activate GameFrame
 User -> GameFrame : insert "undo"/"back" as a command
 
+activate GameManager
+GameFrame -> GameManager : "undo" or "back"
+
 activate Game
-GameFrame -> Game : "undo" or "back"
+GameManager -> Game : nextMove("undo")
 
 Game -> Game : undo()
 activate GameCaretaker
@@ -21,7 +25,7 @@ GameCaretaker --> Game : Returns the last mememnto he has saved
 deactivate GameCaretaker
 
 alt "game has no previous moves" 
-    Game -> GameFrame : notify "No previous moves to undo"
+    Game -> GameManager : notify "No previous moves to undo"
 else "game has previous moves"
     activate GameMemento
     Game -> GameMemento : getPlayer()
@@ -32,9 +36,12 @@ else "game has previous moves"
     GameMemento --> Game : Returns the wall
     deactivate GameMemento
 
-    Game -> GameFrame : notify "Undo successful"
-deactivate Game
+    Game -> GameManager : notify "Undo successful"
+    deactivate Game
 end
+
+GameManager -> GameFrame : returns the message to display
+deactivate GameManager
 
 GameFrame -> User : display updated game state
 

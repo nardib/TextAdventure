@@ -620,6 +620,8 @@ public class Game {
 
     /**
      * Counter for the number of player turns before the enemy moves
+     * 
+     * @return the counter for the number of player turns before the enemy moves
      */
     public int getCount() {
         return count;

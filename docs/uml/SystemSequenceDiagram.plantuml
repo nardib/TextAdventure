@@ -1,4 +1,4 @@
-@startuml System Sequence Diagram
+@startuml SystemSequenceDiagram
 
 actor Player
 participant Game
@@ -7,12 +7,12 @@ Game --> Player : Shows the start page
 
 alt click on "New Game"
     Player -> Game : New Game
+    Game --> Player : Asks for name and gender of the Player    
+    Player -> Game : Gives the requested parameters
 else click on "Load Game"
     Player -> Game : Load Game
 end
 
-Game --> Player : Asks for name and gender of the Player
-Player -> Game : Gives the requested parameters
 Game --> Player : Shows game interface
 
 alt insert an input in the TextField

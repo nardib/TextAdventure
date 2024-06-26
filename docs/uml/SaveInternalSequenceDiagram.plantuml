@@ -1,0 +1,28 @@
+@startuml SaveInternalSequenceDiagram
+
+title Save - Internal Sequence Diagram
+
+actor User
+participant GameFrame
+participant GameManager
+
+activate GameFrame
+User -> GameFrame : submit "save" command
+
+activate GameManager
+GameFrame -> GameManager : nextMove("save")
+
+GameManager -> GameManager : saveProgress()
+
+GameManager -> GameManager : serialize()
+
+GameManager -> GameManager : upload()
+
+GameManager -> GameFrame : notify "Game saved"
+deactivate GameManager
+
+GameFrame -> User : display updated game state
+
+deactivate GameFrame
+
+@enduml

@@ -63,8 +63,8 @@ public class Wall {
 
     /**
      * Constructor for the Wall
-     * @param w The image of the wall
      * @param d Tells if the wall has a door
+     * @param items The items in the room
      */
     public Wall(boolean d, Item[] items) 
     {
@@ -185,7 +185,7 @@ public class Wall {
     /**
      * Set the items length of the wall
      * 
-     * @param items the items  length of the wall
+     * @param itemsLength the items length of the wall
      */
     public void setItemsLength(int itemsLength) {
         this.itemsLength = itemsLength;

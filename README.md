@@ -160,6 +160,28 @@ mvn clean compile package
 mvn compile test exec:java
 ```
 
+### Save and Load usage
+
+The game is configured to save and load game progress in an Amazon S3 bucket. To use this functionality make sure to use your personal AWS account to save your progresses.
+First of all you need to set your AWS credentials to access the bucket in the `%UserProfile$\.aws\credentials` file on Windows or `~/.aws/credentials` on Linux and MacOS. The file must have this structure:
+
+```
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY_ID
+aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
+```
+
+where `YOUR_ACCESS_KEY_ID` and `YOUR_SECRET_ACCESS_KEY` are the credentials you need to generate from you AWS account.
+
+The second thing you need to do is to modify `src/main/resources/config.properties` file:
+
+```
+bucketName=bucket-name
+keyName=file-name.json
+region=region
+```
+where `bucket-name` is the name of the S3 bucket you created, `file-name.json` is the name of the file to save in the bucket and `region` is the region of your bucket.
+
 ## Design Patterns
 
 ### GoF
@@ -309,11 +331,13 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 
 ![Command Sequence Diagram](docs/uml/CommandInternalSequenceDiagram.png)
 
-#### Back Sequence Diagram
+#### Undo Sequence Diagram
 
 ![Undo Sequence Diagram](docs/uml/UndoInternalSequenceDiagram.png)
 
 #### Save Sequence Diagram
+
+![Save Sequence Diagram](docs/uml/SaveInternalSequenceDiagram.png)
 
 ## System Test Reports
 

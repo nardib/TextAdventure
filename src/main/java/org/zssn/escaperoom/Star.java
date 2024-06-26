@@ -55,6 +55,8 @@ public class Star extends Item {
 
     /**
      * Set the ID of the star
+     * 
+     * @param ID the ID of the star
      */
     public void setID(int ID) {
         this.ID = ID;

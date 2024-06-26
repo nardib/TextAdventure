@@ -86,6 +86,8 @@ public class StarHole extends Item {
 
     /**
      * Set the ID of the starHole
+     * 
+     * @param ID the ID of the starHole
      */
     public void setID(int ID) {
         this.ID = ID;

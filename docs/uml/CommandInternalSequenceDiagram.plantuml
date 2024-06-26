@@ -1,9 +1,10 @@
-@startuml Command Internal Sequence Diagram
+@startuml CommandInternalSequenceDiagram
 
 title Commands - Intenal Sequence Diagram
 
 actor User
 participant GameFrame
+participant GameManager
 participant Game
 participant Player
 participant Enemy
@@ -13,8 +14,10 @@ participant Item
 activate GameFrame
 User -> GameFrame : submit a valid command
 
+activate GameManager
+GameFrame -> GameManager : nextMove(<command>)
 activate Game
-GameFrame -> Game : nextMove(<command>)
+GameManager -> Game : nextMove(<command>)
 
 Game -> Game : playerMove()
 
@@ -63,9 +66,11 @@ else player is not in the same room as the enemy
     deactivate Enemy
 end
 
-Game -> GameFrame : return updated game state
+Game -> GameManager : return a string with the message to display
+deactivate Game
+GameManager -> GameFrame : return updated game state
+deactivate GameManager
 GameFrame -> User : display updated game state
-
 deactivate GameFrame
 
 @enduml
