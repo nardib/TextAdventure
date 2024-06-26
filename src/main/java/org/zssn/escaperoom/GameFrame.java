@@ -128,9 +128,12 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                         updatePlayerHealthLabel();
                     }
-                    else {
+                    else if (game.isGameWon())
+                        graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.png")));
+                    else if (game.isGameLost())
+                        graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.png")));
+                    else
                         graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
-                    }
 
                     inputField.setText("");
                 }

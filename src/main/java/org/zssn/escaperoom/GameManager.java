@@ -93,6 +93,16 @@ public class GameManager {
     private boolean gameOn;
 
     /**
+     * Boolean that tells if the game is won
+     */
+    private boolean gameWon;
+
+    /**
+     * Boolean that tells if the game is lost
+     */
+    private boolean gameLost;
+
+    /**
      * Defualt constructor for the GameManager class
      */
     public GameManager() {
@@ -100,6 +110,8 @@ public class GameManager {
         configuring = false;
         count = 0;
         gameOn = false;
+        gameWon = false;
+        gameLost = false;
         loadConfig();
     }
 
@@ -368,10 +380,43 @@ public class GameManager {
             if (move.equals("exit")) {
                 gameOn = false;
                 g = null;
+                gameWon = false;
+                gameLost = false;
                 return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
             }
 
-            return g.nextMove(move);
+            String result = g.nextMove(move);
+            if (g.checkWin()) {
+                gameOn = false;
+                g = null;
+                gameWon = true;
+                return result;
+            }
+            else if (g.checkLost()) {
+                gameOn = false;
+                g = null;
+                gameLost = true;
+                return result;
+            }
+            return result;
         }
+    }
+
+    /**
+     * Method that returns if the game was won
+     * 
+     * @return true if the game was won, false otherwise
+     */
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    /**
+     * Method that returns if the game was lost
+     * 
+     * @return true if the game was lost, false otherwise
+     */
+    public boolean isGameLost() {
+        return gameLost;
     }
 }
