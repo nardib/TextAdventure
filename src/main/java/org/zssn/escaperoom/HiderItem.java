@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 /**
  * Item class for all the hider items in the game
  * An hider item hides another item in the room

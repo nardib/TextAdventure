@@ -796,7 +796,7 @@ public class Game {
     /**
      * Method to save the current state of the game and add it to the stack of mementos
      */
-    private void saveCurrentState() {
+    public void saveCurrentState() {
         caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count, filledStarHoles));
     }
 

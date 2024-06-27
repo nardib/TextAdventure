@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 /**
  * HidingItem class is a subclass of Item class. It represents a hiding item that can be used to hide the player from the enemy.
  */

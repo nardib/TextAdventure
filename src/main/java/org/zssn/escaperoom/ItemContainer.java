@@ -1,7 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
-
 /**
  * ItemContainer class that contains other items used in the game
  * The items in the container can be removed, but can't be added back

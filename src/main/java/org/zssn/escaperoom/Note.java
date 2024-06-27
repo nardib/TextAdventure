@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 /**
  * Notes class that extends Item. It represents a note that can be read by the player.
  */

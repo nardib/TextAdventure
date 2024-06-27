@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 /**
  * HealingItem class is a subclass of Item class. It represents a healing item that can be used to heal the player.
  */

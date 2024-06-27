@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 
 /**
  * Star class that represents a star in the game that can be used to fill a star hole to complete the final puzzle

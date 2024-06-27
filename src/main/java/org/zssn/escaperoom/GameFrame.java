@@ -1,6 +1,7 @@
 package org.zssn.escaperoom;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,13 +15,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Game object
      */
-    private GameManager game; // Oggetto del gioco
-    //int x = 0; // Coordinata X del mouse
-    //int y = 0; // Coordinata Y del mouse
-    /**
-     * counter for the walls
-     */
-    private int wallcount = 0;
+    private GameManager game;
+
     /**
      * Array of images of the walls
      */
@@ -46,17 +42,17 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
      */
     JTextField inputField;
     /**
-     * JPanel object for the buttons
+     * JPanel object for the game informations
      */
-    JPanel buttonPanel;
+    JPanel statusPanel;
     /**
-     * JLabel object for the game status
+     * JLabel object for the position of the player
      */
-    JLabel gameStatusLabel;
+    JLabel playerStatusLabel;
     /**
      * JLabel object for the player health
      */
-    private JLabel playerHelthLabel;
+    private JLabel playerHealthLabel;
 
     /**
      * JLabel object for the filled stars
@@ -92,6 +88,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         JLabel graphic = new JLabel();
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
         graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
@@ -103,8 +100,9 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         terminal.setFont(new Font("Monospaced", Font.PLAIN, 14));
         terminal.setBackground(new Color(28, 28, 28));
         terminal.setForeground(Color.WHITE);
+        writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
         JScrollPane terminalScrollPane = new JScrollPane(terminal);
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 140)); // Altezza del terminale a 140
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 200)); // Altezza del terminale a 140
 
         // Pannello per terminal e input
         JPanel downPanel = new JPanel();
@@ -133,14 +131,19 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                         updatePlayerHealthLabel();
                         updateStarLabel();
+                        updatePlayerStatusLabel();
                     }
-                    else if (game.isGameWon())
-                        graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.png")));
-                    else if (game.isGameLost())
-                        graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.png")));
-                    else
-                        graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
-
+                    else {
+                        if (game.isGameWon())
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.png")));
+                        else if (game.isGameLost())
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.png")));
+                        else
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
+                        playerHealthLabel.setText("");
+                        filledStarsLabel.setText("");
+                        playerStatusLabel.setText("");
+                    } 
                     inputField.setText("");
                 }
             }
@@ -150,119 +153,31 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
-        //Configura Label vita giocatore
-        playerHelthLabel = new JLabel();
-        playerHelthLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        playerHelthLabel.setForeground(Color.WHITE);
-        playerHelthLabel.setText("SALUTE: ♥♥♥♥♥");
-        center.add(playerHelthLabel, BorderLayout.PAGE_START);
+        // Configura il pannello delle informazioni
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(new Color(28, 28, 28));
+        topPanel.setLayout(new BorderLayout());
+        topPanel.setPreferredSize(new Dimension(0, 45));
 
-        //Configura Label stelle
+        playerHealthLabel = new JLabel();
+        playerHealthLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
+        playerHealthLabel.setForeground(Color.RED);
+        playerHealthLabel.setText("");
+        topPanel.add(playerHealthLabel, BorderLayout.LINE_START);
+
         filledStarsLabel = new JLabel();
-        filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        filledStarsLabel.setForeground(Color.WHITE);
-        filledStarsLabel.setText("STELLE: ☆☆☆☆☆☆☆☆☆☆");
+        filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
+        filledStarsLabel.setForeground(Color.YELLOW);
+        filledStarsLabel.setText("");
+        topPanel.add(filledStarsLabel, BorderLayout.CENTER);
 
-        // Configura il pannello dei pulsanti
-        buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(28, 28, 28));
-        buttonPanel.setLayout(new GridBagLayout());
-        buttonPanel.setPreferredSize(new Dimension(0, 45));
+        playerStatusLabel = new JLabel();
+        playerStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        playerStatusLabel.setForeground(Color.WHITE);
+        playerStatusLabel.setText("");
+        topPanel.add(playerStatusLabel, BorderLayout.LINE_END);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-
-        gameStatusLabel = new JLabel();
-        gameStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        gameStatusLabel.setForeground(Color.WHITE);
-
-        gbc.gridx = 2; // Colonna 2
-        gbc.gridy = 0; // Riga 0
-        gbc.weightx = 1.0; // Espansione orizzontale
-        gbc.anchor = GridBagConstraints.EAST; // Ancoraggio a destra
-        buttonPanel.add(gameStatusLabel, gbc);
-
-        JPanel buttonPanelCenter = new JPanel();
-        buttonPanelCenter.setBackground(new Color(0, 0, 0));
-        buttonPanelCenter.setLayout(new FlowLayout());
-
-        Color buttonBackgroundColor = new Color(70, 70, 70);
-        Color buttonTextColor = Color.WHITE;
-
-        // Aggiungi pulsanti
-        JButton startButton = new JButton("Start");
-        startButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gameStatusLabel.setText("GIOCO INIZIATO");
-            }
-        });
-        startButton.setBackground(buttonBackgroundColor);
-        startButton.setForeground(buttonTextColor);
-        buttonPanelCenter.add(startButton);
-        buttonPanel.add(filledStarsLabel);
-
-        JButton pauseButton = new JButton("Pause");
-        pauseButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        pauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gameStatusLabel.setText("GIOCO IN PAUSA");
-            }
-        });
-        pauseButton.setBackground(buttonBackgroundColor);
-        pauseButton.setForeground(buttonTextColor);
-        buttonPanelCenter.add(pauseButton);
-
-        JButton resetButton = new JButton("Reset");
-        resetButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        resetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gameStatusLabel.setText("");
-                graphic.setText(" ");
-                playerHelthLabel.setText("SALUTE: ♥♥♥♥♥");
-                graphic.setIcon(null);
-                wallcount = 0;
-                clearTerminal();
-            }
-        });
-        resetButton.setBackground(buttonBackgroundColor);
-        resetButton.setForeground(buttonTextColor);
-        buttonPanelCenter.add(resetButton);
-
-        JButton nextWallButton = new JButton("Turn Right");
-        nextWallButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        nextWallButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                graphic.setIcon(new ImageIcon(Images[wallcount]));
-                gameStatusLabel.setText("");
-                wallcount++;
-            }
-        });
-        nextWallButton.setBackground(buttonBackgroundColor);
-        nextWallButton.setForeground(buttonTextColor);
-        buttonPanelCenter.add(nextWallButton);
-
-        JButton attackButton = new JButton("Attack");
-        attackButton.setFont(new Font("Monospaced", Font.BOLD, 20));
-        writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
-        attackButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String mex = inputField.getText();
-                writeToTerminal(game.nextMove(mex));
-                inputField.setText(""); // Pulisce il campo di testo dopo l'invio
-            }
-        });
-        attackButton.setBackground(buttonBackgroundColor);
-        attackButton.setForeground(buttonTextColor);
-        buttonPanelCenter.add(attackButton);
-
-        gbc.gridx = 1; // Colonna 1
-        gbc.gridy = 0; // Riga 0
-        gbc.weightx = 0.0; // Nessuna espansione orizzontale
-        gbc.anchor = GridBagConstraints.CENTER; // Ancoraggio al centro
-        buttonPanel.add(buttonPanelCenter, gbc);
-
-        frame.add(buttonPanel, BorderLayout.PAGE_START);
+        frame.add(topPanel, BorderLayout.PAGE_START);
 
         // Listener per il ridimensionamento della finestra
         frame.addComponentListener(new ComponentAdapter() {
@@ -282,7 +197,6 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         frame.getRootPane().getActionMap().put("toggleFullscreen", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 toggleFullscreen();
-                gameStatusLabel.setText("F11");
             }
         });
 
@@ -303,7 +217,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         for (int i = 0; i < game.getGame().getPlayer().getHealth(); i++) {
             heartSymbols.append("♥");
         }
-        playerHelthLabel.setText("SALUTE: " + heartSymbols.toString());
+        playerHealthLabel.setText(heartSymbols.toString());
     }
 
     /**
@@ -317,7 +231,14 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             else
                 starSymbols.append("☆");
         }
-        filledStarsLabel.setText("STELLE: " + starSymbols.toString());
+        filledStarsLabel.setText(starSymbols.toString());
+    }
+
+    /**
+     * Update the player status label
+     */
+    private void updatePlayerStatusLabel() {
+        playerStatusLabel.setText(game.getGame().getMap().getRoom(game.getGame().getPlayer().getCurrentRoom()).getName() + ", " + game.getGame().getPlayer().getCurrentDirection().toString());
     }
 
     /**
