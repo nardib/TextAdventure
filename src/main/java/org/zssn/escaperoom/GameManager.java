@@ -103,6 +103,16 @@ public class GameManager {
     private boolean gameLost;
 
     /**
+     * Boolean to say if the last progress was saved
+     */
+    private boolean saved;
+
+    /**
+     * Boolean to say if we are asking to save the progress before quitting
+     */
+    private boolean askingToSave;
+
+    /**
      * Defualt constructor for the GameManager class
      */
     public GameManager() {
@@ -112,6 +122,8 @@ public class GameManager {
         gameOn = false;
         gameWon = false;
         gameLost = false;
+        saved = false;
+        askingToSave = false;
         loadConfig();
     }
 
@@ -282,6 +294,27 @@ public class GameManager {
     public String nextMove(String move) {
         move = move.trim();
 
+        if (askingToSave) {
+            if (move.equalsIgnoreCase("yes") || move.equalsIgnoreCase("y")) {
+                saveProgress(g);
+                askingToSave = false;
+                gameOn = false;
+                g = null;
+                gameLost = false;
+                gameWon = false;
+                return "Game saved!\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+            }
+            else if (move.equalsIgnoreCase("no") || move.equalsIgnoreCase("n")) {
+                askingToSave = false;
+                gameOn = false;
+                g = null;
+                gameLost = false;
+                gameWon = false;
+                return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+            }
+            return "Input not valid. Valid inputs are 'yes' or 'no'.";
+        }
+
         if (move.equals("quit")) {
             System.exit(0);
         }
@@ -357,6 +390,7 @@ public class GameManager {
                 try {
                     g = resumeProgress();
                     gameOn = true;
+                    saved = true;
                     return "Game resumed!" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
                 } catch (Exception e) {
                     return e.getMessage();
@@ -365,6 +399,7 @@ public class GameManager {
             if (move.equalsIgnoreCase("new game"))
             {
                 configuring = true;
+                saved = false;
                 return "\nEnter the name for the player:";
             }
             return "Game not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
@@ -373,19 +408,26 @@ public class GameManager {
             if (move.equalsIgnoreCase("save")) {
                 try {
                     saveProgress(g);
+                    saved = true;
+                    return "Game saved!";
                 } catch (Exception e) {
                     return e.getMessage();
                 }
             }
             if (move.equals("exit")) {
-                gameOn = false;
-                g = null;
-                gameWon = false;
-                gameLost = false;
-                return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                if (saved) {
+                    gameOn = false;
+                    g = null;
+                    gameLost = false;
+                    gameWon = false;
+                    return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                }
+                askingToSave = true;
+                return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
             }
 
             String result = g.nextMove(move);
+            saved = false;
             if (g.checkWin()) {
                 gameOn = false;
                 g = null;
