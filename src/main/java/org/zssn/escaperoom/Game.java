@@ -52,6 +52,11 @@ public class Game {
     private int filledStarHoles;
 
     /**
+     * Array of boolean to check all the star holes (true if filled, false otherwise)
+     */
+    private boolean[] starHoles;
+
+    /**
      * The help message
      */
     public final static String HELP = "The commands are:\n"
@@ -64,7 +69,8 @@ public class Game {
             + "- status : gives the status of the player, in particular it returns the health of the player and the items in the inventory\n"
             + "- undo/back : goes back of a move in the game\n"
             + "- save : save the current state of the game\n"
-            + "- quit/exit : exit the game\n";
+            + "- exit : exit the game and go back to the main menu\n"
+            + "- quit : close the game\n";
 
     /** 
      * Default constructor to initialize the game variables
@@ -97,6 +103,9 @@ public class Game {
         saveCurrentState();
         this.enemyAttacks = enemyAttacks;
         filledStarHoles = 0;
+        starHoles = new boolean[10];
+        for (int i = 0; i < 10; i++)
+            starHoles[i] = false;
     }
 
     /**
@@ -124,19 +133,19 @@ public class Game {
         //commands to change the wall the player is facing
         if (input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")){
             player.changeDirection(Direction.NORTH);
-            return player.getName() + " is now facing north";
+            return player.getName() + " is now facing north\n" + printLook();
         }
         else if (input.equalsIgnoreCase("south") || input.equalsIgnoreCase("s")){
             player.changeDirection(Direction.SOUTH);
-            return player.getName() + " is now facing south";
+            return player.getName() + " is now facing south\n" + printLook();
         }
         else if (input.equalsIgnoreCase("east") || input.equalsIgnoreCase("e")){
             player.changeDirection(Direction.EAST);
-            return player.getName() + " is now facing east";
+            return player.getName() + " is now facing east\n" + printLook();
         }
         else if (input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")){
             player.changeDirection(Direction.WEST);
-            return player.getName() + " is now facing west";
+            return player.getName() + " is now facing west\n" + printLook();
         }
         
         //commands to move the player
@@ -145,40 +154,40 @@ public class Game {
             if(input.length() == 5){
                 if(player.getCurrentDirection() == Direction.NORTH && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
-                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
                 }
                 else if(player.getCurrentDirection() == Direction.SOUTH && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
-                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
                 }
                 else if(player.getCurrentDirection() == Direction.EAST && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
-                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
                 }
                 else if(player.getCurrentDirection() == Direction.WEST && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                     player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
-                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                    return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
                 }
             }
             else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
                 player.changeDirection(Direction.NORTH);
-                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
                 player.changeDirection(Direction.SOUTH);
-                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
                 player.changeDirection(Direction.EAST);
-                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
                 player.changeDirection(Direction.WEST);
-                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName();
+                return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             throw new IllegalArgumentException(player.getName() + " can't cross in that direction");
         }
@@ -263,7 +272,7 @@ public class Game {
                 if (items[i].getName().equalsIgnoreCase(itemInput) || items[i].getName().equalsIgnoreCase(input.substring(4))) {
                     Item item = items[i];
                     if (item instanceof Key || item instanceof Note || item instanceof HealingItem || item instanceof Star)
-                        return player.getName() + " must pick the " + item.getName().toLowerCase() + " before using it!";
+                        return player.getName() + " must take the " + item.getName().toLowerCase() + " before using it!";
                     else if (item instanceof ClueItem) {
                         ClueItem clueItem = (ClueItem) item;
                         return clueItem.getUsingMessage();
@@ -369,6 +378,7 @@ public class Game {
                                     starHole.fill(star);
                                     player.removeItem(j);
                                     filledStarHoles++;
+                                    starHoles[starHole.getID()-1] = true;
                                     return player.getName() + " filled the star hole " + starHole.getID() + " with the " + star.getName().toLowerCase();
                                 }
                             }
@@ -417,26 +427,17 @@ public class Game {
 
         String out = "\n-------------------------- Input : " + input + " --------------------------\n\n";
 
-        if (!isGameOn)
-            return out + "Game is Over!";
-
         if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
             return out + HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points\n"
+            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points.\n"
                     + capitalizeFistLetter(player.returnPronoun()) + " has the following items in the invenotory: " + player.printInventory()
-                    + "\nThe total weight of the items " + player.getName() + " is " + player.getInventoryWeight() + "/10\n"
+                    + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n"
                     + "The number of star holes filled is " + filledStarHoles + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
-        
-        if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-            isGameOn = false;
-            return out + "Game over";
-       }
-        if (input.equalsIgnoreCase("save"))
-            return out + "Game saved";
 
+        
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) 
                 return out + "Undo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
@@ -459,11 +460,12 @@ public class Game {
         }
 
         // enemy turn
-        out += "\n" + enemyTurn();
+        if (enemyAttacks)
+            out += "\n" + enemyTurn();
         count++;
         
         if(checkGameOver() && player.getHealth() == 0)
-            return out + "\nGame Over! " + enemy.getName() + " killed you!";
+            return out;
         if(checkGameOver() && filledStarHoles == 10)
             return out + "\nYou win! You filled all the star holes!";
         
@@ -651,6 +653,38 @@ public class Game {
     }
 
     /**
+     * Method to get the array of boolean to check all the star holes
+     * 
+     * @return the array of boolean to check all the star holes
+     */
+    public boolean[] getStarHoles() {
+        return starHoles;
+    }
+
+    /**
+     * Method to set the array of boolean to check all the star holes
+     * 
+     * @param starHoles the array of boolean to check all the star holes
+     */
+    public void setStarHoles(boolean[] starHoles) {
+        this.starHoles = starHoles;
+    }
+
+    /**
+     * Method to get the element i of the array of boolean to check all the star holes
+     * 
+     * @param i the index of the array
+     * @return the element i of the array of boolean to check all the star holes
+     * 
+     * @throws IllegalArgumentException if the index is out of bounds
+     */
+    public boolean getStarHole(int i) {
+        if (i < 0 || i >= 10)
+            throw new IllegalArgumentException("The index must be between 0 and 9");
+        return starHoles[i];
+    }
+
+    /**
      * Class for memento pattern to implement "undo" function
      */
     private class GameMemento {
@@ -762,7 +796,7 @@ public class Game {
     /**
      * Method to save the current state of the game and add it to the stack of mementos
      */
-    private void saveCurrentState() {
+    public void saveCurrentState() {
         caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count, filledStarHoles));
     }
 

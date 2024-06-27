@@ -261,13 +261,13 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 | Postcondition | Game configuration page is shown. |
 | Extensions points | - |
 
-| Use case | Player Configuration |
+| Use case | Game Configuration |
 | --- | --- |
-| Brief description | User can choose the name and gender of the player. |
+| Brief description | User can choose the name and gender of the player and the enemy, and other setting like the difficoulty level. |
 | Actor | User |
-| Basic flow | User writes the name and select the gender between the available options. |
+| Basic flow | User writes the name and select the gender and the other settings between the available options. |
 | Alternative flow | No errors because pre-selected values are provided by default. |
-| Precondition | User has started the game. |
+| Precondition | User has started the game with "new game" command. |
 | Postcondition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Extensions points | - |
 
@@ -327,9 +327,9 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 
 ### Internal Sequence Diagrams
 
-#### Player Configuration Sequence Diagram
+#### Game Configuration Sequence Diagram
 
-![Player Configuration Sequence Diagram](docs/uml/PlayerConfigurationInternalSequenceDiagram.png)
+![Game Configuration Sequence Diagram](docs/uml/GameConfigurationInternalSequenceDiagram.png)
 
 #### Command Sequence Diagram
 
@@ -354,15 +354,15 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test of game start without errors <br> - Test of correct initial configuration |
 | Pre-Condition | The game was successfully installed |
 | Post-Condition | Game configuration page is shown |
-| Test Scripts | **Test of game start without errors:** <br> + Click on `New Game` button in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Click on `New Game` button on the main screen <br> + Configure the player <br> + Verify that the game is started in the defualt position |
+| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "New Game" on the main screen <br> + Configure the player <br> + Verify that the game is started in the defualt position |
 | Test Case Execution Report | - Test of game start without errors: <br> - Test of correct initial configuration: |
 
-### Player Configuration
+### Game Configuration
 
-| Summary | After pressing `New Game` in the main menu you configure the Player with a proper name and gender |
+| Summary | After using "New Game" command in the main menu you configure the Player and Enemy with a proper name and gender and set the other setting. |
 | --- | --- |
-| Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game |
-| Pre-Condition | User has started the game |
+| Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game; check also if the other settings are setted corrected. |
+| Pre-Condition |  User has started the game with "new game" command. |
 | Post-Condition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Test Scripts | **Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:** <br> + Click on `New Game` button <br> + Compile the requested fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
 | Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:  |

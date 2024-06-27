@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 /**
  * Item class for all the clues items in the game
  * Each item has a clue necessary for completing the game

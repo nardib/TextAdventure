@@ -93,6 +93,26 @@ public class GameManager {
     private boolean gameOn;
 
     /**
+     * Boolean that tells if the game is won
+     */
+    private boolean gameWon;
+
+    /**
+     * Boolean that tells if the game is lost
+     */
+    private boolean gameLost;
+
+    /**
+     * Boolean to say if the last progress was saved
+     */
+    private boolean saved;
+
+    /**
+     * Boolean to say if we are asking to save the progress before quitting
+     */
+    private boolean askingToSave;
+
+    /**
      * Defualt constructor for the GameManager class
      */
     public GameManager() {
@@ -100,6 +120,10 @@ public class GameManager {
         configuring = false;
         count = 0;
         gameOn = false;
+        gameWon = false;
+        gameLost = false;
+        saved = false;
+        askingToSave = false;
         loadConfig();
     }
 
@@ -270,6 +294,27 @@ public class GameManager {
     public String nextMove(String move) {
         move = move.trim();
 
+        if (askingToSave) {
+            if (move.equalsIgnoreCase("yes") || move.equalsIgnoreCase("y")) {
+                saveProgress(g);
+                askingToSave = false;
+                gameOn = false;
+                g = null;
+                gameLost = false;
+                gameWon = false;
+                return "Game saved!\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+            }
+            else if (move.equalsIgnoreCase("no") || move.equalsIgnoreCase("n")) {
+                askingToSave = false;
+                gameOn = false;
+                g = null;
+                gameLost = false;
+                gameWon = false;
+                return "\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+            }
+            return "Input not valid. Valid inputs are 'yes' or 'no'.";
+        }
+
         if (move.equals("quit")) {
             System.exit(0);
         }
@@ -290,18 +335,35 @@ public class GameManager {
                 else 
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
                 count++;
-                return "Gender setted to " + playerGender + "\n\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+                return "Gender setted to " + playerGender + "\n\nEnter 'true' (1) if the enemy attacks the player, 'false' (0) otherwise.";
             }
             else if (count == 2) {
+                if (move.equalsIgnoreCase("true") || move.equalsIgnoreCase("1") || move.equalsIgnoreCase("t"))
+                    enemyAttacks = true;
+                else if (move.equalsIgnoreCase("false") || move.equalsIgnoreCase("0") || move.equalsIgnoreCase("f")){
+                    enemyAttacks = false;
+                    movesBeforeEnemy = 1;
+                    g = new Game(playerName, playerGender, enemyName, enemyGender, movesBeforeEnemy, enemyAttacks);
+                    configuring = false;
+                    count = 0;
+                    gameOn = true;
+                    return "\nGame configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!";
+                }
+                else
+                    return "Input not valid. Valid inputs are 'true' or 'false'.";
+                count++;
+                return "\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+            }
+            else if (count == 3) {
                 if (move.equals("0")) {
                     count += 2;
-                    return "Ok, your enemy is " + enemyName + "!\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+                    return "Ok, your enemy is " + enemyName + "\n\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
                 }
                 enemyName = move;
                 count++;
-                return "Name setted to " + playerName +"!\n\nEnter the gender for the enemy:\n1.Male\n2.Female\n3.Neutral";
+                return "Name setted to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
-            else if (count == 3) {
+            else if (count == 4) {
                 if (move.equals("1"))
                     enemyGender = "m";
                 else if (move.equals("2"))
@@ -311,9 +373,10 @@ public class GameManager {
                 else
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
                 count++;
-                return "Gender setted to " + playerGender + "\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+                return "\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
             }
-            else if (count == 4) {
+            
+            else if (count == 5) {
                 if (move.equals("1"))
                     movesBeforeEnemy = 5;
                 else if (move.equals("2"))
@@ -322,16 +385,6 @@ public class GameManager {
                     movesBeforeEnemy = 1;
                 else
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
-                count++;
-                return "\nEnter 'true' if the enemy attacks the player, 'false' otherwise.";
-            }
-            else if (count == 5) {
-                if (move.equalsIgnoreCase("true"))
-                    enemyAttacks = true;
-                else if (move.equalsIgnoreCase("false"))
-                    enemyAttacks = false;
-                else
-                    return "Input not valid. Valid inputs are 'true' or 'false'.";
                 g = new Game(playerName, playerGender, enemyName, enemyGender, movesBeforeEnemy, enemyAttacks);
                 configuring = false;
                 count = 0;
@@ -345,6 +398,8 @@ public class GameManager {
                 try {
                     g = resumeProgress();
                     gameOn = true;
+                    saved = true;
+                    g.saveCurrentState();
                     return "Game resumed!" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
                 } catch (Exception e) {
                     return e.getMessage();
@@ -353,6 +408,7 @@ public class GameManager {
             if (move.equalsIgnoreCase("new game"))
             {
                 configuring = true;
+                saved = false;
                 return "\nEnter the name for the player:";
             }
             return "Game not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
@@ -361,17 +417,57 @@ public class GameManager {
             if (move.equalsIgnoreCase("save")) {
                 try {
                     saveProgress(g);
+                    saved = true;
+                    return "Game saved!";
                 } catch (Exception e) {
                     return e.getMessage();
                 }
             }
             if (move.equals("exit")) {
-                gameOn = false;
-                g = null;
-                return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                if (saved) {
+                    gameOn = false;
+                    g = null;
+                    gameLost = false;
+                    gameWon = false;
+                    return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                }
+                askingToSave = true;
+                return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
             }
 
-            return g.nextMove(move);
+            String result = g.nextMove(move);
+            saved = false;
+            if (g.checkWin()) {
+                gameOn = false;
+                g = null;
+                gameWon = true;
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nYou win! " + playerName + " filled all the star holes!\nIf you want to start a new game enter 'new game'.";
+            }
+            else if (g.checkLost()) {
+                gameOn = false;
+                g = null;
+                gameLost = true;
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nGame Over! " + enemyName + " killed " + playerName + "!\nIf you want to start a new game enter 'new game'.";
+            }
+            return result;
         }
+    }
+
+    /**
+     * Method that returns if the game was won
+     * 
+     * @return true if the game was won, false otherwise
+     */
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    /**
+     * Method that returns if the game was lost
+     * 
+     * @return true if the game was lost, false otherwise
+     */
+    public boolean isGameLost() {
+        return gameLost;
     }
 }

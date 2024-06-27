@@ -1,6 +1,5 @@
 package org.zssn.escaperoom;
 
-import javax.swing.ImageIcon;
 
 /**
  * Key class is a subclass of Item. It is used to unlock doors in the game.

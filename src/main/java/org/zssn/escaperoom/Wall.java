@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class Wall - Represents a wall in the game. It has an image, (possibly) a door, and items.
