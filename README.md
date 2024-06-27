@@ -20,7 +20,7 @@ The game is played in a 9 rooms map of fixed design and each room has a variable
 The main room from witch the game begins is also the final room where the game ends after having solved all the riddles and quiz consisting of varius challenges, from finding the right item to using logic and memory.
 
 Each item has its own weight (expressed in Kg) and the player can carry a maximum ammount of weight (10 Kg).
-Almost all the ites weight 1 Kg, but some others, like the bandages have a hevier weight.
+Almost all the items weight 1 Kg, but some others, like the bandages have a hevier weight.
 Also, once used, the item dissapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage, forcing the player to carfully manage the inventory.
 
 ### **Player and commands**
