@@ -408,9 +408,13 @@ public class Game {
             }
             return enemy.getName() + " attacked " + player.getName() + ", now " + player.returnPronoun() + " has " + player.getHealth() + " health points left";
         }
-        else if (count % enemycount == 0) {
+        else if (count % enemycount == 0){
             enemy.move(map.getRoom(enemy.getCurrentRoom()));
-            return enemy.getName() + " moved to another room (for testing purposes: " + enemy.getCurrentRoom() + ")";
+            if (enemy.getCurrentRoom() == player.getCurrentRoom())
+                return enemy.getName() + " moved to the same room of " + player.getName() + " and is now in the " + map.getRoom(enemy.getCurrentRoom()).getName().toLowerCase();
+            if (player.isHidden())
+                return enemy.getName() + " is now in room " + map.getRoom(enemy.getCurrentRoom()).getName().toLowerCase();
+            return enemy.getName() + " moved to another room";
         }
         return enemy.getName() + " didn't move";
     }
@@ -866,7 +870,7 @@ public class Game {
          */
         public int size() {
             return mementos.size()-1;
-        }  
+        }
     }
 
     /**

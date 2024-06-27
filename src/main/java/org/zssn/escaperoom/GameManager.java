@@ -400,7 +400,7 @@ public class GameManager {
                     gameOn = true;
                     saved = true;
                     g.saveCurrentState();
-                    return "Game resumed!" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
+                    return "\nGame resumed!\n" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
                 } catch (Exception e) {
                     return e.getMessage();
                 }
