@@ -56,7 +56,12 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * JLabel object for the player health
      */
-    private static JLabel playerHelthLabel;
+    private JLabel playerHelthLabel;
+
+    /**
+     * JLabel object for the filled stars
+     */
+    private JLabel filledStarsLabel;
 
     /**
      * Boolean for the wall configuration
@@ -127,6 +132,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                     if (game.getGame() != null){
                         graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                         updatePlayerHealthLabel();
+                        updateStarLabel();
                     }
                     else if (game.isGameWon())
                         graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.png")));
@@ -150,6 +156,12 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         playerHelthLabel.setForeground(Color.WHITE);
         playerHelthLabel.setText("SALUTE: ♥♥♥♥♥");
         center.add(playerHelthLabel, BorderLayout.PAGE_START);
+
+        //Configura Label stelle
+        filledStarsLabel = new JLabel();
+        filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        filledStarsLabel.setForeground(Color.WHITE);
+        filledStarsLabel.setText("STELLE: ☆☆☆☆☆☆☆☆☆☆");
 
         // Configura il pannello dei pulsanti
         buttonPanel = new JPanel();
@@ -188,6 +200,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         startButton.setBackground(buttonBackgroundColor);
         startButton.setForeground(buttonTextColor);
         buttonPanelCenter.add(startButton);
+        buttonPanel.add(filledStarsLabel);
 
         JButton pauseButton = new JButton("Pause");
         pauseButton.setFont(new Font("Monospaced", Font.PLAIN, 20));
@@ -291,6 +304,20 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             heartSymbols.append("♥");
         }
         playerHelthLabel.setText("SALUTE: " + heartSymbols.toString());
+    }
+
+    /**
+     * Update the star label
+     */
+    private void updateStarLabel() {
+        StringBuilder starSymbols = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            if (game.getGame().getStarHole(i))
+                starSymbols.append("★");
+            else
+                starSymbols.append("☆");
+        }
+        filledStarsLabel.setText("STELLE: " + starSymbols.toString());
     }
 
     /**

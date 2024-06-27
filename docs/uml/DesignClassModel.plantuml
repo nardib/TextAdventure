@@ -16,19 +16,27 @@
         +decreaseHealth()
         +increaseHealth()
         +getHealth()
+        +setHealth()
         +getInventory()
         +insertItem()
         +removeItem()
+        +getInventory()
+        +setInventory()
         +getItem()
         +getInventoryCount()
+        +setInventoryCount()
+        +getInventoryWeight()
+        +setInventoryWeight()
         +getNotesInventory()
+        +setNotesInventory()
         +getNotesCount()
+        +setNotesCount()
         +getNoteAt()
-        +getWeight()
         +printInventory()
         +crossDoor()
         +changeDirection()
         +getCurrentDirection()
+        +setCurrentDirection()
         +isHidden()
         +setHidden()
         +equals()
@@ -42,13 +50,15 @@
         -enemy : Enemy
         -isGameOn : boolean
         -count : int
+        -filledStarHoles : int
 
-        GameMemento()
+        +GameMemento()
         +getPlayer()
-        +getMap()
+        +getWall()
         +getEnemy()
-        +getIsGameOn()
+        +getisGameOn()
         +getCount()
+        +getFilledStarHoles()
     }
 
     class GameCaretaker{
@@ -111,25 +121,45 @@
         -map : Map
         -enemy : Enemy
         -enemycount: int
+        -enemyAttacks : boolean
         -count : int
         -isGameOn : boolean
         -caretaker : GameCaretaker
-        -enemycount : int {final}
-        -enemyAttacks : boolean {final}
+        -filledStarHoles : int
+        -starHoles : boolean[]
         
         +Game()
         +nextMove()
         +isGameOver()
         +isGameOn()
+        +setGameOn()
         +getPlayer()
+        +setPlayer()
         +getMap()
+        +setMap()
         +getEnemy()
+        +setEnemy()
+        +getEnemyCount()
+        +setEnemyCount()
+        +getEnemyAttacks()
+        +setEnemyAttacks()
+        +getCount()
+        +setCount()
+        +getFilledStarHoles()
+        +setFilledStarHoles()
+        +getStarHoles()
+        +setStarHoles()
+        +getStarHole()
         +undo()
+        +checkGameOver()
+        +checkWin()
+        +checkLost()
+        +returnItemsInWall()
         -saveCurrentState()
         -playerTurn()
         -enemyTurn()
         -capitalizeFirstLetter()
-        -getItemsInWall()
+        -printLook()
     }
 
     class Main {
@@ -138,19 +168,26 @@
 
     class Item{
         #name : String
-        #icon : ImageIcon
-        #WEIGHT : int {final}
-        #PICKABLE : boolean {final}
+        #icon : String
+        #weight : int
+        #pickable : boolean
         #currentRoom : int
         #usingMessage : String
 
         +Item()
         +getIcon()
-        +getRoom()
+        +getWeight()
+        +isPickable()
+        +getCurrentRoom()
         +getName()
         +getUsingMessage()
-        +setRoom()
-        -setName()
+        +setCurrentRoom()
+        +setName()
+        +setUsingMessage()
+        +setIcon()
+        +setWeight()
+        +setCurrentRoom()
+        +setPickable()
         +clone()
         +equals()
     }
@@ -167,6 +204,9 @@
 
         +HiderItem()
         +isHiding()
+        +getHiddenItem()
+        +setHiddenItem()
+        +setHiding()
         +reveal()
         +clone()
         +equals()
@@ -176,7 +216,7 @@
         -items : Item[]
         -ArrayIndexCount : int
         -locked : boolean
-        -lockType : LockType
+        -lock : LockType
         -ID : int
 
         +ItemContainer()
@@ -184,10 +224,16 @@
         +unlock()
         +setUsingMessage()
         +getItem()
+        +getItems()
         +getItemsLength()
         +isLocked()
         +getLockType()
         +getID()
+        +setLockType()
+        +setID()
+        +setLocked()
+        +setItems()
+        +setItemsLength()
         +clone()
         +equals()
     }
@@ -201,19 +247,21 @@
 
     class HidingItem{
         +HidingItem()
-    }
-
-    class HealingItem{
-        +HEALING_POINTS : int
-
-        +HealingItem()
         +clone()
         +equals()
     }
 
-    class Note {
-        -message : String
+    class HealingItem{
+        +healingPoints : int
 
+        +HealingItem()
+        +clone()
+        +equals()
+        +getHealingPoints()
+        +setHealingPoints()
+    }
+
+    class Note {
         +Notes()
         +clone()
         +equals()
@@ -225,6 +273,8 @@
         +Key()
         +clone()
         +equals()
+        +getID()
+        +setID()
     }
 
     class Map {
@@ -237,6 +287,8 @@
         +clone()
         +getWall()
         +setWall()
+        +getRooms()
+        +setRooms()
     }
 
     class Room {
@@ -287,7 +339,7 @@
         +setCurrentRoom()
         +setName()
         +setGender()
-        +getPronoun()
+        +returnPronoun()
     }
 
     class Wall
@@ -303,17 +355,75 @@
         +addItemImages()
         +hasDoor()
         +removeItemImage()
-        +getCombinedImage()
+        +returnCombinedImage()
         +setDoor()
         +getItem()
         +getItemsLength()
+        +setItemsLength()
         +hasItems()
         +setItems()
+        +getItems()
         +removeItem()
         +clone()
         +equals()
         -deepCopy()
         -drawItems()
+    }
+
+    class Star {
+        -ID : int
+
+        +Star()
+        +getID()
+        +setID()
+        +clone()
+        +equals()
+    }
+
+    class StarHoles {
+        -ID : int
+        -filled : boolean
+
+        +starHoles()
+        +fill()
+        +getID()
+        +setID()
+        +isFilled()
+        +setFilled()
+        +clone()
+        +equals()
+    }
+
+    class GameManager {
+        -BUCKET_NAME : String
+        -KEY_NAME : String
+        -REGION : Region
+        -g : Game   
+        -configuring : boolean
+        -count : int
+        -playerName : String
+        -playerGender : String
+        -enemyName : String
+        -enemyGender : String
+        -movesBeforeEnemy : int
+        -gameOn: boolean
+        -gameWon : boolean
+        -gameLost : boolean
+        -saved : boolean
+        -askingToSave : boolean
+
+        +GameManager()
+        +loadConfig()
+        +saveProgress()
+        +resumeProgress()
+        +serialize()
+        +deserialize()
+        +upload()
+        +download()
+        +getGame()
+        +nextMove()
+        +isGameWon()
+        +isGameLost()
     }
 
     Player ..|> Gender
@@ -330,16 +440,19 @@
     ClueItem --|> Item : extends
     HidingItem --|> Item : extends
     Note --|> Item : extends
+    Star --|> Item : extends
+    StarHoles --|> Item : extends
     Enemy ..|> Gender
     Character <|-- Player : extends
     Character <|-- Enemy : extends
     Player --o "1" Game
     Map --o "1" Game
     Enemy --o "1" Game
-    GameMemento --* Game
+    GameMemento --o Game
     GameCaretaker --* GameMemento
     Game ..|> GameCaretaker : uses
-    Game --o GameFrame
+    GameManager --o GameFrame
+    GameManager o-- Game : manages
     GameFrame <|-- Main
     CustomOutputStream --* GameFrame
 

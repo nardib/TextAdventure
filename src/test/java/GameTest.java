@@ -117,7 +117,7 @@ public class GameTest {
     //i test the dynamics of picking the items in the map (i test one item for each type)
     @Test
     public void ItemsTest() {
-        g = new Game("Player", "f", "Enemy", "m", 1, false);
+        g = new Game("Player", "f", "Enemy", "m", 1, true);
 
         //i try to hide in the chest in the first room wall north (hiding item)
         g.nextMove("use hiding chest");
@@ -134,6 +134,7 @@ public class GameTest {
         Assert.assertFalse(g.getPlayer().isHidden());
 
         //i test if i can pick the key in the board games in the second room wall east (hider item test)
+        g.setEnemyAttacks(false);
         g.nextMove("cross east");
         g.nextMove("cross north");
         g.nextMove("cross west");

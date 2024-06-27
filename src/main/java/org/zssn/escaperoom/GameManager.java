@@ -310,7 +310,7 @@ public class GameManager {
                 g = null;
                 gameLost = false;
                 gameWon = false;
-                return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                return "\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
             }
             return "Input not valid. Valid inputs are 'yes' or 'no'.";
         }
@@ -335,18 +335,35 @@ public class GameManager {
                 else 
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
                 count++;
-                return "Gender setted to " + playerGender + "\n\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+                return "Gender setted to " + playerGender + "\n\nEnter 'true' (1) if the enemy attacks the player, 'false' (0) otherwise.";
             }
             else if (count == 2) {
+                if (move.equalsIgnoreCase("true") || move.equalsIgnoreCase("1") || move.equalsIgnoreCase("t"))
+                    enemyAttacks = true;
+                else if (move.equalsIgnoreCase("false") || move.equalsIgnoreCase("0") || move.equalsIgnoreCase("f")){
+                    enemyAttacks = false;
+                    movesBeforeEnemy = 1;
+                    g = new Game(playerName, playerGender, enemyName, enemyGender, movesBeforeEnemy, enemyAttacks);
+                    configuring = false;
+                    count = 0;
+                    gameOn = true;
+                    return "\nGame configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!";
+                }
+                else
+                    return "Input not valid. Valid inputs are 'true' or 'false'.";
+                count++;
+                return "\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+            }
+            else if (count == 3) {
                 if (move.equals("0")) {
                     count += 2;
-                    return "Ok, your enemy is " + enemyName + "!\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+                    return "Ok, your enemy is " + enemyName + "\n\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
                 }
                 enemyName = move;
                 count++;
-                return "Name setted to " + playerName +"!\n\nEnter the gender for the enemy:\n1.Male\n2.Female\n3.Neutral";
+                return "Name setted to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
-            else if (count == 3) {
+            else if (count == 4) {
                 if (move.equals("1"))
                     enemyGender = "m";
                 else if (move.equals("2"))
@@ -356,9 +373,10 @@ public class GameManager {
                 else
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
                 count++;
-                return "Gender setted to " + playerGender + "\n\nChoose a difficulty level:\n1.Easy\n2.Medium\n3.Hard";
+                return "\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
             }
-            else if (count == 4) {
+            
+            else if (count == 5) {
                 if (move.equals("1"))
                     movesBeforeEnemy = 5;
                 else if (move.equals("2"))
@@ -367,16 +385,6 @@ public class GameManager {
                     movesBeforeEnemy = 1;
                 else
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
-                count++;
-                return "\nEnter 'true' if the enemy attacks the player, 'false' otherwise.";
-            }
-            else if (count == 5) {
-                if (move.equalsIgnoreCase("true"))
-                    enemyAttacks = true;
-                else if (move.equalsIgnoreCase("false"))
-                    enemyAttacks = false;
-                else
-                    return "Input not valid. Valid inputs are 'true' or 'false'.";
                 g = new Game(playerName, playerGender, enemyName, enemyGender, movesBeforeEnemy, enemyAttacks);
                 configuring = false;
                 count = 0;
@@ -432,13 +440,13 @@ public class GameManager {
                 gameOn = false;
                 g = null;
                 gameWon = true;
-                return result;
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nYou win! " + playerName + " filled all the star holes!\nIf you want to start a new game enter 'new game'.";
             }
             else if (g.checkLost()) {
                 gameOn = false;
                 g = null;
                 gameLost = true;
-                return result;
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nGame Over! " + enemyName + " killed " + playerName + "!\nIf you want to start a new game enter 'new game'.";
             }
             return result;
         }

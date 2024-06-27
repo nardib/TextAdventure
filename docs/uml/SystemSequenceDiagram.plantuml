@@ -5,17 +5,17 @@ participant Game
 
 Game --> Player : Shows the start page
 
-alt click on "New Game"
+alt use "New Game" command
     Player -> Game : New Game
-    Game --> Player : Asks for name and gender of the Player    
+    Game --> Player : Asks for name and gender of the Player and Enemy   
     Player -> Game : Gives the requested parameters
-else click on "Load Game"
+else use "Resume" command
     Player -> Game : Load Game
 end
 
 Game --> Player : Shows game interface
 
-alt insert an input in the TextField
+loop until the game is over
     Player -> Game : submit a command
     alt command is  "<direction>"
         Game --> Player : Shows the wall n, e, w, s of the current room
@@ -45,22 +45,22 @@ alt insert an input in the TextField
         Game --> Player : Shows all the items in player's inventory
     else command is "status"
         Game --> Player : Shows the status of the player (health, room and invenotry)
+    else submit "undo"/"back" command
+        Game --> Player : returns the state of the game one step back
+    else submit "help" command
+        Game --> Player : shows the instruction page with all the commands the player can use
+    else submit "save" command
+        Game --> Player : Save the state of the game
+    else submit on "Exit" command
+        Player -> Game : Exit
+            alt the game was saved
+                Game --> Player : Exit the game saving changes
+            else the game was not saved
+                Game --> Player : Asks if the user wants to save the game
+                Player -> Game : Says "yes" or "no"
+                Game --> Player : Exit the game saving or not saving the progress of the game
+            end
     end
-else submit "undo"/"back" command
-    Game --> Player : returns the state of the game one step back
-else submit "help" command
-    Game --> Player : shows the instruction page with all the commands the player can use
-else submit "save" command
-    Game --> Player : Save the state of the game
-else clicks on "Exit"
-    Player -> Game : Exit
-        alt the game was saved
-            Game --> Player : Exit the game saving changes
-        else the game was not saved
-            Game --> Player : Asks if the user wants to save the game
-            Player -> Game : Says "yes" or "no"
-            Game --> Player : Exit the game saving or not saving the progress of the game
-        end
 end
 
 @enduml

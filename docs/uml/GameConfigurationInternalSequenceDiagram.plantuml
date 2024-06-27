@@ -1,0 +1,57 @@
+@startuml GameConfigurationInternalSequenceDiagram
+
+title Game Configuration - Internal Sequence DiagramBorderColor
+
+actor User
+participant GameFrame
+participant GameManager
+participant Game
+participant Player
+participant Enemy
+
+activate GameFrame
+GameFrame --> User: Asks for a name and a gender for the player
+User -> GameFrame : provides the asked parameters
+activate GameManager
+GameFrame -> GameManager : nextMove(<name>)
+GameFrame -> GameManager : nextMove(<gender>)
+
+GameFrame --> User : Asks if the enemy attacks the player
+User -> GameFrame : provides the asked parameters
+
+alt Enemy attacks the player
+    GameFrame -> GameManager : nextMove(true)
+    GameFrame --> User : Asks for a name and a gender for the enemy
+    User -> GameFrame : provides the asked parameters
+    GameFrame -> GameManager : nextMove(<name>)
+    GameFrame -> GameManager : nextMove(<gender>)
+    GameFrame --> User : Asks the difficulty level
+    User -> GameFrame : provides the asked parameters
+    GameFrame -> GameManager : nextMove(difficulty level)
+else Enemy does not attack the player
+    GameFrame -> GameManager : nextMove(false)
+end
+
+activate Game
+GameManager -> Game: Game()
+
+activate Player
+Game -> Player: Player()
+Player --> Game : Returns the player object
+deactivate Player
+
+activate Enemy
+Game -> Enemy: Enemy()
+Enemy --> Game : Returns the enemy object
+deactivate Enemy
+
+Game --> GameManager : Returns the game object
+deactivate Game
+
+GameManager --> GameFrame : Returns the game object
+deactivate GameManager
+
+GameFrame --> User : Shows the game
+deactivate GameFrame
+
+@enduml

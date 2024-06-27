@@ -52,6 +52,11 @@ public class Game {
     private int filledStarHoles;
 
     /**
+     * Array of boolean to check all the star holes (true if filled, false otherwise)
+     */
+    private boolean[] starHoles;
+
+    /**
      * The help message
      */
     public final static String HELP = "The commands are:\n"
@@ -98,6 +103,9 @@ public class Game {
         saveCurrentState();
         this.enemyAttacks = enemyAttacks;
         filledStarHoles = 0;
+        starHoles = new boolean[10];
+        for (int i = 0; i < 10; i++)
+            starHoles[i] = false;
     }
 
     /**
@@ -264,7 +272,7 @@ public class Game {
                 if (items[i].getName().equalsIgnoreCase(itemInput) || items[i].getName().equalsIgnoreCase(input.substring(4))) {
                     Item item = items[i];
                     if (item instanceof Key || item instanceof Note || item instanceof HealingItem || item instanceof Star)
-                        return player.getName() + " must pick the " + item.getName().toLowerCase() + " before using it!";
+                        return player.getName() + " must take the " + item.getName().toLowerCase() + " before using it!";
                     else if (item instanceof ClueItem) {
                         ClueItem clueItem = (ClueItem) item;
                         return clueItem.getUsingMessage();
@@ -370,6 +378,7 @@ public class Game {
                                     starHole.fill(star);
                                     player.removeItem(j);
                                     filledStarHoles++;
+                                    starHoles[starHole.getID()-1] = true;
                                     return player.getName() + " filled the star hole " + starHole.getID() + " with the " + star.getName().toLowerCase();
                                 }
                             }
@@ -418,9 +427,6 @@ public class Game {
 
         String out = "\n-------------------------- Input : " + input + " --------------------------\n\n";
 
-        if (!isGameOn)
-            return out + "Game is Over!";
-
         if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h"))
             return out + HELP;
 
@@ -430,11 +436,7 @@ public class Game {
                     + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n"
                     + "The number of star holes filled is " + filledStarHoles + "/10\n"
                     + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
-        
-        if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-            isGameOn = false;
-            return out + "Game over";
-        }
+
         
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) 
@@ -458,11 +460,12 @@ public class Game {
         }
 
         // enemy turn
-        out += "\n" + enemyTurn();
+        if (enemyAttacks)
+            out += "\n" + enemyTurn();
         count++;
         
         if(checkGameOver() && player.getHealth() == 0)
-            return out + "\nGame Over! " + enemy.getName() + " killed you!";
+            return out;
         if(checkGameOver() && filledStarHoles == 10)
             return out + "\nYou win! You filled all the star holes!";
         
@@ -647,6 +650,38 @@ public class Game {
      */
     public void setFilledStarHoles(int filledStarHoles) {
         this.filledStarHoles = filledStarHoles;
+    }
+
+    /**
+     * Method to get the array of boolean to check all the star holes
+     * 
+     * @return the array of boolean to check all the star holes
+     */
+    public boolean[] getStarHoles() {
+        return starHoles;
+    }
+
+    /**
+     * Method to set the array of boolean to check all the star holes
+     * 
+     * @param starHoles the array of boolean to check all the star holes
+     */
+    public void setStarHoles(boolean[] starHoles) {
+        this.starHoles = starHoles;
+    }
+
+    /**
+     * Method to get the element i of the array of boolean to check all the star holes
+     * 
+     * @param i the index of the array
+     * @return the element i of the array of boolean to check all the star holes
+     * 
+     * @throws IllegalArgumentException if the index is out of bounds
+     */
+    public boolean getStarHole(int i) {
+        if (i < 0 || i >= 10)
+            throw new IllegalArgumentException("The index must be between 0 and 9");
+        return starHoles[i];
     }
 
     /**

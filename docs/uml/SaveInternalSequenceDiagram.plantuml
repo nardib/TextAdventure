@@ -18,10 +18,10 @@ GameManager -> GameManager : serialize()
 
 GameManager -> GameManager : upload()
 
-GameManager -> GameFrame : notify "Game saved"
+GameManager -> GameFrame : return "Game saved"
 deactivate GameManager
 
-GameFrame -> User : display updated game state
+GameFrame -> User : display "Game saved"
 
 deactivate GameFrame
 
