@@ -25,27 +25,27 @@ public class Map
     /**
      * items in the drawer
      */
-    private final static Item[] drawerItems = {new Note("Note", "test.png", 1, "Message"), new Key("Key", 123, "test.png", 1), new Star ("Star 1", "test.png", 1, 1)};
+    private final static Item[] drawerItems = {new Star ("Star 1", "test.png", 1, 1)};
     /**
      * items in the safe
      */
-    private final static Item[] safeItems = {new Key("Key", 111, "test.png", 1), new Star ("Star 2", "test.png", 1, 2)};
+    private final static Item[] safeItems = {new Star ("Star 2", "test.png", 1, 2)};
     /**
      * items in the item chest
      */
-    private final static Item[] itemChestItems = {new Key("Key", 222, "test.png", 1), new Star ("Star 3", "test.png", 2, 3)};
+    private final static Item[] itemChestItems = {new Star ("Star 3", "test.png", 2, 3), new HealingItem("Bendage", "test.png", 3, 3, 2)};
     /**
      * items in the dice
      */
-    private final static Item[] diceItems = {new Key("Key", 333, "test.png", 1), new Star ("Star 4", "test.png", 2, 4)};
+    private final static Item[] diceItems = {new Star ("Star 4", "test.png", 2, 4)};
     /**
      * items in the fridge
      */
-    private final static Item[] fridgeItems = {new Key("Key", 444, "test.png", 1), new Star ("Star 5", "test.png", 3, 5)};
+    private final static Item[] fridgeItems = {new Star ("Star 5", "test.png", 3, 5)};
     /**
      * items in the safe2
      */
-    private final static Item[] LivingRoomSafeItems = {new Key("Key", 555, "test.png", 1), new Star ("Star 6", "test.png", 6, 6)};
+    private final static Item[] LivingRoomSafeItems = {new Star ("Star 6", "test.png", 6, 6)};
     /**
      * items in the chess drawer
      */
@@ -53,15 +53,15 @@ public class Map
     /**
      * items in the safe3
      */
-    private final static Item[] BedRoomSafeItems = {new Key("Key", 777, "test.png", 1), new Star ("Star 9", "test.png", 8, 9)};
+    private final static Item[] BedRoomSafeItems = {new Star ("Star 9", "test.png", 8, 9)};
     /**
      * items in the mirror cabinet
      */
-    private final static Item[] mirrorCabinetItems = {new Key("Key", 888, "test.png", 1)};
+    private final static Item[] mirrorCabinetItems = {new Note("Note in the mirror cabinet", "test.png", 1, "To unlock the fridge type: 151"), new HealingItem("Pills", "test.png", 2, 9, 1)};
     /**
      * items in the pinpad
      */
-    private final static Item[] pinpadItems = {new Key("Key", 999, "test.png", 1), new Star ("Star 8", "test.png", 7, 8)};
+    private final static Item[] pinpadItems = { new Star ("Star 8", "test.png", 7, 8)};
     /**
      * items in the clock drawer
      */
@@ -69,7 +69,7 @@ public class Map
     /**
      * items in the lock
      */
-    private final static Item[] lockItems = {new Key("Key", 100, "test.png", 9), new Star ("Star 10", "test.png", 9, 10)};
+    private final static Item[] lockItems = {new Star ("Star 10", "test.png", 9, 10)};
 
     /**
      * items in the room 1 wall N
@@ -110,7 +110,7 @@ public class Map
     /**
      * items in the room 3 wall E
      */
-    private final static Item[] itemsE3 = {new Key("Key", 222, "test.png", 3)};
+    private final static Item[] itemsE3 = {new HealingItem("Pills", "test.png", 2, 3, 1)};
     /**
      * items in the room 3 wall S
      */
@@ -126,7 +126,7 @@ public class Map
     /**
      * items in the room 4 wall E
      */
-    private final static Item[] itemsE4 = {new HealingItem("Bendage", "test.png", 2, 4, 2)};
+    private final static Item[] itemsE4 = {new HealingItem("Bendage", "test.png", 3, 4, 2)};
     /**
      * items in the room 4 wall S
      */

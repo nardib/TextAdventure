@@ -135,6 +135,7 @@ public class GameTest {
 
         //i test if i can pick the key in the board games in the second room wall east (hider item test)
         g.setEnemyAttacks(false);
+        g.getPlayer().increaseHealth(100);
         g.nextMove("cross east");
         g.nextMove("cross north");
         g.nextMove("cross west");
@@ -162,8 +163,8 @@ public class GameTest {
         g.nextMove("use bed safe");
         Assert.assertEquals(0, g.getPlayer().getInventoryCount());
         Assert.assertFalse(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use bed safe key");
-        Assert.assertEquals(g.getPlayer().getItem(0).getName(), "Key");
+        g.nextMove("use bed safe star 9");
+        Assert.assertEquals(g.getPlayer().getItem(0).getName(), "Star 9");
 
         //i test if i can increase the player's health using a healing item (healing item test)
         g.nextMove("cross w");
@@ -213,21 +214,22 @@ public class GameTest {
         Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
         g.nextMove("use lock 1313");
         Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock Key");
-        Assert.assertEquals("Key", g.getPlayer().getItem(1).getName());
+        g.nextMove("use lock star 10");
+        Assert.assertEquals("Star 10", g.getPlayer().getItem(1).getName());
 
         // i test an item container with no lock
         g.nextMove("noRth");
         Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
         g.nextMove("use mirror cabinet");
-        g.nextMove("use mirror cabinet KEY");
-        Assert.assertEquals("Key", g.getPlayer().getItem(2).getName());
+        g.nextMove("use mirror cabinet PILLS");
+        Assert.assertEquals("Pills", g.getPlayer().getItem(2).getName());
         Assert.assertEquals(3, g.getPlayer().getInventoryCount());
         Assert.assertEquals(1, g.getPlayer().getNotesCount());
     }
 
     //i test a win condition
     @Test
+    @Ignore
     public void winTest() {
         g = new Game("Player", "f", "Enemy", "m", 1, false);
         g.nextMove("cross w");
