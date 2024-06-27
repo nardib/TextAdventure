@@ -46,7 +46,7 @@ In orther to interract with the game, the player as to use the command line impl
 
 - save (used to save the status of the game)
 
-- quit (used to quit the game)
+- quit/exit (used to quit the game)
 
 ### Enemy
 
@@ -64,8 +64,10 @@ The player can also find and use some special healing items like bandages and pa
 | Name | Version | Description |
 | --- | --- | --- |
 | Java | 17 | Version of Java defined in the `pom.xml` file for compiling and generating the target bytecode|
-| JavaSwing | 1.0.3 | Platform used for develpment of client applications, based on Java, later on substitued with JavaFX |
 | JUnit | 4.13.2 | Framework for Java class tests |
+| Jackson | 2.17.1 | Framework for converting objects into JSON stringifying them, and to convert back in the original shape through get and set methods using the ObjectMapper class |
+| aws-sdk-for-java | 2.26.7 | Framework from the AWS SDK for accessing AWS Services Including S3 Bucket |
+| Logback Classic Module | 1.5.6 | Used for monitoring the use of the AWS services and possibly intercept |
 
 ### Compile and Execute
 
@@ -399,9 +401,9 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Execution Report | - Test back function with no previous moves to undo: <br> - Test back function with a previous move to undo: <br> - Test back function several times with several previous moves to undo: |
 
 
-### Save and Exit
+### Save and Exit/Quit
 
-| Summary | When inserting `save` ad command the game saves its actual state and when pressing `exit` it returns to the main menu |
+| Summary | When inserting `save` ad command the game saves its actual state and when pressing `exit` it returns to the main menu or use `quit` to close the entire window |
 | --- | --- |
 | Test Case Design | - Test save <br> - Test exit |
 | Pre-Condition | The user must have done at least one move. |
