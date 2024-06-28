@@ -297,26 +297,20 @@ public class GameManager {
         if (askingToSave) {
             if (move.equalsIgnoreCase("yes") || move.equalsIgnoreCase("y")) {
                 saveProgress(g);
-                askingToSave = false;
-                gameOn = false;
-                g = null;
-                gameLost = false;
-                gameWon = false;
-                return "Game saved!\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                System.exit(0);
             }
             else if (move.equalsIgnoreCase("no") || move.equalsIgnoreCase("n")) {
-                askingToSave = false;
-                gameOn = false;
-                g = null;
-                gameLost = false;
-                gameWon = false;
-                return "\nWe are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
+                System.exit(0);
             }
             return "Input not valid. Valid inputs are 'yes' or 'no'.";
         }
 
-        if (move.equals("quit")) {
-            System.exit(0);
+        if (move.equals("exit") || move.equals("quit")) {
+            if (saved || gameLost || gameWon || !gameOn) {
+                System.exit(0);
+            }
+            askingToSave = true;
+            return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
         }
         
         if (configuring) {
@@ -393,6 +387,8 @@ public class GameManager {
             }
             return "Error during configuration!";
         }
+        else if (gameLost || gameWon)
+            return "Game over! You can now quit the game using the 'exit' or 'quit' command";
         else if (!gameOn) {
             if (move.equalsIgnoreCase("resume")) {
                 try {
@@ -400,6 +396,9 @@ public class GameManager {
                     gameOn = true;
                     saved = true;
                     g.saveCurrentState();
+                    playerName = g.getPlayer().getName();
+                    enemyName = g.getEnemy().getName();
+                    enemyAttacks = g.getEnemyAttacks();
                     return "\nGame resumed!\n" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
                 } catch (Exception e) {
                     return e.getMessage();
@@ -423,31 +422,18 @@ public class GameManager {
                     return e.getMessage();
                 }
             }
-            if (move.equals("exit")) {
-                if (saved) {
-                    gameOn = false;
-                    g = null;
-                    gameLost = false;
-                    gameWon = false;
-                    return "We are sorry to see you go! Hope to see you soon!\nIf you want to resume the game, enter 'resume' or to start a new game enter 'new game'.";
-                }
-                askingToSave = true;
-                return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
-            }
 
             String result = g.nextMove(move);
             saved = false;
             if (g.checkWin()) {
-                gameOn = false;
                 g = null;
                 gameWon = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\nYou win! " + playerName + " filled all the star holes!\nIf you want to start a new game enter 'new game'.";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nYou win! " + playerName + " filled all the star holes!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             else if (g.checkLost()) {
-                gameOn = false;
                 g = null;
                 gameLost = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\nGame Over! " + enemyName + " killed " + playerName + "!\nIf you want to start a new game enter 'new game'.";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nGame Over! " + enemyName + " killed " + playerName + "!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             return result;
         }
