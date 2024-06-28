@@ -102,11 +102,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         terminal.setForeground(Color.WHITE);
         writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
         JScrollPane terminalScrollPane = new JScrollPane(terminal);
-<<<<<<< HEAD
         terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225)); // Altezza del terminale a 225
-=======
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225));
->>>>>>> bcccc36821137eea47a733fd846f5065b1bc96ce
         // Pannello per terminal e input
         JPanel downPanel = new JPanel();
         downPanel.setLayout(new BorderLayout());
@@ -228,22 +224,6 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             }
         });
 
-        InputMap inputMapZoom = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMapZoom.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "zoom");
-        frame.getRootPane().getActionMap().put("zoom", new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                zoom();
-            }
-        });
-
-        InputMap inputMapUnzoom = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMapUnzoom.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "unzoom");
-        frame.getRootPane().getActionMap().put("unzoom", new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                unzoom();
-            }
-        });
-
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         //System.setOut(printStream);
@@ -294,7 +274,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             frame.dispose();
             frame.setUndecorated(false);
             frame.setSize(1920, 1080);
-            frame.setResizable(true);
+            frame.setResizable(false);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         } else {
@@ -304,27 +284,6 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             gd.setFullScreenWindow(frame);
         }
         isFullscreen = !isFullscreen;
-    }
-
-    /**
-     * Zoom the font of the terminal and the input field
-     */
-    private void zoom() {
-        Font font = terminal.getFont();
-        float size = font.getSize() + 1.0f;
-        terminal.setFont(font.deriveFont(size));
-        inputField.setFont(font.deriveFont(size));
-
-    }
-
-    /**
-     * Unzoom the font of the terminal and the input field
-     */
-    private void unzoom() {
-        Font font = terminal.getFont();
-        float size = font.getSize() - 1.0f;
-        terminal.setFont(font.deriveFont(size));
-        inputField.setFont(font.deriveFont(size));
     }
 
     /**
