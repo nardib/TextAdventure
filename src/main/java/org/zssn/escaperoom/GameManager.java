@@ -285,6 +285,7 @@ public class GameManager {
         return g;
     }
 
+    
     /**
      * Method that performs the next move in the game
      * 
@@ -383,7 +384,6 @@ public class GameManager {
                 configuring = false;
                 count = 0;
                 gameOn = true;
-                return "\nGame configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!";
             }
             return "Error during configuration!";
         }
