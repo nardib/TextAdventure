@@ -9,7 +9,7 @@
 
 ## Game Manual
 
-The game is a text adventure with a easy and clean graphic user interface (GUI) provided with a screen showing images to improve the user experience. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the image shown in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, locks, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
+The game is a text adventure with a easy and clean graphic user interface (GUI) provided with a screen, resizable, showing images to improve the user experience. Pressin F1 zooms the screen out, F2 zooms in and F11 selects full screen mode. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the image shown in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, locks, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
 - changing the wall you are facing
 - changing room (based on the doors placed in the room)
 - picking up items (only the pickable ones)
