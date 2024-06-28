@@ -160,15 +160,20 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
 
         // Pannello sinistro per la salute del giocatore
         JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setPreferredSize(new Dimension(250, 45));
         leftPanel.setBackground(new Color(28, 28, 28));
         playerHealthLabel = new JLabel();
         playerHealthLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
         playerHealthLabel.setForeground(Color.RED);
         playerHealthLabel.setText("");
-        leftPanel.add(playerHealthLabel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START; // align to left
+        gbc.weightx = 1.0; // take up all available space
+        leftPanel.add(playerHealthLabel, gbc);
 
         // Pannello centrale per le stelle raccolte
-        JPanel centerPanel = new JPanel(new  GridBagLayout());
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        //centerPanel.setPreferredSize(new Dimension(frame.getWidth()/3, 45));
         centerPanel.setBackground(new Color(28, 28, 28));
         filledStarsLabel = new JLabel();
         filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
@@ -176,14 +181,18 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         filledStarsLabel.setText("");
         centerPanel.add(filledStarsLabel);
 
-        // Pannello destro per la posizione del giocatore
+       // Pannello destro per la posizione del giocatore
         JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setPreferredSize(new Dimension(250, 45));
         rightPanel.setBackground(new Color(28, 28, 28));
         playerStatusLabel = new JLabel();
         playerStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
         playerStatusLabel.setForeground(Color.WHITE);
         playerStatusLabel.setText("");
-        rightPanel.add(playerStatusLabel);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_END; // align to right
+        gbc.weightx = 1.0; // take up all available space
+        rightPanel.add(playerStatusLabel, gbc);
 
         // Aggiungi i pannelli al pannello superiore
         topPanel.add(leftPanel, BorderLayout.WEST);
