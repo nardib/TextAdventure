@@ -102,8 +102,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         terminal.setForeground(Color.WHITE);
         writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
         JScrollPane terminalScrollPane = new JScrollPane(terminal);
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 200)); // Altezza del terminale a 140
-
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225)); // Altezza del terminale a 140
         // Pannello per terminal e input
         JPanel downPanel = new JPanel();
         downPanel.setLayout(new BorderLayout());
@@ -159,23 +158,37 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         topPanel.setLayout(new BorderLayout());
         topPanel.setPreferredSize(new Dimension(0, 45));
 
+        // Pannello sinistro per la salute del giocatore
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setBackground(new Color(28, 28, 28));
         playerHealthLabel = new JLabel();
         playerHealthLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
         playerHealthLabel.setForeground(Color.RED);
         playerHealthLabel.setText("");
-        topPanel.add(playerHealthLabel, BorderLayout.LINE_START);
+        leftPanel.add(playerHealthLabel);
 
+        // Pannello centrale per le stelle raccolte
+        JPanel centerPanel = new JPanel(new  GridBagLayout());
+        centerPanel.setBackground(new Color(28, 28, 28));
         filledStarsLabel = new JLabel();
         filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
         filledStarsLabel.setForeground(Color.YELLOW);
         filledStarsLabel.setText("");
-        topPanel.add(filledStarsLabel, BorderLayout.CENTER);
+        centerPanel.add(filledStarsLabel);
 
+        // Pannello destro per la posizione del giocatore
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setBackground(new Color(28, 28, 28));
         playerStatusLabel = new JLabel();
         playerStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
         playerStatusLabel.setForeground(Color.WHITE);
         playerStatusLabel.setText("");
-        topPanel.add(playerStatusLabel, BorderLayout.LINE_END);
+        rightPanel.add(playerStatusLabel);
+
+        // Aggiungi i pannelli al pannello superiore
+        topPanel.add(leftPanel, BorderLayout.WEST);
+        topPanel.add(centerPanel, BorderLayout.CENTER);
+        topPanel.add(rightPanel, BorderLayout.EAST);
 
         frame.add(topPanel, BorderLayout.PAGE_START);
 
@@ -186,7 +199,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 int w = frame.getWidth();
                 double grapSize = w / 25;
                 graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
-                terminalScrollPane.setPreferredSize(new Dimension(w, 140)); // Mantieni l'altezza del terminale a 140
+                terminalScrollPane.setPreferredSize(new Dimension(w, 225)); // Mantieni l'altezza del terminale a 140
                 center.setPreferredSize(new Dimension(w, h - 140));
             }
         });
