@@ -100,12 +100,12 @@ public class Game {
             throw new IllegalArgumentException("The count must be a positive integer");
         this.enemycount = count;
         caretaker = new GameCaretaker();
-        saveCurrentState();
         this.enemyAttacks = enemyAttacks;
         filledStarHoles = 0;
         starHoles = new boolean[10];
         for (int i = 0; i < 10; i++)
             starHoles[i] = false;
+        saveCurrentState();
     }
 
     /**
@@ -199,6 +199,8 @@ public class Game {
                 
                 for (int i = 0; i < items.length; i++) {
                     if (items[i].getName().equalsIgnoreCase(input.substring(5))) {
+                        if (!enemyAttacks && items[i] instanceof HealingItem)
+                            return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
                         if (!items[i].isPickable())
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's not pickable";
                         if (player.getInventoryWeight() + items[i].getWeight() > Player.MAX_WEIGHT)
@@ -299,6 +301,8 @@ public class Game {
                         return hiderItem.getUsingMessage();
                     }
                     else if (item instanceof HidingItem) {
+                        if (!enemyAttacks)
+                            return "The enemy doesn't attack, " + player.getName() + " doesn't need to hide.";
                         HidingItem hidingItem = (HidingItem) item;
                         player.setHidden();
                         return hidingItem.getUsingMessage();
@@ -353,6 +357,8 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
+                                if (!enemyAttacks && items[i] instanceof HealingItem)
+                                    return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
                                 if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
                                     return player.getName() + " can't take the item, it's too heavy";
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
@@ -416,6 +422,8 @@ public class Game {
                 return enemy.getName() + " is now in room " + map.getRoom(enemy.getCurrentRoom()).getName().toLowerCase();
             return enemy.getName() + " moved to another room";
         }
+        if (player.isHidden())
+            return enemy.getName() + " is now in room " + map.getRoom(enemy.getCurrentRoom()).getName().toLowerCase();
         return enemy.getName() + " didn't move";
     }
 
@@ -435,16 +443,13 @@ public class Game {
             return out + HELP;
 
         if (input.equalsIgnoreCase("status"))
-            return out + player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points.\n"
-                    + capitalizeFistLetter(player.returnPronoun()) + " has the following items in the invenotory: " + player.printInventory()
-                    + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n"
-                    + "The number of star holes filled is " + filledStarHoles + "/10\n"
-                    + enemy.getName() + " is in room " + enemy.getCurrentRoom(); //this message should be removed
+            return out + printStatus();
 
         
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
-            if (undo()) 
-                return out + "Undo successful! Now " + player.getName() + " is in room " + player.getCurrentRoom() + " and " + enemy.getName() +" is in room " + enemy.getCurrentRoom();   //i should delete the enemy room
+            if (undo()) {
+                return out + "Undo successful!\n" + printStatus() + printLook();
+            }
             return out + "No previous moves to undo";
         }
         //command to check the items in the inventory (probably should be in nextMove)
@@ -724,6 +729,11 @@ public class Game {
         private final int filledStarHoles;
 
         /**
+         * Array of boolean to check all the star holes
+         */
+        private final boolean[] starHoles;
+
+        /**
          * Constructor to initialize the memento
          * 
          * @param player the player
@@ -733,15 +743,18 @@ public class Game {
          * @param count tells the number of the move
          * @param filledStarHoles tells the number of star holes filled
          */
-        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn, int count, int filledStarHoles) {
+        public GameMemento(Player player, Enemy enemy, Map map, boolean isGameOn, int count, int filledStarHoles, boolean[] starHoles) {
             this.player = player.clone();
             this.enemy = enemy.clone();
             this.wall = map.getWall(player.getCurrentRoom(), player.getCurrentDirection()).clone();
             this.isGameOn = isGameOn;
             this.count = count;
             this.filledStarHoles = filledStarHoles;
+            this.starHoles = new boolean[10];
+            for (int i = 0; i < 10; i++)
+                this.starHoles[i] = starHoles[i];
         }
-
+        
         /**
          * Method to get the player
          * 
@@ -795,13 +808,22 @@ public class Game {
         public int getFilledStarHoles() {
             return filledStarHoles;
         }
+
+        /**
+         * Method to get the array of boolean to check all the star holes
+         * 
+         * @return the array of boolean to check all the star holes
+         */
+        public boolean[] getStarHoles() {
+            return starHoles;
+        }
     }
 
     /**
      * Method to save the current state of the game and add it to the stack of mementos
      */
     public void saveCurrentState() {
-        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count, filledStarHoles));
+        caretaker.addMemento(new GameMemento(player, enemy, map, isGameOn, count, filledStarHoles, starHoles));
     }
 
     /**
@@ -819,6 +841,8 @@ public class Game {
             isGameOn = memento.getisGameOn();
             count = memento.getCount();
             filledStarHoles = memento.getFilledStarHoles();
+            for (int i = 0; i < 10; i++)
+                starHoles[i] = memento.getStarHoles()[i];
             return true;
         }
         return false;
@@ -953,5 +977,17 @@ public class Game {
         } catch (IllegalStateException e) {
             return e.getMessage();
         }
+    }
+
+    /**
+     * Method to print the status of the player
+     * 
+     * @return the status of the player
+     */
+    private String printStatus() {
+        return player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points.\n"
+                + capitalizeFistLetter(player.returnPronoun()) + " has the following items in the inventory: " + player.printInventory()
+                + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n"
+                + "The number of star holes filled is " + filledStarHoles + "/10\n";
     }
 }

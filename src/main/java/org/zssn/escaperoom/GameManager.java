@@ -361,7 +361,7 @@ public class GameManager {
                 }
                 enemyName = move;
                 count++;
-                return "Name setted to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
+                return "Name setted to " + enemyName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
             else if (count == 4) {
                 if (move.equals("1"))
