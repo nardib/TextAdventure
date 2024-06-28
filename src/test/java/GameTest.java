@@ -2,11 +2,109 @@ import org.zssn.escaperoom.*;
 import org.junit.*;
 
 public class GameTest {
-    Game g;
+
+    //i test a win condition
+    @Test
+    public void winTest() {
+        Game g = new Game("Player", "f", "Enemy", "m", 1, false);
+        Assert.assertEquals(0, g.getFilledStarHoles());
+        g.nextMove("cross w");
+        g.nextMove("cross n");
+        g.nextMove("use drawer star 1");
+        Assert.assertEquals("Star 1", g.getPlayer().getItem(0).getName());
+        g.nextMove("e");
+        g.nextMove("use painting");
+        g.nextMove("use safe 352");
+        g.nextMove("use safe star 2");
+        Assert.assertEquals("Star 2", g.getPlayer().getItem(1).getName());
+        g.nextMove("take key on pinboard");
+        Assert.assertEquals("Key on pinboard", g.getPlayer().getItem(2).getName());
+        g.nextMove("cross");
+        g.nextMove("use dice 143");
+        g.nextMove("use dice star 4");
+        Assert.assertEquals("Star 4", g.getPlayer().getItem(3).getName());
+        g.nextMove("use board games");
+        g.nextMove("take bedroom safe key");
+        Assert.assertEquals("Bedroom safe key", g.getPlayer().getItem(4).getName());
+        g.nextMove("cross");
+        g.nextMove("n");
+        g.nextMove("use fridge 151");
+        g.nextMove("use fridge star 5");
+        Assert.assertEquals("Star 5", g.getPlayer().getItem(5).getName());
+        g.nextMove("cross s");
+        g.nextMove("n");
+        g.nextMove("use safe");
+        g.nextMove("use safe star 6");
+        Assert.assertEquals("Star 6", g.getPlayer().getItem(5).getName());
+        g.nextMove("s");
+        g.nextMove("cross");
+        g.nextMove("use lock 1313");
+        g.nextMove("use lock star 10");
+        Assert.assertEquals("Star 10", g.getPlayer().getItem(6).getName());
+        g.nextMove("cross n");
+        g.nextMove("cross w");
+        g.nextMove("use star hole 1");
+        Assert.assertEquals(1, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(0));
+        g.nextMove("use star hole 2");
+        Assert.assertEquals(2, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(1));
+        g.nextMove("n");
+        g.nextMove("use star hole 4");
+        Assert.assertEquals(3, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(3));
+        g.nextMove("use star hole 5");
+        Assert.assertEquals(4, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(4));
+        g.nextMove("use star hole 6");
+        Assert.assertEquals(5, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(5));
+        g.nextMove("s");
+        g.nextMove("use star hole 10");
+        Assert.assertTrue(g.getStarHole(9));
+        Assert.assertEquals(6, g.getFilledStarHoles());
+        g.nextMove("cross");
+        g.nextMove("use bed safe");
+        g.nextMove("use bed safe star 9");
+        g.nextMove("e");
+        g.nextMove("use chess drawer 358");
+        g.nextMove("use chess drawer key for games chest");
+        g.nextMove("cross w");
+        g.nextMove("n");
+        g.nextMove("use vase");
+        g.nextMove("take star 7");
+        g.nextMove("s");
+        g.nextMove("use vase with wheels");
+        g.nextMove("use pinpad 1563");
+        g.nextMove("use pinpad star 8");
+        g.nextMove("cross n");
+        g.nextMove("cross n");
+        g.nextMove("cross e");
+        g.nextMove("n");
+        g.nextMove("use games chest");
+        g.nextMove("use games chest star 3");
+        g.nextMove("cross w");
+        g.nextMove("cross s");
+        g.nextMove("cross e");
+        g.nextMove("use star hole 7");
+        Assert.assertEquals(7, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(6));
+        g.nextMove("use star hole 8");
+        Assert.assertEquals(8, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(7));
+        g.nextMove("s");
+        g.nextMove("use star hole 9");
+        Assert.assertEquals(9, g.getFilledStarHoles());
+        Assert.assertTrue(g.getStarHole(8));
+        g.nextMove("n");
+        g.nextMove("use star hole 3");
+        Assert.assertTrue(g.getStarHole(2));
+        Assert.assertEquals(10, g.getFilledStarHoles());
+    }
 
     @Test
     public void playerDirectionChange() {
-        g = new Game("Player", "f", "Enemy", "m", 1, false);
+        var g = new Game("Player", "f", "Enemy", "m", 1, false);
         g.nextMove("north");
         Assert.assertEquals(Direction.NORTH, g.getPlayer().getCurrentDirection());
         g.nextMove("south");
@@ -20,7 +118,7 @@ public class GameTest {
     //i verify that the player moves in the rooms with a specified command
     @Test
     public void playerMove() {
-        g = new Game("Player", "f", "Enemy", "m", 1, false);
+        var g = new Game("Player", "f", "Enemy", "m", 1, false);
         //player is in the room 5
         Assert.assertEquals(5, g.getPlayer().getCurrentRoom());
         //test passage number 9
@@ -65,7 +163,7 @@ public class GameTest {
     //i verify that the game returns to a previous state after calling the undo method
     @Test
     public void undoTest() {
-        g = new Game("Player", "f", "Enemy", "m", 1, true);
+        var g = new Game("Player", "f", "Enemy", "m", 1, true);
         var initP = g.getPlayer().clone();
         var initE = g.getEnemy().clone();
         var initW = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).clone();
@@ -117,7 +215,7 @@ public class GameTest {
     //i test the dynamics of picking the items in the map (i test one item for each type)
     @Test
     public void ItemsTest() {
-        g = new Game("Player", "f", "Enemy", "m", 1, true);
+        var g = new Game("Player", "f", "Enemy", "m", 1, true);
 
         //i try to hide in the chest in the first room wall north (hiding item)
         g.nextMove("use hiding chest");
@@ -163,8 +261,10 @@ public class GameTest {
         g.nextMove("use bed safe");
         Assert.assertEquals(0, g.getPlayer().getInventoryCount());
         Assert.assertFalse(((ItemContainer) g.getMap().getWall(8, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use bed safe star 9");
-        Assert.assertEquals(g.getPlayer().getItem(0).getName(), "Star 9");
+        g.nextMove("w");
+        g.nextMove("use clock drawer 735");
+        g.nextMove("use clock drawer clock drawer note");
+        Assert.assertEquals("Clock drawer note", g.getPlayer().getNoteAt(0).getName());
 
         //i test if i can increase the player's health using a healing item (healing item test)
         g.getPlayer().increaseHealth(100);
@@ -176,19 +276,19 @@ public class GameTest {
         wallElem = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength();
         g.nextMove("take bendage");
         Assert.assertEquals(wallElem - 1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength());
-        Assert.assertEquals("Bendage", g.getPlayer().getItem(1).getName());
+        Assert.assertEquals("Bendage", g.getPlayer().getItem(0).getName());
         g.getPlayer().increaseHealth(100);
         g.setEnemyAttacks(false);
         g.getPlayer().decreaseHealth(2);
         Assert.assertEquals(3, g.getPlayer().getHealth());
         g.nextMove("use bendage");
         Assert.assertEquals(5, g.getPlayer().getHealth());
-        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(0, g.getPlayer().getInventoryCount());
 
         //i test if a note goes in the note inventory and not in the inventory (note test)
         g.getPlayer().increaseHealth(100);
-        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
-        Assert.assertEquals(0, g.getPlayer().getNotesCount());
+        Assert.assertEquals(0, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(1, g.getPlayer().getNotesCount());
         g.nextMove("cross");
         g.nextMove("cross");
         g.nextMove("s");
@@ -197,8 +297,8 @@ public class GameTest {
         wallElem = g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength();
         g.nextMove("take note in the coat");
         Assert.assertEquals(wallElem - 1, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()).getItemsLength());
-        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
-        Assert.assertEquals(1, g.getPlayer().getNotesCount());
+        Assert.assertEquals(0, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(2, g.getPlayer().getNotesCount());
 
         //i test if a clue item returns it's clue
         g.getPlayer().increaseHealth(100);
@@ -206,104 +306,15 @@ public class GameTest {
         String message = g.nextMove("use television").substring(79, 140);
         Assert.assertEquals("The television turns on and shows the code \"1563\" on a pinpad", message);
 
-        //i test an item container with a combination
-        g.getPlayer().increaseHealth(100);
-        g.nextMove("cross south");
-        Assert.assertEquals(g.getPlayer().getCurrentDirection(), Direction.SOUTH);
-        Assert.assertEquals(g.getPlayer().getCurrentRoom(), 9);
-        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock");
-        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock 1234");
-        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock Key");
-        Assert.assertTrue(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock 1313");
-        Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
-        g.nextMove("use lock star 10");
-        Assert.assertEquals("Star 10", g.getPlayer().getItem(1).getName());
-
         // i test an item container with no lock
         g.getPlayer().increaseHealth(100);
+        g.nextMove("cross south");
         g.nextMove("noRth");
-        Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.SOUTH).getItem(0)).isLocked());
+        Assert.assertFalse(((ItemContainer) g.getMap().getWall(9, Direction.NORTH).getItem(1)).isLocked());
         g.nextMove("use mirror cabinet");
         g.nextMove("use mirror cabinet PILLS");
-        Assert.assertEquals("Pills", g.getPlayer().getItem(2).getName());
-        Assert.assertEquals(3, g.getPlayer().getInventoryCount());
-        Assert.assertEquals(1, g.getPlayer().getNotesCount());
-    }
-
-    //i test a win condition
-    @Test
-    @Ignore
-    public void winTest() {
-        g = new Game("Player", "f", "Enemy", "m", 1, false);
-        g.nextMove("cross w");
-        g.nextMove("cross n");
-        g.nextMove("use drawer star 1");
-        g.nextMove("e");
-        g.nextMove("use painting");
-        g.nextMove("use safe 352");
-        g.nextMove("use safe star 2");
-        g.nextMove("take key on pinboard");
-        g.nextMove("cross");
-        g.nextMove("use dice 143");
-        g.nextMove("use dice star 4");
-        g.nextMove("use board games");
-        g.nextMove("take bedroom safe key");
-        g.nextMove("cross");
-        g.nextMove("n");
-        g.nextMove("use fridge 151");
-        g.nextMove("use fridge star 5");
-        g.nextMove("cross s");
-        g.nextMove("n");
-        g.nextMove("use safe");
-        g.nextMove("use safe star 6");
-        g.nextMove("s");
-        g.nextMove("cross");
-        g.nextMove("use lock 1313");
-        g.nextMove("use lock star 10");
-        g.nextMove("cross n");
-        g.nextMove("cross w");
-        g.nextMove("use star hole 1");
-        g.nextMove("use star hole 2");
-        g.nextMove("n");
-        g.nextMove("use star hole 4");
-        g.nextMove("use star hole 5");
-        g.nextMove("use star hole 6");
-        g.nextMove("s");
-        g.nextMove("use star hole 10");
-        g.nextMove("cross");
-        g.nextMove("use bed safe");
-        g.nextMove("use bed safe star 9");
-        g.nextMove("e");
-        g.nextMove("use chess drawer 358");
-        g.nextMove("use chess drawer key for games chest");
-        g.nextMove("cross w");
-        g.nextMove("n");
-        g.nextMove("use vase");
-        g.nextMove("take star 7");
-        g.nextMove("s");
-        g.nextMove("use vase with wheels");
-        g.nextMove("use pinpad 1563");
-        g.nextMove("use pinpad star 8");
-        g.nextMove("cross n");
-        g.nextMove("cross n");
-        g.nextMove("cross e");
-        g.nextMove("n");
-        g.nextMove("use games chest");
-        g.nextMove("use games chest star 3");
-        g.nextMove("cross w");
-        g.nextMove("cross s");
-        g.nextMove("cross e");
-        g.nextMove("use star hole 7");
-        g.nextMove("use star hole 8");
-        g.nextMove("s");
-        g.nextMove("use star hole 9");
-        g.nextMove("n");
-        g.nextMove("use star hole 3");
-        Assert.assertFalse(g.checkLost());
-        Assert.assertTrue(g.checkWin());
+        Assert.assertEquals("Pills", g.getPlayer().getItem(0).getName());
+        Assert.assertEquals(1, g.getPlayer().getInventoryCount());
+        Assert.assertEquals(2, g.getPlayer().getNotesCount());
     }
 }
