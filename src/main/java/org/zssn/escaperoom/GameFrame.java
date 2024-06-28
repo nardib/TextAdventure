@@ -69,7 +69,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
      */
     public GameFrame() {
         try {
-            game = new GameManager();
+            game = new GameManager(/*this*/);
         } catch (Exception e) {
             writeToTerminal(e.getMessage());
         }
@@ -102,7 +102,11 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         terminal.setForeground(Color.WHITE);
         writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
         JScrollPane terminalScrollPane = new JScrollPane(terminal);
+<<<<<<< HEAD
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225)); // Altezza del terminale a 225
+=======
         terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225));
+>>>>>>> bcccc36821137eea47a733fd846f5065b1bc96ce
         // Pannello per terminal e input
         JPanel downPanel = new JPanel();
         downPanel.setLayout(new BorderLayout());
@@ -121,6 +125,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                     writeToTerminal(game.nextMove(mex));
                     if (game.getGame() != null && !wallConfigured) {
                         // Carica le immagini dei muri
+                        clearTerminal();
+                        writeToTerminal("Game configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!");
                         for (int i = 0; i < 36; i++) {
                             Images[i] = (Image) Room.Walls[i].returnCombinedImage();
                         }
@@ -343,7 +349,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Clear the terminal
      */
-    private void clearTerminal() {
+    public void clearTerminal() {
         StyledDocument doc = terminal.getStyledDocument();
         try {
             doc.remove(0, doc.getLength());
