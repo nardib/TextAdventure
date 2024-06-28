@@ -67,7 +67,7 @@ public class Room
     public static void loadImages() {
         for (int i = 0; i < 36; i++) {
             try {
-                InputStream in = Room.class.getResourceAsStream("/rooms/" + i + ".png");
+                InputStream in = Room.class.getResourceAsStream("/rooms/" + i + ".jpg");
                 BufferedImage image = ImageIO.read(in);
                 Walls[i] = new Wall(image, false, null);
             } catch (IOException e) {
