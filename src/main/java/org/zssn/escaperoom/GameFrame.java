@@ -155,7 +155,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         if (game.isGameWon())
                             graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.jpg")));
                         else if (game.isGameLost())
-                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.png")));
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.jpg")));
                         else
                             graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.jpg")));
                         playerHealthLabel.setText("");
