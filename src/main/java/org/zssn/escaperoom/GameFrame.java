@@ -95,7 +95,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
-        graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
+        graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.jpg")));
         imagePanel.add(graphic, BorderLayout.CENTER);
 
         
@@ -151,11 +151,11 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                     }
                     else {
                         if (game.isGameWon())
-                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.png")));
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/YouWin.jpg")));
                         else if (game.isGameLost())
                             graphic.setIcon(new ImageIcon(getClass().getResource("/YouLose.png")));
                         else
-                            graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
+                            graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.jpg")));
                         playerHealthLabel.setText("");
                         filledStarsLabel.setText("");
                         playerStatusLabel.setText("");
