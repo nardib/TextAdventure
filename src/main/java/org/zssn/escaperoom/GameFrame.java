@@ -86,13 +86,28 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         center.setBackground(new Color(0, 0, 0));
         center.setLayout(new BorderLayout());
 
+        // Crea un pannello per contenere l'immagine principale e la minimappa
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(new Color(0, 0, 0));
+        imagePanel.setLayout(new BorderLayout());
+
         JLabel graphic = new JLabel();
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
         graphic.setVerticalAlignment(SwingConstants.CENTER);
         graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.png")));
-        center.add(graphic, BorderLayout.CENTER);
+        imagePanel.add(graphic, BorderLayout.CENTER);
+
+        
+        // Ridimensiona la minimappa
+        ImageIcon miniMapIcon = new ImageIcon(getClass().getResource("/MiniMapNero.png"));
+        Image miniMapImage = miniMapIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // Imposta le dimensioni desiderate (es. 200x200)
+        // Aggiungi la minimappa
+        JLabel miniMap = new JLabel(new ImageIcon(miniMapImage));
+        miniMap.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        miniMap.setHorizontalAlignment(SwingConstants.CENTER);
+        miniMap.setVerticalAlignment(SwingConstants.NORTH);
+        center.add(imagePanel, BorderLayout.CENTER);
 
         // Configura il terminale e lo scorrimento
         terminal = new JTextPane();
@@ -126,6 +141,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         for (int i = 0; i < 36; i++) {
                             Images[i] = (Image) Room.Walls[i].returnCombinedImage();
                         }
+                        imagePanel.add(miniMap, BorderLayout.EAST); // Aggiungi la minimappa a destra
+
                         wallConfigured = true;
                     }
                     if (game.getGame() != null){
