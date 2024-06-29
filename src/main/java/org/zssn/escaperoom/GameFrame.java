@@ -101,7 +101,9 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         
         // Ridimensiona la minimappa
         ImageIcon miniMapIcon = new ImageIcon(getClass().getResource("/MiniMapNero.png"));
-        JLabel miniMap = new JLabel();
+        Image miniMapImage = miniMapIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // Imposta le dimensioni desiderate (es. 200x200)
+        // Aggiungi la minimappa
+        JLabel miniMap = new JLabel(new ImageIcon(miniMapImage));
         miniMap.setFont(new Font("Monospaced", Font.PLAIN, 20));
         miniMap.setHorizontalAlignment(SwingConstants.CENTER);
         miniMap.setVerticalAlignment(SwingConstants.NORTH);
@@ -219,7 +221,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         frame.add(topPanel, BorderLayout.PAGE_START);
 
         // Listener per il ridimensionamento della finestra
-        /*frame.addComponentListener(new ComponentAdapter() {
+        frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 int h = frame.getHeight();
                 int w = frame.getWidth();
@@ -227,27 +229,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
                 //terminalScrollPane.setPreferredSize(new Dimension(w, 225));
                 center.setPreferredSize(new Dimension(w, h - 140));
-                Image miniMapImage = miniMapIcon.getImage().getScaledInstance(w/9, w/9, Image.SCALE_SMOOTH);
-                miniMap.setIcon(new ImageIcon(miniMapImage));
             }   
-        });*/
-                // Listener per il ridimensionamento della finestra
-                frame.addComponentListener(new ComponentAdapter() {
-                    @Override
-                    public void componentResized(ComponentEvent e) {
-                        // Aggiorna le dimensioni dell'immagine della minimappa solo se la finestra è visibile
-                        if (frame.isVisible()) {
-                            int mapWidth = frame.getWidth() / 9;  // Larghezza della minimappa è 1/3 della larghezza della finestra
-                            int mapHeight = mapWidth;  // Altezza proporzionale
-        
-                            // Evita di creare un'immagine con dimensioni zero
-                            if (mapWidth > 0 && mapHeight > 0) {
-                                Image miniMapImage = miniMapIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH);
-                                miniMap.setIcon(new ImageIcon(miniMapImage));
-                            }
-                        }
-                    }
-                });
+        });
 
         // Configura i key bindings per la finestra
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -279,7 +262,6 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         //System.setOut(printStream);
         //System.setErr(printStream);
 
-        frame.pack(); // Pack il frame per assicurarsi che tutti i componenti siano visualizzati correttamente
         frame.setVisible(true);
         toggleFullscreen();
     }
