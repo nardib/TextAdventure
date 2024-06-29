@@ -183,7 +183,7 @@ public class Item {
      */
     public void setUsingMessage(String usingMessage) {
         this.usingMessage = usingMessage;
-    }   
+    }
 
     /**
      * Clone the item

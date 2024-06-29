@@ -6,14 +6,11 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
@@ -40,7 +37,7 @@ public class GameManager {
     /**
      * The region of the bucket
      */
-    private Region REGION;
+    private static Region REGION;
 
     /**
      * The game object that contains the status of the game
@@ -130,7 +127,7 @@ public class GameManager {
     /**
      * Method that loads the configuration file that contains the bucket name, the key name and the region
      */
-    private void loadConfig() { //loads the configuration file
+    private void loadConfig() {
         try {
             InputStream input = GameManager.class.getResourceAsStream(CONFIG_FILE);
             Properties prop = new Properties();
@@ -152,7 +149,7 @@ public class GameManager {
      * 
      * @param game the game object that contains the status of the game
      */
-    public void saveProgress(Game game) { //fuction to be used for saving status
+    public void saveProgress(Game game) {
         String message = serialize(game);
         upLoad(message);
     }
@@ -162,7 +159,7 @@ public class GameManager {
      * 
      * @return the game object that contains the status of the game
      */
-    public Game resumeProgress() { //function to be used to resume status
+    public Game resumeProgress() {
         String message = downLoad();
         Game game = deserialize(message);
         return game;
@@ -295,6 +292,7 @@ public class GameManager {
     public String nextMove(String move) {
         move = move.trim();
 
+        // Check if the user wants to save the progress before quitting
         if (askingToSave) {
             if (move.equalsIgnoreCase("yes") || move.equalsIgnoreCase("y")) {
                 saveProgress(g);
@@ -306,6 +304,7 @@ public class GameManager {
             return "Input not valid. Valid inputs are 'yes' or 'no'.";
         }
 
+        // Check if the user wants to exit the game
         if (move.equals("exit") || move.equals("quit")) {
             if (saved || gameLost || gameWon || !gameOn) {
                 System.exit(0);
@@ -314,6 +313,7 @@ public class GameManager {
             return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
         }
         
+        // Check if the user wants to configure the game
         if (configuring) {
             if (count == 0) {
                 playerName = move;
@@ -387,8 +387,12 @@ public class GameManager {
             }
             return "Error during configuration!";
         }
+
+        // Check if the game is running
         else if (gameLost || gameWon)
             return "Game over! You can now quit the game using the 'exit' or 'quit' command";
+
+        // Check if the game is not started
         else if (!gameOn) {
             if (move.equalsIgnoreCase("resume")) {
                 try {
@@ -412,6 +416,8 @@ public class GameManager {
             }
             return "Game not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
         }
+
+        // Check if the game is started
         else {
             if (move.equalsIgnoreCase("save")) {
                 try {

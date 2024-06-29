@@ -3,7 +3,9 @@ package org.zssn.escaperoom;
 import java.lang.Math;
 
 /**
- * Enemy class. This class represents the enemy in the game. The enemy is a character that moves randomly in the map and can attack the player. The enemy has a name.
+ * Enemy class. This class represents the enemy in the game. 
+ * The enemy is a character that moves randomly in the map and can attack the player. 
+ * The enemy has a name.
  */
 public class Enemy extends Character{ //AKA ER CATTIVONE
 
@@ -13,18 +15,18 @@ public class Enemy extends Character{ //AKA ER CATTIVONE
     public final int DAMAGE = 1;
     
     /**
-     * The room number of the enemy
-     * 
+     * Let the enemy move in a random direction in the map given the room in which it is
+     *  
      * @see Room
      * @param n room in which the enemy is
-     * @return the room in which the enemy is
+     * @return the room in which the enemy is after the move
      */
     public int move(Room n) {
         boolean[] rooms = new boolean[4]; //contiene i boleani N, S, E, W per sapere se la facciata ha la porta o meno
-        rooms[0] = n.getCrossableNorth(); //le stanze adiacenti sono accessibili?
-        rooms[1] = n.getCrossableSouth(); //
-        rooms[2] = n.getCrossableEast();  //
-        rooms[3] = n.getCrossableWest();  //
+        rooms[0] = n.getCrossableNorth(); 
+        rooms[1] = n.getCrossableSouth();
+        rooms[2] = n.getCrossableEast();
+        rooms[3] = n.getCrossableWest();
 
         while(true) {
             int i = (int) (Math.random()*4);  //genera un intero da 0 a 3 che sarà usato per vedere se la facciata è attraversabile o meno. Se non lo è riprova. L'ordine delle facciate è 0=N, 1=S, 2=E e 3=W;

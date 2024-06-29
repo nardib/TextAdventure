@@ -47,7 +47,7 @@ public class ClueItem extends Item{
     }
 
     /**
-     * Check if two items are equal
+     * Check if two ClueItem are equal
      * 
      * @param other the item to compare
      * @return true if the two items are equal, false otherwise

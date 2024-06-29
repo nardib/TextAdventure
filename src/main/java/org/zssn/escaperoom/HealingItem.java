@@ -34,9 +34,7 @@ public class HealingItem extends Item {
     {
         super(name, image, weight, currentRoom, PICKABLE);
         if (healthPoints < 0)
-        {
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
-        }
         this.healingPoints = healthPoints;
         usingMessage = "You have used " + name + " and gained " + healthPoints + " health points";
     }

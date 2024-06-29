@@ -20,22 +20,22 @@ public class Character {
     protected int currentRoom;
 
     /**
-     * constants value to move the character in the north room
+     * Constants value to move the character in the north room
      */
     public final static int CROSS_NORTH = -3; 
 
     /**
-     * constants value to move the character in the south room
+     * Constants value to move the character in the south room
      */
     public final static int CROSS_SOUTH = 3;
 
     /**
-     * constants value to move the character in the east room
+     * Constants value to move the character in the east room
      */
     public final static int CROSS_EAST = 1;
 
     /**
-     * constants value to move the character in the west room
+     * Constants value to move the character in the west room
      */
     public final static int CROSS_WEST = -1;
 

@@ -8,7 +8,7 @@ public class HidingItem extends Item {
     /**
      * The weight of the hiding item is 11 because it can't be picked up
      */
-    public final int WEIGHT = 11;
+    public final static int WEIGHT = 11;
 
     /**
      * The hiding item is not pickable
@@ -29,7 +29,7 @@ public class HidingItem extends Item {
     */
     public HidingItem(String name, String image, int currentRoom)
     {
-        super (name, image, currentRoom, currentRoom, false);
+        super (name, image, WEIGHT, currentRoom, false);
         usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
     }
 

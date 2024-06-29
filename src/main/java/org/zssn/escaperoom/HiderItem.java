@@ -17,7 +17,7 @@ public class HiderItem extends Item{
     public final static boolean PICKABLE = false;
 
     /**
-     * The item hidden by the hider item
+     * Hiding state of the item
      */
     private boolean hiding;
 

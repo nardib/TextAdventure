@@ -3,7 +3,10 @@ package org.zssn.escaperoom;
 import java.util.Stack;
 
 /**
- * Game class. This class represents the game. The game is composed by a player, an enemy and a map. The player can move in the map and interact with the items in the rooms. The enemy moves randomly in the map and can attack the player. The game can be saved and the player can undo the last move.
+ * Game class. This class represents the game. 
+ * The game is composed by a player, an enemy and a map. 
+ * The player can move in the map and interact with the items in the rooms. 
+ * The enemy moves randomly in the map and can attack the player.
  */
 public class Game {
     /**
@@ -72,7 +75,7 @@ public class Game {
             + "- exit/quit : closes the game";
 
     /** 
-     * Default constructor to initialize the game variables
+     * Default constructor for the game
      */
     public Game() {
         caretaker = new GameCaretaker();
@@ -228,6 +231,7 @@ public class Game {
                 for (int i = 0; i < player.getInventoryCount(); i++) {
                     if (player.getItem(i).getName().equalsIgnoreCase(input.substring(4))) {
                         Item item = player.getItem(i);
+                        //i have to check the type of the item and do the right action
                         if (item instanceof Key) {
                             Key key = (Key) item;
                             return key.getUsingMessage();
@@ -270,8 +274,10 @@ public class Game {
                 try {
                     itemInput = input.substring(4, 4 + items[i].getName().length());
                 } catch (StringIndexOutOfBoundsException e) {}
-                if (items[i].getName().equalsIgnoreCase(itemInput) || items[i].getName().equalsIgnoreCase(input.substring(4))) {
-                    Item item = items[i];
+                Item item = items[i];
+
+                if (items[i].getName().equalsIgnoreCase(input.substring(4))) {
+                    //i have to check the type of the item and do the right action
                     if (item instanceof Key || item instanceof Note || item instanceof HealingItem || item instanceof Star)
                         return player.getName() + " must take the " + item.getName().toLowerCase() + " before using it!";
                     else if (item instanceof ClueItem) {
@@ -306,7 +312,30 @@ public class Game {
                         player.setHidden();
                         return hidingItem.getUsingMessage();
                     }
-                    else if (item instanceof ItemContainer) {
+                    else if (item instanceof StarHole) {
+                        StarHole starHole = (StarHole) item;
+                        if (starHole.isFilled())
+                            return player.getName() + " can't fill the " + starHole.getName().toLowerCase() + ", it's already filled";
+                        if (player.getInventoryCount() == 0)
+                            return player.getName() + " must have a star in the inventory to fill the star hole";
+                        for (int j = 0; j < player.getInventoryCount(); j++) {
+                            if (player.getItem(j) instanceof Star) {
+                                Star star = (Star) player.getItem(j);
+                                if (star.getID() == starHole.getID()) {
+                                    starHole.fill(star);
+                                    player.removeItem(j);
+                                    filledStarHoles++;
+                                    starHoles[starHole.getID()-1] = true;
+                                    return player.getName() + " filled the star hole " + starHole.getID() + " with the " + star.getName().toLowerCase();
+                                }
+                            }
+                        }
+                        return player.getName() + " must have a star with the same ID of the star hole in the inventory to fill the star hole";
+                    }
+                }
+
+                if (items[i].getName().equalsIgnoreCase(itemInput)) {
+                    if (item instanceof ItemContainer) {
                         ItemContainer itemContainer = (ItemContainer) item;
                         if (itemContainer.isLocked()){
                             String newInput = "";
@@ -347,6 +376,7 @@ public class Game {
                                 }
                             }
                         }
+                        
                         String newInput = "";
                         try {
                             newInput = input.substring(5 + itemContainer.getName().length());
@@ -369,33 +399,10 @@ public class Game {
                             return "The item is not in the " + itemContainer.getName().toLowerCase();
                         }
                     }
-                    else if (item instanceof StarHole)
-                    {
-                        StarHole starHole = (StarHole) item;
-                        if (starHole.isFilled())
-                            return player.getName() + " can't fill the " + starHole.getName().toLowerCase() + ", it's already filled";
-                        if (player.getInventoryCount() == 0)
-                            return player.getName() + " must have a star in the inventory to fill the star hole";
-                        for (int j = 0; j < player.getInventoryCount(); j++) {
-                            if (player.getItem(j) instanceof Star) {
-                                Star star = (Star) player.getItem(j);
-                                if (star.getID() == starHole.getID()) {
-                                    starHole.fill(star);
-                                    player.removeItem(j);
-                                    filledStarHoles++;
-                                    starHoles[starHole.getID()-1] = true;
-                                    return player.getName() + " filled the star hole " + starHole.getID() + " with the " + star.getName().toLowerCase();
-                                }
-                            }
-                        }
-                        return player.getName() + " must have a star with the same ID of the star hole in the inventory to fill the star hole";
-                    
-                    }
                 }
             }
             return player.getName() + " can't use this item";
         }
-        
         throw new IllegalArgumentException("Invalid input. For help type 'help' or 'h' to see the list of commands");
     }
 
@@ -443,7 +450,6 @@ public class Game {
 
         if (input.equalsIgnoreCase("status"))
             return out + printStatus();
-
         
         if (input.equalsIgnoreCase("undo") || input.equalsIgnoreCase("back")) {
             if (undo()) {
@@ -451,7 +457,7 @@ public class Game {
             }
             return out + "No previous moves to undo";
         }
-        //command to check the items in the inventory (probably should be in nextMove)
+        //command to check the items in the inventory
         if (input.equalsIgnoreCase("inventory")) {
             return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
@@ -484,7 +490,7 @@ public class Game {
     }
 
     /**
-     * Method to check if the game is over
+     * Method to check if the game is over, i.e. if the player is dead or if all the star holes are filled
      * 
      * @return true if the game is over, false otherwise
      */
@@ -535,7 +541,7 @@ public class Game {
     }
 
     /**
-     * Method to get the player
+     * Method to get the player of the game
      * 
      * @return the player
      */
@@ -553,7 +559,7 @@ public class Game {
     }
 
     /**
-     * Method to get the enemy
+     * Method to get the enemy of the game
      * 
      * @return the enemy
      */
@@ -571,7 +577,7 @@ public class Game {
     }
 
     /**
-     * Method to get the map
+     * Method to get the map of the game
      * 
      * @return the map
      */
@@ -952,7 +958,7 @@ public class Game {
     /**
      * Method to print the items in the wall the player is facing
      * 
-     * @return the items in the wall the player is facing
+     * @return the items in the wall the player is facing in a String format
      */
     private String printLook() {
         try {
@@ -981,7 +987,7 @@ public class Game {
     /**
      * Method to print the status of the player
      * 
-     * @return the status of the player
+     * @return the status of the player in a String format
      */
     private String printStatus() {
         return player.getName() +" is in the " + map.getRoom(player.getCurrentRoom()).getName().toLowerCase() + " facing " + player.getCurrentDirection() + " direction, and " + player.returnPronoun() + " has " + player.getHealth() + " health points.\n"
