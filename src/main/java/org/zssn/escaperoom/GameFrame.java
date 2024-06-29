@@ -241,6 +241,22 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             }
         });
 
+        InputMap inputMapZoom = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMapZoom.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "zoom");
+        frame.getRootPane().getActionMap().put("zoom", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                zoom();
+            }
+        });
+
+        InputMap inputMapUnzoom = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMapUnzoom.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "unzoom");
+        frame.getRootPane().getActionMap().put("unzoom", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                unzoom();
+            }
+        });
+
         // Reindirizza System.out e System.err alla JTextPane
         PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         //System.setOut(printStream);
@@ -291,7 +307,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             frame.dispose();
             frame.setUndecorated(false);
             frame.setSize(1920, 1080);
-            frame.setResizable(false);
+            frame.setResizable(true);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         } else {
@@ -301,6 +317,27 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             gd.setFullScreenWindow(frame);
         }
         isFullscreen = !isFullscreen;
+    }
+
+        /**
+     * Zoom the font of the terminal and the input field
+     */
+    private void zoom() {
+        Font font = terminal.getFont();
+        float size = font.getSize() + 1.0f;
+        terminal.setFont(font.deriveFont(size));
+        inputField.setFont(font.deriveFont(size));
+
+    }
+
+    /**
+     * Unzoom the font of the terminal and the input field
+     */
+    private void unzoom() {
+        Font font = terminal.getFont();
+        float size = font.getSize() - 1.0f;
+        terminal.setFont(font.deriveFont(size));
+        inputField.setFont(font.deriveFont(size));
     }
 
     /**
