@@ -227,9 +227,9 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 int w = frame.getWidth();
                 double grapSize = w / 25;
                 graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
-                terminalScrollPane.setPreferredSize(new Dimension(w, 225)); // Mantieni l'altezza del terminale a 140
+                //terminalScrollPane.setPreferredSize(new Dimension(w, 225));
                 center.setPreferredSize(new Dimension(w, h - 140));
-            }
+            }   
         });
 
         // Configura i key bindings per la finestra

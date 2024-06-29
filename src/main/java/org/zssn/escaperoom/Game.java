@@ -69,7 +69,7 @@ public class Game {
             + "- status : gives the status of the player, in particular it returns the health of the player and the items in the inventory\n"
             + "- undo/back : goes back of a move in the game\n"
             + "- save : save the current state of the game\n"
-            + "- exit/quit : closes the game\n";
+            + "- exit/quit : closes the game";
 
     /** 
      * Default constructor to initialize the game variables
