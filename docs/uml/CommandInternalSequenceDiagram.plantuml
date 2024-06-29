@@ -58,7 +58,7 @@ else <command> is "inventory"
 end
 
 Game -> Game : enemyMove()
-alt player is in the same room as an enemy
+alt player is in the same room as the enemy
     activate Enemy
     Game -> Player: decreaseHealth()
 else player is not in the same room as the enemy

@@ -426,13 +426,13 @@
         +isGameLost()
     }
 
-    Player ..|> Gender
-    LockType <|.. ItemContainer
-    Map ..o "9" Room : has
-    Room ..o "4" Wall :has
-    Player ..|> "0...*"Item : uses 
-    Wall ..|> "0...*" Item : has
-    Player ..|> Direction
+    Player"1" ..|> "1"Gender : has
+    LockType"1" <|.. "1"ItemContainer : has
+    Map"1" ..o "9" Room : has
+    Room"1" ..o "4" Wall :has
+    Player"1" ..|> "0...*"Item : uses 
+    Wall"1" ..|> "0...*" Item : has
+    Player"1" ..|> "1"Direction : has
     Key --|> Item : extends
     HiderItem --|> Item : extends
     ItemContainer --|> Item : extends
@@ -442,18 +442,18 @@
     Note --|> Item : extends
     Star --|> Item : extends
     StarHoles --|> Item : extends
-    Enemy ..|> Gender
+    Enemy"1" ..|> "1"Gender : has
     Character <|-- Player : extends
     Character <|-- Enemy : extends
-    Player --o "1" Game
-    Map --o "1" Game
-    Enemy --o "1" Game
-    GameMemento --o Game
-    GameCaretaker --* GameMemento
-    Game ..|> GameCaretaker : uses
-    GameManager --o GameFrame
-    GameManager o-- Game : manages
-    GameFrame <|-- Main
+    Player "1" --o "1" Game : uses
+    Map "1" --o "1" Game : uses
+    Enemy "1" --o "1" Game : uses
+    GameMemento "1" --o "1" Game : uses
+    GameCaretaker "1" --* "1" GameMemento : uses
+    Game "1" ..|> "1" GameCaretaker : uses
+    GameManager "1" --o "1" GameFrame : creates
+    GameManager "1" o-- "1" Game : manages
+    GameFrame "1" <|-- "1" Main : creates
     CustomOutputStream --* GameFrame
 
 @enduml

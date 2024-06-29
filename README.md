@@ -210,7 +210,7 @@ The project follows the principles of high cohesion, with each class designed to
 
 The project demonstrates the implementation of the low coupling pattern, which minimizes dependencies and interactions between classes. By reducing direct dependencies, the project achieves flexibility, maintainability, and code reusability. The pattern promotes modularity, allowing for easier modifications and updates without cascading effects. It enhances stability, scalability, and testing, enabling isolated testing and future enhancements. Overall, the low coupling pattern facilitates a modular and flexible design, promoting easier development, maintenance, and evolution of the software.
 
-### Creator
+#### Creator
 
 The Game class in this project utilizes the Creator design pattern to create instances of the Player, Enemy, and Map classes. This pattern promotes loose coupling and encapsulation by abstracting the object creation process. By centralizing the creation logic within the Game class, it becomes easier to manage and modify the creation process. The Creator design pattern enhances code reusability and flexibility, allowing for easy extension and customization of the game. Overall, it provides a modular and maintainable architecture.
 
@@ -222,7 +222,7 @@ The Game class in this project utilizes the Creator design pattern to create ins
 | --- | --- |
 | Brief description | User can start the game. |
 | Actor | User |
-| Basic flow | User presses `Start` button or `Load Game` button. |
+| Basic flow | User uses `New game` command or `Resume` command. |
 | Alternative flow | If there are no saved game, it returns an error |
 | Precondition | The game was succesfully installed. |
 | Postcondition | Game configuration page is shown. |
@@ -233,7 +233,7 @@ The Game class in this project utilizes the Creator design pattern to create ins
 | Brief description | User can choose the name and gender of the player and the enemy, and other setting like the difficoulty level. |
 | Actor | User |
 | Basic flow | User writes the name and select the gender and the other settings between the available options. |
-| Alternative flow | No errors because pre-selected values are provided by default. |
+| Alternative flow | Errors if the user does not select one of the preselected option. |
 | Precondition | User has started the game with "new game" command. |
 | Postcondition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Extensions points | - |
@@ -243,16 +243,16 @@ The Game class in this project utilizes the Creator design pattern to create ins
 | Brief description | User can play the game interacting through the command shell. |
 | Actor | User |
 | Basic flow | User interacts with the game, moving between the rooms, collecting objects in order to win the game solving the final puzzle. |
-| Alternative flow | • The player is either killed by the enemy = LOSS or the player as solved the game = WIN • |
+| Alternative flow | The player is either killed by the enemy = LOSS or the player as solved the game = WIN |
 | Precondition | Game must be correctly started and with a valid configuration. |
-| Postcondition | GUI updates after every move and the objects are modified following the given command. |
+| Postcondition | GUI updates after every move and the items are modified following the given command. |
 | Extensions points | The enemy also makes a move every time the player does one (or more) |
 
 | Use case | Win |
 | --- | --- |
 | Brief description | User wins the game. |
 | Actor | User |
-| Basic flow | User unlocks the door in the room where all started. |
+| Basic flow | User fills all the star holes in the central room. |
 | Alternative flow | The player is killed. |
 | Precondition | The player must have used all the items and must have visited all the rooms. |
 | Postcondition | The enemy dissapears and a win screen is shown. |
@@ -273,8 +273,8 @@ The Game class in this project utilizes the Creator design pattern to create ins
 | Brief description | User saves the state of the game and can resume the game later. |
 | Actor | User |
 | Basic flow | User types `save` and then the game can be closed via `exit` command. |
-| Alternative flow | The game was already saved, so it can't be saved twice. The last progress of the game was not saved, so the game asks if the user wants to save the state of leave the game without saving. |
-| Precondition | The user must have done at least one move. |
+| Alternative flow | The last progress of the game was not saved, so the game asks if the user wants to save the state of leave the game without saving. |
+| Precondition | The game must have been started correctly. |
 | Postcondition | The game is saved and the user can leave and resume the game later. |
 | Extensions points | - |
 
@@ -316,13 +316,13 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 
 ### Start
 
-| Summary | The game starts with the player in the correct position |
+| Summary | The game starts and let the player configure a new game or restore a previous one. |
 | --- | --- |
-| Test Case Design | - Test of game start without errors <br> - Test of correct initial configuration |
+| Test Case Design | - Test of game start without errors <br> - Test of correct restore of the previous game saved |
 | Pre-Condition | The game was successfully installed |
 | Post-Condition | Game configuration page is shown |
-| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "New Game" on the main screen <br> + Configure the player <br> + Verify that the game is started in the defualt position |
-| Test Case Execution Report | - Test of game start without errors: <br> - Test of correct initial configuration: |
+| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that the game is started in the same state it was in the last save |
+| Test Case Execution Report | - Test of game start without errors: ✔ Passed <br> - Test of correct restore of the previous game saved: ✔ Passed |
 
 ### Game Configuration
 
@@ -331,9 +331,8 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game; check also if the other settings are setted corrected. |
 | Pre-Condition |  User has started the game with "new game" command. |
 | Post-Condition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
-| Test Scripts | **Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:** <br> + Click on `New Game` button <br> + Compile the requested fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
-| Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:  |
-
+| Test Scripts | **Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:** <br> + Use "new game" command in the main menu <br> + Compile the requested fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
+| Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game: ✔ Passed  |
 
 ### Commands
 
@@ -341,10 +340,9 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | --- | --- |
 | Test Case Design | - Test of all the commands for moving the player <br> - Test for all the commands to interact with the items in the map <br> - Test for invalid commands |
 | Pre-Condition | Game must be correctly started and with a valid configuration. |
-| Post-Condition | GUI updates after every move and the objects are modified following the given command. |
+| Post-Condition | GUI updates after every move and the items are modified following the given command. |
 | Test Scripts | **Test of all the commands for moving the player:** <br> + Start a new game and select a valid configuration <br> + Move the player in the map changing the facing direction and the room making him cross the doors <br> + Verify that the player can cross only the walls with a door and the GUI is updated showing the current room and facing direction <br> **Test for all the commands to interact with the items in the map:** <br> + Start a new game and select a valid configuration <br> + Interact with all the items in a proper way according to the type of object <br> + Verify that all the items work as intended and there are errors that show the correct usage of the item when the commands are not used properly <br> **Test for invalid commands:** <br> + Start a new game and select a valid configuration <br> + Test a bunch of invalid commands <br> + Verify that after each invalid command an error message is displayed to show the correct usage of the command or it suggests to type `help` to get a list of valid commands |
-| Test Case Execution Report | - Test of all the commands for moving the player: <br> - Test for all the commands to interact with the items in the map: <br> - Test for invalid commands: |
-
+| Test Case Execution Report | - Test of all the commands for moving the player: ✔ Passed <br> - Test for all the commands to interact with the items in the map: ✔ Passed <br> - Test for invalid commands: ✔ Passed |
 
 ### Win
 
@@ -353,8 +351,8 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test win |
 | Pre-Condition | The player must have used all the items and must have visited all the rooms. |
 | Post-Condition | The enemy dissapears and a win screen is shown. |
-| Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play all the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can go back to the main menu |
-| Test Case Execution Report | - Test win: |
+| Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play all the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can close the game |
+| Test Case Execution Report | - Test win: ✔ Passed |
 
 
 ### Back
@@ -365,15 +363,15 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition | The user must have done at least one move. |
 | Post-Condition | The game is restored one move back. |
 | Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Do at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Do a ceratain number of moves <br> + Use `back` command several time <br> + Verify that after each `back` the game is restored to its previous state until the first move (inital configuration) |
-| Test Case Execution Report | - Test back function with no previous moves to undo: <br> - Test back function with a previous move to undo: <br> - Test back function several times with several previous moves to undo: |
+| Test Case Execution Report | - Test back function with no previous moves to undo: <br> - Test back function with a previous move to undo: <br> - Test back function several times with several previous moves to undo: ✔ Passed |
 
 
 ### Save and Exit/Quit
 
-| Summary | When inserting `save` ad command the game saves its actual state and when pressing `exit` it returns to the main menu or use `quit` to close the entire window |
+| Summary | When inserting `save` command the game saves its actual state and when pressing `exit` it closes the game and asks to save the game first if the last state was not saved |
 | --- | --- |
 | Test Case Design | - Test save <br> - Test exit |
-| Pre-Condition | The user must have done at least one move. |
+| Pre-Condition | The game must have been started correctly |
 | Post-Condition | The game is saved and the user can leave and resume the game later. |
-| Test Scripts | **Test save:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Use `save` command and exit the game <br> + Try to log back in the game <br> + Verify that you are in the same state of when you saved the game <br> **Test exit:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Try to `exit` the game with the proper command <br> + Verify that the game goes back to the main screen after having asked if you want to save the game (if the current state was not already saved) |
-| Test Case Execution Report | - Test save: <br> - Test exit: |
+| Test Scripts | **Test save:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Use `save` command and exit the game <br> + Try to log back in the game using `resume` command <br> + Verify that you are in the same state of when you saved the game <br> **Test exit:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Try to `exit` the game with the proper command <br> + Verify that if the last state of the game was not saved the game asks to save it <br> + Verify that if the game closes properly (either saving or not saving the game based on the choice made in the previous step) |
+| Test Case Execution Report | - Test save: ✔ Passed <br> - Test exit: ✔ Passed |

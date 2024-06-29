@@ -1,6 +1,6 @@
 @startuml GameConfigurationInternalSequenceDiagram
 
-title Game Configuration - Internal Sequence DiagramBorderColor
+title Game Configuration - Internal Sequence Diagram
 
 actor User
 participant GameFrame
