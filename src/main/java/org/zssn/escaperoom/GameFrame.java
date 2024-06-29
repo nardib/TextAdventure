@@ -219,7 +219,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         frame.add(topPanel, BorderLayout.PAGE_START);
 
         // Listener per il ridimensionamento della finestra
-        frame.addComponentListener(new ComponentAdapter() {
+        /*frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 int h = frame.getHeight();
                 int w = frame.getWidth();
@@ -230,7 +230,24 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 Image miniMapImage = miniMapIcon.getImage().getScaledInstance(w/9, w/9, Image.SCALE_SMOOTH);
                 miniMap.setIcon(new ImageIcon(miniMapImage));
             }   
-        });
+        });*/
+                // Listener per il ridimensionamento della finestra
+                frame.addComponentListener(new ComponentAdapter() {
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                        // Aggiorna le dimensioni dell'immagine della minimappa solo se la finestra è visibile
+                        if (frame.isVisible()) {
+                            int mapWidth = frame.getWidth() / 9;  // Larghezza della minimappa è 1/3 della larghezza della finestra
+                            int mapHeight = mapWidth;  // Altezza proporzionale
+        
+                            // Evita di creare un'immagine con dimensioni zero
+                            if (mapWidth > 0 && mapHeight > 0) {
+                                Image miniMapImage = miniMapIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH);
+                                miniMap.setIcon(new ImageIcon(miniMapImage));
+                            }
+                        }
+                    }
+                });
 
         // Configura i key bindings per la finestra
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
