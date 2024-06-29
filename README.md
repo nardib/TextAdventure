@@ -198,60 +198,21 @@ where `bucket-name` is the name of the S3 bucket you created, `file-name.json` i
 
 #### Memento
 
-The Memento design pattern is a behavioral design pattern that is commonly used to implement the "undo" functionality in applications. In the context of the Game class, the Memento pattern is utilized to save and restore the state of the game.
-
-Within the Game class, there are two inner classes: GameMemento and GameCaretaker. The GameMemento class is responsible for capturing a snapshot of the game's state at a specific point in time. It stores the necessary information to restore the game to that particular state.
-
-On the other hand, the GameCaretaker class is responsible for managing multiple GameMemento objects. It keeps track of all the snapshots taken throughout the game and provides a way to retrieve the most recent snapshot when needed.
-
-The Game class itself acts as the originator in this pattern. It generates the GameMemento objects when necessary, allowing the game state to be saved. It also provides methods to restore the game state by utilizing the information stored in the GameMemento objects.
-
-By implementing the Memento design pattern, the Game class enables the "undo" functionality, allowing players to revert the game state to a previous point in time. This can be useful in situations where players make mistakes or want to explore different paths within the game.
+The Memento design pattern is used in the Game class to implement the "undo" functionality. It consists of two inner classes: GameMemento and GameCaretaker. GameMemento captures snapshots of the game's state, while GameCaretaker manages these snapshots. The Game class acts as the originator, generating and restoring game states using the stored information. This pattern allows players to revert to previous game states, enabling them to correct mistakes or explore different paths.
 
 ### GRASP
 
-#### Information Expert
-
-The Game class, following the Information Expert pattern, is responsible for managing the information and interactions between the Player, Enemy, and Map objects in the game. It acts as a central hub, coordinating the actions and behaviors of these entities.
-
-As an expert in game management, the Game class keeps track of the current state of the game, including the player's location, the enemy's movements, and the layout of the map. It ensures that the player and enemy are in the correct rooms and handles the logic for moving between rooms.
-
-Additionally, the Game class, with its expertise in inventory management, handles the player's inventory and the interaction with objects in the game. It allows the player to pick up items, use them, and manage their inventory weight. It also tracks the player's health and manages the enemy's attacks, inflicting damage when they are in the same room.
-
-By leveraging its knowledge and expertise, the Game class creates a cohesive and immersive gaming experience. It ensures that the player can navigate the game world, solve puzzles, and ultimately achieve the goal of escaping the room.
-
-
 #### High Cohesion
 
-Each class in the project has been designed with a single, well-defined responsibility, following the principles of high cohesion. This means that each class focuses on a specific task or functionality, ensuring that it has a clear purpose and does not have unnecessary dependencies on other classes.
-
-By adopting a black-box mindset, the project maintains a high level of independence and distinction between classes. This allows for easier maintenance and modification of individual classes without affecting the overall system. Each class can be developed, tested, and modified independently, promoting code reusability and flexibility.
-
-The high cohesion pattern ensures that classes are self-contained and encapsulated, reducing the risk of unintended side effects and making the codebase more modular. This modular structure enables easier debugging, troubleshooting, and enhancement of specific functionalities without impacting the entire system.
-
-Overall, the project's adherence to the high cohesion pattern promotes clean and maintainable code, making it easier to understand, extend, and collaborate on the project in the future.
+The project follows the principles of high cohesion, with each class designed to have a single, well-defined responsibility. This promotes modular and independent development, allowing for easier maintenance and modification of individual classes without impacting the overall system. The codebase is self-contained and encapsulated, reducing the risk of unintended side effects and enabling easier debugging and enhancement of specific functionalities. Overall, the project's adherence to high cohesion results in clean and maintainable code that is easier to understand, extend, and collaborate on in the future.
 
 #### Low Copuling
 
-The project follows the low coupling pattern by minimizing the dependencies and interactions between the Game class, Player class, Enemy class, and Map class. The relationships between these classes are limited to method calls, ensuring loose coupling and promoting modularity.
+The project demonstrates the implementation of the low coupling pattern, which minimizes dependencies and interactions between classes. By reducing direct dependencies, the project achieves flexibility, maintainability, and code reusability. The pattern promotes modularity, allowing for easier modifications and updates without cascading effects. It enhances stability, scalability, and testing, enabling isolated testing and future enhancements. Overall, the low coupling pattern facilitates a modular and flexible design, promoting easier development, maintenance, and evolution of the software.
 
-By reducing the direct dependencies between classes, the project achieves greater flexibility and maintainability. Changes made to one class are less likely to have a cascading effect on other classes, allowing for easier modifications and updates. This also promotes code reusability, as individual classes can be used independently in other projects without bringing unnecessary dependencies.
+### Creator
 
-The low coupling pattern enhances the project's overall stability and scalability. It allows for easier testing and debugging, as each class can be isolated and tested in isolation. Additionally, it facilitates future enhancements and extensions, as new classes can be added or existing classes can be modified without disrupting the entire system.
-
-Overall, the low coupling pattern in the project promotes a modular and flexible design, enabling easier development, maintenance, and evolution of the software.
-
-#### Creator
-
-The Game class in this project utilizes the Creator design pattern to create instances of the Player, Enemy, and Map classes. By employing this pattern, the responsibility of object creation is delegated to the Game class, which acts as the creator.
-
-The Creator design pattern promotes loose coupling and encapsulation by abstracting the process of object creation. It allows the Game class to create instances of the Player, Enemy, and Map classes without exposing the details of their construction to the client code.
-
-By centralizing the creation logic within the Game class, it becomes easier to manage and modify the creation process. If there are any changes or variations in the way objects are created, the Game class can handle them without affecting the client code.
-
-Additionally, the Creator design pattern enhances code reusability and flexibility. The Game class can create different types of players, enemies, and maps by implementing different creation methods or using different parameters. This allows for easy extension and customization of the game without modifying the existing codebase.
-
-Overall, the use of the Creator design pattern in this project promotes modular and maintainable code, separating the object creation logic from the client code and providing a flexible and scalable architecture.
+The Game class in this project utilizes the Creator design pattern to create instances of the Player, Enemy, and Map classes. This pattern promotes loose coupling and encapsulation by abstracting the object creation process. By centralizing the creation logic within the Game class, it becomes easier to manage and modify the creation process. The Creator design pattern enhances code reusability and flexibility, allowing for easy extension and customization of the game. Overall, it provides a modular and maintainable architecture.
 
 ## Specifications
 
