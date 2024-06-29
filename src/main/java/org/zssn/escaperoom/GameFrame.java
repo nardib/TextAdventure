@@ -101,9 +101,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         
         // Ridimensiona la minimappa
         ImageIcon miniMapIcon = new ImageIcon(getClass().getResource("/MiniMapNero.png"));
-        Image miniMapImage = miniMapIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // Imposta le dimensioni desiderate (es. 200x200)
-        // Aggiungi la minimappa
-        JLabel miniMap = new JLabel(new ImageIcon(miniMapImage));
+        JLabel miniMap = new JLabel();
         miniMap.setFont(new Font("Monospaced", Font.PLAIN, 20));
         miniMap.setHorizontalAlignment(SwingConstants.CENTER);
         miniMap.setVerticalAlignment(SwingConstants.NORTH);
@@ -229,6 +227,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
                 //terminalScrollPane.setPreferredSize(new Dimension(w, 225));
                 center.setPreferredSize(new Dimension(w, h - 140));
+                Image miniMapImage = miniMapIcon.getImage().getScaledInstance(w/9, w/9, Image.SCALE_SMOOTH);
+                miniMap.setIcon(new ImageIcon(miniMapImage));
             }   
         });
 
@@ -262,6 +262,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         //System.setOut(printStream);
         //System.setErr(printStream);
 
+        frame.pack(); // Pack il frame per assicurarsi che tutti i componenti siano visualizzati correttamente
         frame.setVisible(true);
         toggleFullscreen();
     }
