@@ -63,14 +63,14 @@ public class Game {
      * The help message
      */
     public final static String HELP = "The commands are:\n"
-            + "- <direction> : allows to face a specified direction given a cardinal points; it can be either \"north\" or \"n\"\n"
-            + "- cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the current facing direction\n"
+            + "- <direction> : allows to face a specified direction given the cardinal point; it can be either \"north\" or \"n\"\n"
+            + "- cross <direction> : allows to cross in a specified direction; if <direction> argument is omitted, then the player crosses the currently facing direction\n"
             + "- look : returns a list of the items in the current room\n"
             + "- inventory : shows the items in the player's inventory\n"
-            + "- take <item> : allows to pick an item in the facing wall given it's name as argument\n"
-            + "- use <item> : allows to use an item in the inventory or in the facing wall\n"
+            + "- take <item> : allows to take an item in the faced wall given its name as argument\n"
+            + "- use <item> : allows to use an item in the inventory or on the faced wall\n"
             + "- status : gives the status of the player, in particular it returns the health of the player and the items in the inventory\n"
-            + "- undo/back : goes back of a move in the game\n"
+            + "- undo/back : undoes a move in the game\n"
             + "- save : save the current state of the game\n"
             + "- exit/quit : closes the game";
 
@@ -336,8 +336,6 @@ public class Game {
                 if (items[i].getName().equalsIgnoreCase(itemInput)) {
                     if (item instanceof ItemContainer) {
                         ItemContainer itemContainer = (ItemContainer) item;
-
-                        //if it is locked i have to unlock it
                         if (itemContainer.isLocked()){
                             String newInput = "";
                             try {
@@ -378,7 +376,6 @@ public class Game {
                             }
                         }
                         
-                        //i can use the item container to take an item inside when it's unlocked
                         String newInput = "";
                         try {
                             newInput = input.substring(5 + itemContainer.getName().length());
@@ -388,11 +385,11 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
+                                if (!enemyAttacks && items[i] instanceof HealingItem)
+                                    return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
+                                if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
+                                    return player.getName() + " can't take the item, it's too heavy";
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
-                                    if (itemContainer.getItem(j) instanceof HealingItem && !enemyAttacks)
-                                        return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
-                                    if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
-                                        return player.getName() + " can't take the item, it's too heavy";
                                     Item removedItem = itemContainer.removeItem(j);
                                     player.insertItem(removedItem);
                                     return player.getName() + " took the item: " + removedItem.getName().toLowerCase();
@@ -461,7 +458,7 @@ public class Game {
         }
         //command to check the items in the inventory
         if (input.equalsIgnoreCase("inventory")) {
-            return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory() + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n";
+            return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
         }
         //command to check the items in the room
         if (input.equalsIgnoreCase("look") && !player.isHidden()) {
@@ -483,8 +480,7 @@ public class Game {
         if(checkGameOver() && player.getHealth() == 0)
             return out;
         if(checkGameOver() && filledStarHoles == 10)
-            return out + "\nYou win! You filled all the star holes!";
-        
+            return out + "\nA tunnel opens at the center of the room, " + player.getName() + " tentatively reaches out to the tight walls and crawls through. " + player.getName() + " eventually sees a light at the end of the tunnel. " + player.getName() + "Can't believe his eyes! The nightmare is finally over! " + player.getName() + " is free! " + player.getName() + " won!";
         //i save the state of the game after each move
         saveCurrentState();
 
