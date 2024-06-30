@@ -134,19 +134,19 @@ public class Game {
 
         //commands to change the wall the player is facing
         if (input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")){
-            player.changeDirection(Direction.NORTH);
+            player.setCurrentDirection(Direction.NORTH);
             return player.getName() + " is now facing north\n" + printLook();
         }
         else if (input.equalsIgnoreCase("south") || input.equalsIgnoreCase("s")){
-            player.changeDirection(Direction.SOUTH);
+            player.setCurrentDirection(Direction.SOUTH);
             return player.getName() + " is now facing south\n" + printLook();
         }
         else if (input.equalsIgnoreCase("east") || input.equalsIgnoreCase("e")){
-            player.changeDirection(Direction.EAST);
+            player.setCurrentDirection(Direction.EAST);
             return player.getName() + " is now facing east\n" + printLook();
         }
         else if (input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")){
-            player.changeDirection(Direction.WEST);
+            player.setCurrentDirection(Direction.WEST);
             return player.getName() + " is now facing west\n" + printLook();
         }
         
@@ -173,22 +173,22 @@ public class Game {
             }
             else if ((input.substring(6).equalsIgnoreCase("north") || input.substring(6).equalsIgnoreCase("n")) && map.getRoom(player.getCurrentRoom()).getCrossableNorth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_NORTH);
-                player.changeDirection(Direction.NORTH);
+                player.setCurrentDirection(Direction.NORTH);
                 return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("south") || input.substring(6).equalsIgnoreCase("s")) && map.getRoom(player.getCurrentRoom()).getCrossableSouth()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_SOUTH);
-                player.changeDirection(Direction.SOUTH);
+                player.setCurrentDirection(Direction.SOUTH);
                 return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("east") || input.substring(6).equalsIgnoreCase("e")) && map.getRoom(player.getCurrentRoom()).getCrossableEast()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_EAST);
-                player.changeDirection(Direction.EAST);
+                player.setCurrentDirection(Direction.EAST);
                 return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             else if ((input.substring(6).equalsIgnoreCase("west") || input.substring(6).equalsIgnoreCase("w")) && map.getRoom(player.getCurrentRoom()).getCrossableWest()){
                 player.setCurrentRoom(player.getCurrentRoom() + Player.CROSS_WEST);
-                player.changeDirection(Direction.WEST);
+                player.setCurrentDirection(Direction.WEST);
                 return player.getName() + " moved to the " + map.getRoom(player.getCurrentRoom()).getName() + "\n" + printLook();
             }
             throw new IllegalArgumentException(player.getName() + " can't cross in that direction");

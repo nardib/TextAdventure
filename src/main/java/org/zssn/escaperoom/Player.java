@@ -72,7 +72,7 @@ public class Player extends Character{
     }
 
     /**
-     * Creates a new player with the given name and a given gender. The standard position for the spawn is the room 5 and the standard direction is north. The standard health is 5
+     * Creates a new player with the given name and a given gender. The standard position for the spawn is the room 5 and the standard direction is north. The standard health is 5.
      *
      * @param n name of the player
      * @param g gender of the player given as a string ("m","f","n" or "male", "female", "neutral" are the valid inputs)
@@ -163,6 +163,9 @@ public class Player extends Character{
      * Insert an Item in the inventory
      * 
      * @param i the item to insert
+     * 
+     * @throws IllegalArgumentException if the item is not pickable
+     * @throws IllegalStateException if the item is too heavy to fit the player inventory or if the notes inventory can't fit the notes inventory
      */
     public void insertItem(Item i)
     {
@@ -229,7 +232,8 @@ public class Player extends Character{
      * @param i the index of the item to return
      * @return the item at index i
      * 
-     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1) or if the inventory is empty
+     * @throws IllegalArgumentException if the index is not in the range of 0-(maxIndex-1)
+     * @throws IllegalStateException if the inventory is empty
      */
     public Item getItem(int i)
     {
@@ -241,7 +245,7 @@ public class Player extends Character{
     }
 
     /**
-     * Returns the numeber of items in the inventory
+     * Returns the number of items in the inventory
      * 
      * @return the number of items in the inventory
      */
@@ -348,24 +352,6 @@ public class Player extends Character{
     }
 
     /**
-     * Function to cross a door. 
-     * 
-     * @param newRoom the room the player will end in
-     */
-    public void crossDoor(Room newRoom) {
-        currentRoom = newRoom.getRoomNumber();
-    }
-
-    /**
-     * Function to change the wall the player is facing
-     * 
-     * @param newDirection the new direction the player will be facing
-     */
-    public void changeDirection(Direction newDirection) {
-        currentDirection = newDirection;
-    }
-
-    /**
      * Returns the current direction the player is facing
      * 
      * @return the current direction of the player
@@ -429,6 +415,7 @@ public class Player extends Character{
                     return false;
             }
         }
+        //Check the note inventory
         if (notesCount > 0) {
             for (int i = 0; i < notesCount; i++) {
                 if (!notesInventory[i].equals(p.notesInventory[i]))
@@ -474,7 +461,7 @@ public class Player extends Character{
     }
 
     /**
-    * Private method to compact the inventory when an item is removes 
+    * Method to compact the inventory when an item is removes 
     *
     * @return the compacted inventory
     */

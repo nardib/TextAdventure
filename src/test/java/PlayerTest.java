@@ -3,6 +3,7 @@ import org.junit.*;
 
 public class PlayerTest {
     @Test
+    //test the clone and equals methods of the player
     public void testEquality() {
         Player p = new Player("Filippo", "n");
         var item1 = new Note("Note", "You found a note!");
@@ -20,30 +21,31 @@ public class PlayerTest {
     }
 
     @Test
+    //tests the inventory of the player
     public void testInventory() {
         Key key = new Key("key", 1);
-        HealingItem hammer = new HealingItem("hammer", 5, 3);
-        HidingItem lock = new HidingItem("lock");
+        HealingItem medKit = new HealingItem("med kit", 5, 3);
+        HidingItem chest = new HidingItem("chest");
         HealingItem potion = new HealingItem("potion", 3, 3);
 
         Player p = new Player("Filippo", "n");
         p.insertItem(key);
-        p.insertItem(hammer);
+        p.insertItem(medKit);
         //this item is not pickable
         Assert.assertThrows(IllegalArgumentException.class, () -> {
-            p.insertItem(lock);
+            p.insertItem(chest);
         });
         p.insertItem(potion);
         //this item is too heavy
         Assert.assertThrows(IllegalStateException.class, () -> {
-            p.insertItem(hammer);
+            p.insertItem(medKit);
         });
 
-        //inventory should now be [key, hammer, potion]
+        //inventory should now be [key, med kit, potion]
         Assert.assertEquals(3, p.getInventoryCount());
         Assert.assertEquals(9, p.getInventoryWeight());
         Assert.assertEquals("key", p.getItem(0).getName());
-        Assert.assertEquals("hammer", p.getItem(1).getName());
+        Assert.assertEquals("med kit", p.getItem(1).getName());
         Assert.assertEquals("potion", p.getItem(2).getName());
 
         p.removeItem(1);
@@ -59,14 +61,14 @@ public class PlayerTest {
             p.removeItem(2);
         });
 
-        p.insertItem(hammer);
+        p.insertItem(medKit);
         p.insertItem(key);
-        //inventory should now be [key, potion, hammer, key]
+        //inventory should now be [key, potion, med kit, key]
         Assert.assertEquals(4, p.getInventoryCount());
         Assert.assertEquals(10, p.getInventoryWeight());
         Assert.assertEquals("key", p.getItem(0).getName());
         Assert.assertEquals("potion", p.getItem(1).getName());
-        Assert.assertEquals("hammer", p.getItem(2).getName());
+        Assert.assertEquals("med kit", p.getItem(2).getName());
         Assert.assertEquals("key", p.getItem(3).getName());
         //invenotory is full, so i can't insert other items
         Assert.assertThrows(IllegalStateException.class, () -> {
@@ -79,11 +81,11 @@ public class PlayerTest {
         Assert.assertEquals(2, p.getInventoryCount());
         Assert.assertEquals(8, p.getInventoryWeight());
         Assert.assertEquals("potion", p.getItem(0).getName());
-        Assert.assertEquals("hammer", p.getItem(1).getName());
+        Assert.assertEquals("med kit", p.getItem(1).getName());
     }
     
-    //i test if the health of the player is correctly updated
     @Test
+    //test if the health of the player is correctly updated
     public void testHealth() {
         Player p = new Player("Filippo", "n");
         Enemy e = new Enemy("Enemy", "m");
@@ -112,8 +114,8 @@ public class PlayerTest {
         Assert.assertEquals(4, p.getHealth());
     }
 
-    //test if the player change hidden state correctly
     @Test
+    //test if the player change hidden state correctly
     public void testHidden() {
         Player p = new Player("Filippo", "n");
         Assert.assertFalse(p.isHidden());

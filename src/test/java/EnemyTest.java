@@ -1,9 +1,11 @@
 import org.junit.*;
-import org.zssn.escaperoom.*;
+import org.zssn.escaperoom.Enemy;
+import org.zssn.escaperoom.Map;
 
 public class EnemyTest {
     
     @Test
+    //test the move function of the enemy
     public void testMove() {
         var map = new Map();
         var enemy = new Enemy("enemy", "m");
@@ -16,6 +18,7 @@ public class EnemyTest {
     }
 
     @Test
+    //test the deep copy of the enemy
     public void testDeepCopy() {
         var enemy = new Enemy("enemy", "m");
         var enemy1 = enemy.clone();

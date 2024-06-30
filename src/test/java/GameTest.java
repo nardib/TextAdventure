@@ -178,6 +178,9 @@ public class GameTest {
         Assert.assertEquals(p, g.getPlayer());
         Assert.assertEquals(e, g.getEnemy());
         Assert.assertEquals(w, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
+        Assert.assertNotEquals(initP, g.getPlayer());
+        Assert.assertNotEquals(initE, g.getEnemy());
+        Assert.assertNotEquals(initW, g.getMap().getWall(g.getPlayer().getCurrentRoom(), g.getPlayer().getCurrentDirection()));
         g.nextMove("south");
         g.nextMove("cross");
         g.nextMove("e");

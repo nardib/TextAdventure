@@ -23,9 +23,9 @@ Game -> Game : playerMove()
 
 activate Player
 alt <command> is "<direction>"
-    Game -> Player : changeDirection(<direction>)
+    Game -> Player : setCurrentDirection(<direction>)
 else <command> is "cross <direction>"
-    Game -> Player : crossDoor(<direction>)
+    Game -> Player : setCurrentRoom()
 else <command> is "look"
     activate Wall
     Game -> Wall : getItems()
