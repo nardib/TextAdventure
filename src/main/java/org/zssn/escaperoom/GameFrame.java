@@ -41,6 +41,7 @@ public class GameFrame {
     private ImageIcon miniMapIcon;
     private Image miniMapImage;
     private JLabel miniMap;
+    private JScrollPane terminalScrollPane;
     /**
      * JTextField object for the input field
      */
@@ -72,6 +73,10 @@ public class GameFrame {
      * Dimension of the miniMap
      */
     private int dimension=400;
+    /**
+     * Height of terminal
+     */
+    private int height=225;
     /**
      * Constructor of the GameFrame class
      */
@@ -149,8 +154,8 @@ public class GameFrame {
         terminal.setBackground(new Color(28, 28, 28));
         terminal.setForeground(Color.WHITE);
         writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
-        JScrollPane terminalScrollPane = new JScrollPane(terminal);
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225)); // Set terminal height to 225
+        terminalScrollPane = new JScrollPane(terminal);
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height)); // Set terminal height to 225
 
         // Panel for terminal and input
         JPanel downPanel = new JPanel();
@@ -379,10 +384,13 @@ public class GameFrame {
         inputField.setFont(font.deriveFont(size));
         inventoryText.setFont(font.deriveFont(size));
         dimension +=20;
+        height +=5;
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         miniMap.setIcon(new ImageIcon(miniMapImage));
         miniMap.revalidate();
         miniMap.repaint();
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height));
+        terminalScrollPane.revalidate();
     }
 
     /**
@@ -395,10 +403,13 @@ public class GameFrame {
         inputField.setFont(font.deriveFont(size));
         inventoryText.setFont(font.deriveFont(size));
         dimension -=20;
+        height -=5;
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         miniMap.setIcon(new ImageIcon(miniMapImage));
         miniMap.revalidate();
         miniMap.repaint();
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height));
+        terminalScrollPane.revalidate();
     }
 
     /**
