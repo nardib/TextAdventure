@@ -258,7 +258,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         });
 
         // Reindirizza System.out e System.err alla JTextPane
-        PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
+        //PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
         //System.setOut(printStream);
         //System.setErr(printStream);
 
@@ -319,7 +319,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         isFullscreen = !isFullscreen;
     }
 
-        /**
+    /**
      * Zoom the font of the terminal and the input field
      */
     private void zoom() {
