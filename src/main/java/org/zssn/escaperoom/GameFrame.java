@@ -37,9 +37,14 @@ public class GameFrame {
      * JTextPane object for the terminal
      */
     private JTextPane terminal;
+    private JTextArea inventoryText;
+    private ImageIcon miniMapIcon;
+    private Image miniMapImage;
+    private JLabel miniMap;
     /**
      * JTextField object for the input field
      */
+    
     JTextField inputField;
     /**
      * JPanel object for the game information
@@ -63,7 +68,10 @@ public class GameFrame {
      * Boolean for the wall configuration
      */
     private boolean wallConfigured = false;
-
+    /**
+     * Dimension of the miniMap
+     */
+    private int dimension=400;
     /**
      * Constructor of the GameFrame class
      */
@@ -100,11 +108,11 @@ public class GameFrame {
 
         
         // Resize the minimap
-        ImageIcon miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap1.png"));
-        Image miniMapImage = miniMapIcon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+        miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap1.png"));
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         
         // Add the minimap
-        JLabel miniMap = new JLabel(new ImageIcon(miniMapImage));
+        miniMap = new JLabel(new ImageIcon(miniMapImage));
         miniMap.setFont(new Font("Monospaced", Font.PLAIN, 20));
         miniMap.setHorizontalAlignment(SwingConstants.CENTER);
         miniMap.setVerticalAlignment(SwingConstants.NORTH);
@@ -119,13 +127,11 @@ public class GameFrame {
         inventoryPanel.setBackground(new Color(28, 28, 28));
         inventoryPanel.setLayout(new BorderLayout());
 
-        JTextArea inventoryText = new JTextArea();
+        inventoryText = new JTextArea();
         inventoryText.setEditable(false);
-        inventoryText.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        inventoryText.setFont(new Font("Monospaced", Font.PLAIN, 15));
         inventoryText.setBackground(new Color(28, 28, 28));
         inventoryText.setForeground(Color.WHITE);
-
-        inventoryText.setText("INVENTARIO:");
         JScrollPane inventoryScrollPane = new JScrollPane(inventoryText);
         inventoryPanel.add(inventoryScrollPane, BorderLayout.CENTER);
         
@@ -371,6 +377,12 @@ public class GameFrame {
         float size = font.getSize() + 1.0f;
         terminal.setFont(font.deriveFont(size));
         inputField.setFont(font.deriveFont(size));
+        inventoryText.setFont(font.deriveFont(size));
+        dimension +=20;
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
+        miniMap.setIcon(new ImageIcon(miniMapImage));
+        miniMap.revalidate();
+        miniMap.repaint();
     }
 
     /**
@@ -381,6 +393,12 @@ public class GameFrame {
         float size = font.getSize() - 1.0f;
         terminal.setFont(font.deriveFont(size));
         inputField.setFont(font.deriveFont(size));
+        inventoryText.setFont(font.deriveFont(size));
+        dimension -=20;
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
+        miniMap.setIcon(new ImageIcon(miniMapImage));
+        miniMap.revalidate();
+        miniMap.repaint();
     }
 
     /**
