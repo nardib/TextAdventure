@@ -48,7 +48,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * JLabel object for the position of the player
      */
-    JLabel playerStatusLabel;
+    JLabel playerPositionLabel;
     /**
      * JLabel object for the player health
      */
@@ -149,7 +149,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                         updatePlayerHealthLabel();
                         updateStarLabel();
-                        updatePlayerStatusLabel();
+                        updatePlayerPositionLabel();
                     }
                     else {
                         if (game.isGameWon())
@@ -160,7 +160,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                             graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.jpg")));
                         playerHealthLabel.setText("");
                         filledStarsLabel.setText("");
-                        playerStatusLabel.setText("");
+                        playerPositionLabel.setText("");
                     } 
                     inputField.setText("");
                 }
@@ -204,14 +204,14 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setPreferredSize(new Dimension(250, 45));
         rightPanel.setBackground(new Color(28, 28, 28));
-        playerStatusLabel = new JLabel();
-        playerStatusLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        playerStatusLabel.setForeground(Color.WHITE);
-        playerStatusLabel.setText("");
+        playerPositionLabel = new JLabel();
+        playerPositionLabel.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        playerPositionLabel.setForeground(Color.WHITE);
+        playerPositionLabel.setText("");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_END; // align to right
         gbc.weightx = 1.0; // take up all available space
-        rightPanel.add(playerStatusLabel, gbc);
+        rightPanel.add(playerPositionLabel, gbc);
 
         // Aggiungi i pannelli al pannello superiore
         topPanel.add(leftPanel, BorderLayout.WEST);
@@ -294,8 +294,8 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
     /**
      * Update the player status label
      */
-    private void updatePlayerStatusLabel() {
-        playerStatusLabel.setText(game.getGame().getMap().getRoom(game.getGame().getPlayer().getCurrentRoom()).getName() + ", " + game.getGame().getPlayer().getCurrentDirection().toString());
+    private void updatePlayerPositionLabel() {
+        playerPositionLabel.setText(game.getGame().getMap().getRoom(game.getGame().getPlayer().getCurrentRoom()).getName() + ", " + game.getGame().getPlayer().getCurrentDirection().toString());
     }
 
     /**
