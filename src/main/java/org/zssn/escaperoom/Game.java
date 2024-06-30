@@ -458,7 +458,7 @@ public class Game {
         }
         //command to check the items in the inventory
         if (input.equalsIgnoreCase("inventory")) {
-            return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory();
+            return out + "In " + player.getName() + "'s inventory there are the following items: " + player.printInventory() + "\nThe total weight of the items in " + player.getName() + "'s inventory is  " + player.getInventoryWeight() + "/10\n";
         }
         //command to check the items in the room
         if (input.equalsIgnoreCase("look") && !player.isHidden()) {

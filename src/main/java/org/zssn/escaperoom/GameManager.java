@@ -423,7 +423,7 @@ public class GameManager {
                 try {
                     saveProgress(g);
                     saved = true;
-                    return "Game saved!";
+                    return "\n-------------------------- Input : " + move + " --------------------------\n\nGame saved!";
                 } catch (Exception e) {
                     return e.getMessage();
                 }
