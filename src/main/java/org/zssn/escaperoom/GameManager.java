@@ -318,7 +318,7 @@ public class GameManager {
             if (count == 0) {
                 playerName = move;
                 count++;
-                return "Name setted to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
+                return "Name set to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
             else if (count == 1) {
                 if (move.equals("1"))
@@ -330,7 +330,7 @@ public class GameManager {
                 else 
                     return "Input not valid. Valid inputs are 1, 2 or 3.";
                 count++;
-                return "Gender setted to " + playerGender + "\n\nEnter 'true' (1) if the enemy attacks the player, 'false' (0) otherwise.";
+                return "Gender set to " + playerGender + "\n\nEnter 'true' (1) if the enemy attacks the player, 'false' (0) otherwise.";
             }
             else if (count == 2) {
                 if (move.equalsIgnoreCase("true") || move.equalsIgnoreCase("1") || move.equalsIgnoreCase("t"))
@@ -347,7 +347,7 @@ public class GameManager {
                 else
                     return "Input not valid. Valid inputs are 'true' or 'false'.";
                 count++;
-                return "\nEnter the name for the enemy (type 0 to use the defualt configuraton): ";
+                return "\nEnter the name for the enemy (type 0 to use the default configuraton): ";
             }
             else if (count == 3) {
                 if (move.equals("0")) {
@@ -356,7 +356,7 @@ public class GameManager {
                 }
                 enemyName = move;
                 count++;
-                return "Name setted to " + enemyName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
+                return "Name set to " + enemyName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
             else if (count == 4) {
                 if (move.equals("1"))
@@ -434,12 +434,12 @@ public class GameManager {
             if (g.checkWin()) {
                 g = null;
                 gameWon = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\nYou win! " + playerName + " filled all the star holes!\nYou can now quit the game using the 'exit' or 'quit' command";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nA tunnel opens at the center of the room, " + playerName + " tentatively reaches out to the tight walls and crawls through. " + playerName + " eventually sees a light at the end of the tunnel. " + playerName + "Can't believe his eyes! The nightmare is finally over! " + playerName + " is free! " + playerName + " won!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             else if (g.checkLost()) {
                 g = null;
                 gameLost = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\nGame Over! " + enemyName + " killed " + playerName + "!\nYou can now quit the game using the 'exit' or 'quit' command";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\n" + playerName + "looks at " + enemyName + " with a terrified look in his eyes. " + playerName + " knows that any hopes of survival end here... " + enemyName + " starts to relentlessly stab " + playerName + "..." + "\nGame Over! " + enemyName + " killed " + playerName + "!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             return result;
         }
