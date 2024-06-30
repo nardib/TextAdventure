@@ -19,9 +19,9 @@ The game is a text adventure with a graphic user interface (GUI) provided with a
 The game is played in a 9 rooms map of fixed design and each room has a variable number of objects (up to 8 items) and doors (from 0 to 4), always enabled, connecting to other rooms.
 The main room from witch the game begins is also the final room where the game ends after having solved all the riddles and quiz consisting of varius challenges, from finding the right item to using logic and memory.
 
-Each item has its own weight (expressed in Kg) and the player can carry a maximum ammount of weight (10 Kg).
+Each item has its own weight (expressed in Kg) and the player can carry a maximum amount of weight (10 Kg).
 Almost all the items weight 1 Kg, but some others, like the bandages have a hevier weight.
-Also, once used, the item dissapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage, forcing the player to carfully manage the inventory.
+Also, once used, the item disapears, and by the time there's no way of throwing the items, in orther to free some space the player has to use them in the storage, forcing the player to carfully manage the inventory.
 
 ### **Player and commands**
 At the beginning of the game, the user can choose wether to play a new game or to import a saved match. In case the player chooses to play a new match he will be asked to choose a name, to select the gender and to choose the difficulty level of the match (easy, medium or hard).
@@ -40,9 +40,9 @@ In orther to interract with the game, the player as to use the command line impl
 
 - inventory (command used to display a list of the item in the inventory)
 
-- take ITEM (command used to interract with a specific item in the room. After keeping the item, it will appear in your inventory freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
+- take ITEM (command used to interract with a specific item in the room. After keeping the item, it will appear in your inventory freeing an amount of carryable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
 
-- use ITEM (command used to interract with a specific item in your inventory. After using the item, it will dissapear freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
+- use ITEM (command used to interract with a specific item in your inventory. After using the item, it will disapear freeing an amount of carryable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage)
 
 - help (command used to get a short description of commands)
 
@@ -55,21 +55,21 @@ In orther to interract with the game, the player as to use the command line impl
 ### Enemy
 
 The enemy is a NPC randomly moving in the rooms of the maps, seeking for the player, with the scope to kill him by inflicting damage.
-According to the difficulty choosen at the start of the game the enemy will perform 1 move every 5 actions by the user in EASY mode, 1 move every 3 actions in MEDIUM mode and 1 move every user action in DIFFICULT mode.
+According to the difficulty chosen at the start of the game the enemy will perform 1 move every 5 actions by the user in EASY mode, 1 move every 3 actions in MEDIUM mode and 1 move every user action in DIFFICULT mode.
 
 
 ### Purpose of the game
 
 As in the real-life escape-room the purpose of this game is to solve all the riddles, use all the objects and complete the puzzles to unlock the exit door and gain freedom. The player must also survive to the enemy looking who will randomly move each time the player makes a move.
-When both the player and the enemy are in the same room, the enemy will start inflicting some damege to the player, who's provided with 5 hearts of healt points. Heach hit provides 1 damage point. Health points are displayed on the top-left corner in the shape of 5 hearts while in the top center there are 10 stars showing the progress made. 
-If the player's healt drops to zero point, the game ends with loss.
-The player can also find and use some special healing items like bandages and painkillers to restore some healt points.
+When both the player and the enemy are in the same room, the enemy will start inflicting some damage to the player, who's provided with 5 hearts of health points. Each hit provides 1 damage point. Health points are displayed on the top-left corner in the shape of 5 hearts while in the top center there are 10 stars showing the progress made. 
+If the player's health drops to zero point, the game ends with loss.
+The player can also find and use some special healing items like bandages and painkillers to restore some health points.
 
 ## Project
 
 | Name | Version | Description |
 | --- | --- | --- |
-| Java | 17 | Version of Java defined in the `pom.xml` file for compiling and generating the target bytecode|
+| Java | 17 | Java Version defined in the `pom.xml` file for compiling and generating the target bytecode|
 | JUnit | 4.13.2 | Framework for Java class tests |
 | Jackson | 2.17.1 | Framework for converting objects into JSON stringifying them, and to convert back in the original shape through get and set methods using the ObjectMapper class |
 | aws-sdk-for-java | 2.26.7 | Framework from the AWS SDK for accessing AWS Services Including S3 Bucket |
@@ -255,7 +255,7 @@ The Game class in this project utilizes the Creator design pattern to create ins
 | Basic flow | User fills all the star holes in the central room. |
 | Alternative flow | The player is killed. |
 | Precondition | The player must have used all the items and must have visited all the rooms. |
-| Postcondition | The enemy dissapears and a win screen is shown. |
+| Postcondition | The enemy disapears and a win screen is shown. |
 | Extensions points | If the player was killed, then he has lost the game. |
 
 | Use case | Back |
@@ -350,7 +350,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | --- | --- |
 | Test Case Design | - Test win |
 | Pre-Condition | The player must have used all the items and must have visited all the rooms. |
-| Post-Condition | The enemy dissapears and a win screen is shown. |
+| Post-Condition | The enemy disapears and a win screen is shown. |
 | Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play all the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can close the game |
 | Test Case Execution Report | - Test win: ✅ Passed |
 
@@ -362,7 +362,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test back function with no previous moves to undo <br> - Test back function with a previous move to undo <br> - Test back function several times with several previous moves to undo |
 | Pre-Condition | The user must have done at least one move. |
 | Post-Condition | The game is restored one move back. |
-| Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Do at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Do a ceratain number of moves <br> + Use `back` command several time <br> + Verify that after each `back` the game is restored to its previous state until the first move (inital configuration) |
+| Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Do at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Do a certain number of moves <br> + Use `back` command several time <br> + Verify that after each `back` the game is restored to its previous state until the first move (initial configuration) |
 | Test Case Execution Report | - Test back function with no previous moves to undo: ✅ Passed <br> - Test back function with a previous move to undo: ✅ Passed <br> - Test back function several times with several previous moves to undo: ✅ Passed |
 
 
