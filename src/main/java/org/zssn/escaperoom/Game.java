@@ -336,6 +336,8 @@ public class Game {
                 if (items[i].getName().equalsIgnoreCase(itemInput)) {
                     if (item instanceof ItemContainer) {
                         ItemContainer itemContainer = (ItemContainer) item;
+
+                        //if it is locked i have to unlock it
                         if (itemContainer.isLocked()){
                             String newInput = "";
                             try {
@@ -376,6 +378,7 @@ public class Game {
                             }
                         }
                         
+                        //i can use the item container to take an item inside when it's unlocked
                         String newInput = "";
                         try {
                             newInput = input.substring(5 + itemContainer.getName().length());
@@ -385,11 +388,11 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
-                                if (!enemyAttacks && items[i] instanceof HealingItem)
-                                    return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
-                                if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
-                                    return player.getName() + " can't take the item, it's too heavy";
                                 if (itemContainer.getItem(j).getName().equalsIgnoreCase(newInput)) {
+                                    if (itemContainer.getItem(j) instanceof HealingItem && !enemyAttacks)
+                                        return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
+                                    if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
+                                        return player.getName() + " can't take the item, it's too heavy";
                                     Item removedItem = itemContainer.removeItem(j);
                                     player.insertItem(removedItem);
                                     return player.getName() + " took the item: " + removedItem.getName().toLowerCase();

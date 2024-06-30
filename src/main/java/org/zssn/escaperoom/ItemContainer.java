@@ -273,7 +273,7 @@ public class ItemContainer extends Item{
         for (int i = 0; i < ArrayIndexCount; i++)
             items[i] = this.items[i].clone();
         ItemContainer ic = new ItemContainer(this.getName(), items, this.lock, this.ID);
-        ic.setLocked(this.locked);
+        ic.locked = this.locked;
         return ic;
     }
 
