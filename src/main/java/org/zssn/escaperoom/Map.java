@@ -33,7 +33,11 @@ public class Map
     /**
      * items in the item chest
      */
-    private final static Item[] itemChestItems = {new Star ("Star 3", 3), new HealingItem("Bendage", 3, 2)};
+    private final static Item[] itemChestItems = {new Star ("Star 3", 3), new HealingItem("Bandage", 3, 2)};
+    /**
+     * items in the house phone
+     */
+    private final static Item[] phoneItems = {new Note ("Phone note", "Bathroom 1313")};
     /**
      * items in the dice
      */
@@ -49,7 +53,7 @@ public class Map
     /**
      * items in the chess drawer
      */
-    private final static Item[] chessDrawerItems = {new Key("Key for games chest", 666)};
+    private final static Item[] chessDrawerItems = {new Key("Yellow Key", 666)};
     /**
      * items in the safe3
      */
@@ -78,11 +82,11 @@ public class Map
     /**
      * items in the room 1 wall E
      */
-    private final static Item[] itemsE1 = {new HiderItem("Painting", new ItemContainer("Safe", safeItems, LockType.COMBINATION, 352)), new Note("Note on pinboard", "Use this key for the safe in the office"), new Key("Key on pinboard", 151)};
+    private final static Item[] itemsE1 = {new HiderItem("Painting", new ItemContainer("Safe", safeItems, LockType.COMBINATION, 352)), new Note("Note on pinboard", "Use this key for the safe in the Living Room"), new Key("Green Key", 151)};
     /**
      * items in the room 1 wall S
      */
-    private final static Item[] itemsS1 = {new ClueItem("Clock", "It's 7:35"), new ClueItem("Phone", "You have called the number 0335212 and you heard someone sayng: \"To unlock the lock in the bathroom type: 1313\"")};
+    private final static Item[] itemsS1 = {new ClueItem("Clock", "It's 7:35"), new ItemContainer("House phone", phoneItems, LockType.COMBINATION, 8335)};
     /**
      * items in the room 1 wall W
      */
@@ -90,11 +94,11 @@ public class Map
     /**
      * items in the room 2 wall N
      */
-    private final static Item[] itemsN2 = {new ItemContainer("Games chest", itemChestItems, LockType.KEY, 666)};
+    private final static Item[] itemsN2 = {new ItemContainer("chest with a Yellow Lock", itemChestItems, LockType.KEY, 666)};
     /**
      * items in the room 2 wall E
      */
-    private final static Item[] itemsE2 = {new ItemContainer("Dice", diceItems, LockType.COMBINATION, 143), new HiderItem("Board games", new Key ("Bedroom safe key", 777))};
+    private final static Item[] itemsE2 = {new ItemContainer("Dice", diceItems, LockType.COMBINATION, 143), new HiderItem("Board games", new Key ("Brown Key", 777))};
     /**
      * items in the room 2 wall S
      */
@@ -126,7 +130,7 @@ public class Map
     /**
      * items in the room 4 wall E
      */
-    private final static Item[] itemsE4 = {new HealingItem("Bendage", 3, 2)};
+    private final static Item[] itemsE4 = {new HealingItem("Bandage", 3, 2)};
     /**
      * items in the room 4 wall S
      */
@@ -154,7 +158,7 @@ public class Map
     /**
      * items in the room 6 wall N
      */
-    private final static Item[] itemsN6 = {new ItemContainer("Safe", LivingRoomSafeItems, LockType.KEY, 151)};
+    private final static Item[] itemsN6 = {new ItemContainer("Safe with a Green Lock", LivingRoomSafeItems, LockType.KEY, 151)};
     /**
      * items in the room 6 wall E
      */
@@ -162,11 +166,11 @@ public class Map
     /**
      * items in the room 6 wall S
      */
-    private final static Item[] itemsS6 = {new Note("Note in the coat", "Telephone number: 0335212")};
+    private final static Item[] itemsS6 = {new Note("Note in the coat", "Telephone number: 8335")};
     /**
      * items in the room 6 wall W
      */
-    private final static Item[] itemsW6 = {new HiderItem("Sofa", new Key("Key", 333))};
+    private final static Item[] itemsW6 = {new HiderItem("Sofa", new Key("Weird Key", 333))};
     /**
      * items in the room 7 wall N
      */
@@ -194,7 +198,7 @@ public class Map
     /**
      * items in the room 8 wall S
      */
-    private final static Item[] itemsS8 = {new ItemContainer("Bed Safe", BedRoomSafeItems, LockType.KEY, 777)};
+    private final static Item[] itemsS8 = {new ItemContainer("Bed Safe with Brown Lock", BedRoomSafeItems, LockType.KEY, 777)};
     /**
      * items in the room 8 wall W
      */
@@ -231,14 +235,6 @@ public class Map
         {itemsN9, itemsE9, itemsS9, itemsW9}
     };
 
-    /**
-     * DoorWall: the array of walls that have doors
-     */
-    private Wall[] DoorWall = new Wall[4];
-    /**
-     * PlainWall: the array of walls that do not have doors
-     */
-    private Wall[] PlainWall = new Wall[3];
     /**
      * rooms: the array of rooms
      */
@@ -321,54 +317,6 @@ public class Map
                     break;
             }
         }
-        /*
-        for (int i = 0; i < MAPSIZE; i++)
-        {
-            for(int j=0; j<rooms[i].getDoors(); j++)
-            {
-                if(j==0)
-                    DoorWall[j] = rooms[i].getNWall();
-                else if(j==1)
-                    DoorWall[j] = rooms[i].getEWall();
-                else if(j==2)
-                    DoorWall[j] = rooms[i].getSWall();
-                else if(j==3)
-                    DoorWall[j] = rooms[i].getWWall();
-                if(j==rooms[i].getDoors()-1)
-                {
-                    switch(j)
-                    {
-                        case 0:
-                            PlainWall[0]=rooms[i].getEWall();
-                            PlainWall[1]=rooms[i].getSWall();
-                            PlainWall[2]=rooms[i].getWWall();
-                        case 1:
-                            PlainWall[0]=rooms[i].getSWall();
-                            PlainWall[1]=rooms[i].getWWall();
-                        case 2:
-                            PlainWall[0]=rooms[i].getWWall();
-                    }
-                }
-            }
-            //place walls based on crossable/non-crossable            
-            if(!rooms[i].getCrossableNorth())
-                rooms[i].setNWall(PlainWall[0].getCombinedImage(), false);
-            else
-                rooms[i].setNWall(DoorWall[0].getCombinedImage(), true);
-            if(!rooms[i].getCrossableEast())
-                rooms[i].setEWall(PlainWall[1].getCombinedImage(), false);
-            else
-                rooms[i].setEWall(DoorWall[1].getCombinedImage(), true);
-            if(!rooms[i].getCrossableSouth())
-                rooms[i].setSWall(PlainWall[2].getCombinedImage(), false);
-            else
-                rooms[i].setSWall(DoorWall[2].getCombinedImage(), true);
-            if(!rooms[i].getCrossableWest())
-                rooms[i].setWWall(PlainWall[3].getCombinedImage(), false);
-            else
-                rooms[i].setWWall(DoorWall[3].getCombinedImage(), true);
-        }
-        */
     }
 
     /**
