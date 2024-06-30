@@ -414,7 +414,7 @@ public class GameManager {
                 saved = false;
                 return "\nEnter the name for the player:";
             }
-            return "Game not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
+            return "\nGame not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
         }
 
         // Check if the game is started
