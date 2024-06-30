@@ -69,27 +69,47 @@ The player can also find and use some special healing items like bandages and pa
 
 | Name | Version | Description |
 | --- | --- | --- |
-| Java | 17 | Version of Java defined in the `pom.xml` file for compiling and generating the target bytecode|
+| Java | 17 | Java version used to develop the project |
 | JUnit | 4.13.2 | Framework for Java class tests |
 | Jackson | 2.17.1 | Framework for converting objects into JSON stringifying them, and to convert back in the original shape through get and set methods using the ObjectMapper class |
 | aws-sdk-for-java | 2.26.7 | Framework from the AWS SDK for accessing AWS Services Including S3 Bucket |
 | Logback Classic Module | 1.5.6 | Used for monitoring the use of the AWS services and possibly intercept |
 
+### Execution Environments and Constraints
+
+The entire project was developed using Java, so it can be executed on any machine with a correctly installed JVM (either Windows, Linux or MacOS).
+
+We have tested the project with JDK 17 (and above), so we suggest using this version, otherwise we don't guarantee that the game will work properly. To check the version of version of Java installed on your machine use this command in your OS terminal:
+
+```bash
+java --version
+```
+
+### Libraris Used
+
+During the development of this game, we used the following libraries:
+
+- **JUnit** as a testing framework, to ensure that all the main functionalities of the game work properly with specific tests for the main classes.
+
+- **Jackson** to serialize the game state in a string format and to deserialize a string back into a game object. This was used to implement a save and load functionality, allowing the user to continue the game later by saving his current progress.
+
+- **Amazon SDK for Java** to upload and download game states in an AWS S3 Bucket, enabling the user to save multiple states of more games online with his personal AWS credentials.
+
 ### Compile and Execute
 
-Before executing the game or compiling the code form source, make sure you have **Java Developer Kit 17** (or above) correctly installed on your machine, otherwise it won't be able to compile or execute the game. 
+Before executing the game or compiling the code form source, make sure you have **Java Developer Kit 17** (or above) correctly installed on your machine, otherwise it won't be able to compile or execute the game.
 
-The dependencies are managed with **Maven**, but there is no need to have it installed on you machine: in fact you can use the Maven Wrapper configured in the repository just replacing the keyword `mvn` with `./mvnw` where specified in the following instructions.
+The dependencies are managed with **Maven**, but there is no need to have it installed on you machine: you can use the Maven Wrapper configured in the repository just replacing the keyword `mvn` with `./mvnw` where specified in the following instructions.
 
-First of all you need to clone the project using a terminal command, you can use the following command:
+First, you need to clone the project using a terminal command:
 
 ```bash
 git clone https://github.com/nardib/TextAdventure
 ```
 
-This command will clone the repository of the project from GitHub to your local machine. 
+This command will clone the repository of the project from GitHub to your local machine.
 
-You can also download the zip file from https://github.com/nardib/TextAdventure/archive/refs/heads/main.zip : make sure to extract the content of the zip file in order to use it.
+You can also download the zip file from [GitHub](https://github.com/nardib/TextAdventure/archive/refs/heads/main.zip): make sure to extract the content of the zip file in order to use it.
 
 You can now enter the directory with:
 
@@ -97,7 +117,15 @@ You can now enter the directory with:
 cd TextAdventure
 ```
 
-Now you can just play the game with the `text-adventure-x.x.x.jar` file in the `bin` directory clicking on the icon in your operating system or typing this command from the root directory:
+or
+
+```bash
+cd TextAdventure-main
+```
+
+if you have downloaded and unzipped the zip file.
+
+Now you can play the game with the `text-adventure-x.x.x.jar` file in the `bin` directory clicking on the icon in your operating system or typing this command from the root directory:
 
 ```bash
 java -jar bin/text.adventure-x.x.x.jar
@@ -119,7 +147,7 @@ Now you can run the program with the command:
 mvn exec:java
 ```
 
-Maven will make sure to install all the dependecies nedded to build correctly the project.
+Maven will make sure to install all the dependecies needed to build the project correctly.
 
 For creating the `.jar` executable file you can use:
 
@@ -127,7 +155,7 @@ For creating the `.jar` executable file you can use:
 mvn package
 ```
 
-This command will both compile and test the code, other than creating the executable file.
+This command will both compile and test the code, ad well as create the executable file.
 
 You can find all the file generated by the previous commands in the `target` folder.
 
@@ -170,7 +198,7 @@ mvn clean compile package
 mvn compile test exec:java
 ```
 
-### Save and Load usage
+### Save and Load Usage
 
 The game is configured to save and load game progress in an Amazon S3 bucket. To use this functionality make sure to use your personal AWS account to save your progresses.
 First of all you need to set your AWS credentials to access the bucket in the `%UserProfile$\.aws\credentials` file on Windows or `~/.aws/credentials` on Linux and MacOS. The file must have this structure:
@@ -193,7 +221,7 @@ region=region
 
 where `bucket-name` is the name of the S3 bucket you created, `file-name.json` is the name of the file to save in (or resume from) the bucket and `region` is the region of your bucket.
 
-If you leave the `file-name.json` field void, the game will automatically asks during the game configuration if you want to save the game in the bucket with a specified name ([check this link for all the valid formats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html)), with a defualt name (`game-status.json`) or if you don't want to save the game at all: note that if you specify the name, the game will automatically add the `.json` extension, so you don't have to. Also, when resuming a game it will print a list of games saved in the bucket and will ask it's name to make you select one (in this case you need to specify the extension).
+If you leave the `file-name.json` field void, the game will automatically ask during the game configuration if you want to save the game in the bucket with a specified name ([check this link for all the valid formats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html)), with a defualt name (`game-status.json`) or if you don't want to save the game at all: note that if you specify the name, the game will automatically add the `.json` extension, so you don't have to. Also, when resuming a game it will print a list of games saved in the bucket and will ask it's name to make you select one (in this case you need to specify the extension).
 
 **Note**: saving the game status won't keep track of all the previous moves, so when restoring the game will just go back to the last move, and the back function will work from the restored state.
 
