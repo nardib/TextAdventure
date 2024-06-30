@@ -13,10 +13,9 @@ import java.io.PrintStream;
 public class GameFrame {
     
     /**
-     * Game object
+     * GameManager object
      */
     private GameManager game;
-
     /**
      * Array of images of the walls
      */
@@ -204,6 +203,7 @@ public class GameFrame {
                         playerHealthLabel.setText("");
                         filledStarsLabel.setText("");
                         playerPositionLabel.setText("");
+                        inventoryText.setText("");
                     } 
                     inputField.setText("");
                 }
@@ -346,11 +346,8 @@ public class GameFrame {
      * Update inventary label
      */
     private void updateInventoryText(JTextArea inventoryText) {
-        if (game != null && game.getGame() != null) {
-            inventoryText.setText(game.getGame().getPlayer().printInventory());
-        } else {
-            inventoryText.setText("INVENTARIO:\nNessun oggetto");
-        }
+        if (game != null && game.getGame() != null)
+            inventoryText.setText("INVENTORY:" + game.getGame().getPlayer().printInventory() + "\n\nThe total weight of the items in is  " + game.getGame().getPlayer().getInventoryWeight() + "/10");
     }
     
     /**
@@ -384,7 +381,7 @@ public class GameFrame {
         inputField.setFont(font.deriveFont(size));
         inventoryText.setFont(font.deriveFont(size));
         dimension +=20;
-        height +=5;
+        height +=10;
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         miniMap.setIcon(new ImageIcon(miniMapImage));
         miniMap.revalidate();
@@ -403,7 +400,7 @@ public class GameFrame {
         inputField.setFont(font.deriveFont(size));
         inventoryText.setFont(font.deriveFont(size));
         dimension -=20;
-        height -=5;
+        height -=10;
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         miniMap.setIcon(new ImageIcon(miniMapImage));
         miniMap.revalidate();

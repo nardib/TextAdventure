@@ -97,11 +97,13 @@ You can now enter the directory with:
 cd TextAdventure
 ```
 
-Now you can just play the game with the `text-adventure-x.x.x.jar` files in the `bin` directory clicking on the icon in your operating system or typing this command from the root directory:
+Now you can just play the game with the `text-adventure-x.x.x.jar` file in the `bin` directory clicking on the icon in your operating system or typing this command from the root directory:
 
 ```bash
 java -jar bin/text.adventure-x.x.x.jar
 ```
+
+Remember to change `x-x-x` with the current version of the game
 
 **NOTE**: the execution of all the Maven commands requires a `pom.xml` file, which is in the root directory, so make sure to execute the commands that starts with `mvn` there.
 
@@ -188,7 +190,10 @@ bucketName=bucket-name
 keyName=file-name.json
 region=region
 ```
-where `bucket-name` is the name of the S3 bucket you created, `file-name.json` is the name of the file to save in the bucket and `region` is the region of your bucket.
+
+where `bucket-name` is the name of the S3 bucket you created, `file-name.json` is the name of the file to save in (or resume from) the bucket and `region` is the region of your bucket.
+
+If you leave the `file-name.json` field void, the game will automatically asks during the game configuration if you want to save the game in the bucket with a specified name ([check this link for all the valid formats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html)), with a defualt name (`game-status.json`) or if you don't want to save the game at all: note that if you specify the name, the game will automatically add the `.json` extension, so you don't have to. Also, when resuming a game it will print a list of games saved in the bucket and will ask it's name to make you select one (in this case you need to specify the extension).
 
 **Note**: saving the game status won't keep track of all the previous moves, so when restoring the game will just go back to the last move, and the back function will work from the restored state.
 
