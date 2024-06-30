@@ -1,10 +1,6 @@
 package org.zssn.escaperoom;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * Class Wall - Represents a wall in the game. It has an image, (possibly) a door, and items.
@@ -20,11 +16,6 @@ public class Wall {
      * Tells if the wall has a door
      */
     private boolean hasDoor;
-    
-    /**
-     * The items on the wall
-     */
-    private Map<Point, BufferedImage> itemsImages = new HashMap<>();
     
     /**
      * The combined image of the wall and the items
@@ -72,17 +63,6 @@ public class Wall {
     }
 
     /**
-     * Add an item to the wall 
-     * @param i The image of the item
-     * @param p The position of the item
-     */
-    public void addItemImages(BufferedImage i, Point p) 
-    {
-        this.itemsImages.put(p, i);
-        drawItems();  // Draw the items onto the combined image
-    }
-
-    /**
      * Check if the wall has a door
      * @return True if the wall has a door, false otherwise
      */
@@ -92,38 +72,12 @@ public class Wall {
     }
 
     /**
-     * Remove an item from the wall
-     * @param p The position of the item
-     */
-    public void removeItemImage(Point p) 
-    {
-        this.itemsImages.remove(p);
-        this.combined = deepCopy(wall);  // Reset the combined image to the wall image
-        drawItems();  // Redraw the remaining items
-    }
-
-    /**
      * Get the combined image of the wall and the items
      * @return The combined image
      */
     public BufferedImage returnCombinedImage() 
     {
         return combined;
-    }
-
-    /**
-     * Draw the items onto the combined image 
-     */
-    private void drawItems() 
-    {
-        Graphics2D g = combined.createGraphics();
-        for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet()) 
-        {
-            Point p = entry.getKey();
-            BufferedImage i = entry.getValue();
-            g.drawImage(i, p.x, p.y, null);
-        }
-        g.dispose();
     }
 
     /**
@@ -246,25 +200,6 @@ public class Wall {
             items[i] = items[i + 1];
         itemsLength--;
     }
-
-    /*
-     * Clone the wall
-     * 
-     * @return the cloned wall
-     
-    @Override
-    public Wall clone(){
-        if (items == null)
-            return new Wall(deepCopy(wall), hasDoor, null);
-        Item[] items = new Item[this.items.length];
-        for (int i = 0; i < this.items.length; i++)
-            items[i] = this.items[i].clone();
-        Wall w = new Wall(deepCopy(wall), hasDoor, items);
-        for (Map.Entry<Point, BufferedImage> entry : itemsImages.entrySet())
-            w.addItemImages(deepCopy(entry.getValue()), new Point(entry.getKey()));
-        w.itemsLength = this.itemsLength;
-        return w;
-    }*/
 
     /**
      * Clone the wall

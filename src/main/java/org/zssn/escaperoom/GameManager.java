@@ -434,7 +434,7 @@ public class GameManager {
             if (g.checkWin()) {
                 g = null;
                 gameWon = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\nA tunnel opens at the center of the room, " + playerName + " tentatively reaches out to the tight walls and crawls through. " + playerName + " eventually sees a light at the end of the tunnel. " + playerName + "Can't believe his eyes! The nightmare is finally over! " + playerName + " is free! " + playerName + " won!\nYou can now quit the game using the 'exit' or 'quit' command";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\nA tunnel opens at the center of the room, " + playerName + " tentatively reaches out to the tight walls and crawls through. " + playerName + " eventually sees a light at the end of the tunnel. " + playerName + " can't believe it! The nightmare is finally over! " + playerName + " is free! " + playerName + " won!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             else if (g.checkLost()) {
                 g = null;
