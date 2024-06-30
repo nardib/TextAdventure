@@ -267,8 +267,11 @@ public class ItemContainer extends Item{
      */
     @Override
     public ItemContainer clone() {
-        if (ArrayIndexCount == 0)
-            return new ItemContainer(this.getName(), new Item[]{}, this.lock, this.ID);
+        if (ArrayIndexCount == 0) {
+            ItemContainer ic = new ItemContainer(this.getName(), new Item[]{}, this.lock, this.ID);
+            ic.locked = this.locked;
+            return ic;
+        }
         Item[] items = new Item[ArrayIndexCount];
         for (int i = 0; i < ArrayIndexCount; i++)
             items[i] = this.items[i].clone();
