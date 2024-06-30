@@ -9,7 +9,7 @@
 
 ## Game Manual
 
-The game is a text adventure with a easy and clean graphic user interface (GUI) provided with a screen, resizable, showing images to improve the user experience. Pressin F1 zooms the screen out, F2 zooms in and F11 selects full screen mode. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the image shown in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, locks, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
+The game is a text adventure with a graphic user interface (GUI) provided with a screen, resizable, showing images to improve the user experience. Pressing F1 zooms the screen out, F2 zooms in and F11 selects full screen mode. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the image shown in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, chests, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
 - changing the wall you are facing
 - changing room (based on the doors placed in the room)
 - picking up items (only the pickable ones)
@@ -77,9 +77,9 @@ The player can also find and use some special healing items like bandages and pa
 
 ### Compile and Execute
 
-Before executing the game or compiling the code form source, make sure you have **Java Developer Kit 17** (or above) correctly installed on your machine, otherwise it won't be able to compile or execute the game. 
+Before executing the game or compiling the code form source, make sure you have **Java Developer Kit 17** (or above) correctly installed on your machine, otherwise it won't be able to compile or execute the game.
 
-The dependency are managed with **Maven**, but there is no need to have it installed on you machine: in fact you can use the Maven Wrapper configured in the repository just replacing the keyword `mvn` with `./mvnw` where specified in the following instructions.
+The dependencies are managed with **Maven**, but there is no need to have it installed on you machine: in fact you can use the Maven Wrapper configured in the repository just replacing the keyword `mvn` with `./mvnw` where specified in the following instructions.
 
 First of all you need to clone the project using a terminal command, you can use the following command:
 
@@ -87,7 +87,7 @@ First of all you need to clone the project using a terminal command, you can use
 git clone https://github.com/nardib/TextAdventure
 ```
 
-This command will clone the repository of the project from GitHub to your local machine. 
+This command will clone the repository of the project from GitHub to your local machine.
 
 You can also download the zip file from https://github.com/nardib/TextAdventure/archive/refs/heads/main.zip : make sure to extract the content of the zip file in order to use it.
 
@@ -321,18 +321,18 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test of game start without errors <br> - Test of correct restore of the previous game saved |
 | Pre-Condition | The game was successfully installed |
 | Post-Condition | Game configuration page is shown |
-| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that the game is started in the same state it was in the last save (or it returns an error that suggest to check the readme file) |
-| Test Case Execution Report | - Test of game start without errors: ✔ Passed <br> - Test of correct restore of the previous game saved: ✔ Passed |
+| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that the game is started in the same state it was in the last save (or it returns an error that suggest to check the readme file if the game failed to restore) |
+| Test Case Execution Report | - Test of game start without errors: ✅ Passed <br> - Test of correct restore of the previous game saved: ✅ Passed |
 
 ### Game Configuration
 
 | Summary | After using "New Game" command in the main menu you configure the Player and Enemy with a proper name and gender and set the other setting. |
 | --- | --- |
-| Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game; check also if the other settings are setted corrected. |
+| Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game; check also if the other settings are setted correctly. |
 | Pre-Condition |  User has started the game with "new game" command. |
 | Post-Condition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Test Scripts | **Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:** <br> + Use "new game" command in the main menu <br> + Compile the requested fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
-| Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game: ✔ Passed  |
+| Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game: ✅ Passed  |
 
 ### Commands
 
@@ -342,7 +342,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition | Game must be correctly started and with a valid configuration. |
 | Post-Condition | GUI updates after every move and the items are modified following the given command. |
 | Test Scripts | **Test of all the commands for moving the player:** <br> + Start a new game and select a valid configuration <br> + Move the player in the map changing the facing direction and the room making him cross the doors <br> + Verify that the player can cross only the walls with a door and the GUI is updated showing the current room and facing direction <br> **Test for all the commands to interact with the items in the map:** <br> + Start a new game and select a valid configuration <br> + Interact with all the items in a proper way according to the type of object <br> + Verify that all the items work as intended and there are errors that show the correct usage of the item when the commands are not used properly <br> **Test for invalid commands:** <br> + Start a new game and select a valid configuration <br> + Test a bunch of invalid commands <br> + Verify that after each invalid command an error message is displayed to show the correct usage of the command or it suggests to type `help` to get a list of valid commands |
-| Test Case Execution Report | - Test of all the commands for moving the player: ✔ Passed <br> - Test for all the commands to interact with the items in the map: ✔ Passed <br> - Test for invalid commands: ✔ Passed |
+| Test Case Execution Report | - Test of all the commands for moving the player: ✅ Passed <br> - Test for all the commands to interact with the items in the map: ✅ Passed <br> - Test for invalid commands: ✅ Passed |
 
 ### Win
 
@@ -352,7 +352,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition | The player must have used all the items and must have visited all the rooms. |
 | Post-Condition | The enemy dissapears and a win screen is shown. |
 | Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play all the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can close the game |
-| Test Case Execution Report | - Test win: ✔ Passed |
+| Test Case Execution Report | - Test win: ✅ Passed |
 
 
 ### Back
@@ -363,7 +363,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition | The user must have done at least one move. |
 | Post-Condition | The game is restored one move back. |
 | Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Do at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Do a ceratain number of moves <br> + Use `back` command several time <br> + Verify that after each `back` the game is restored to its previous state until the first move (inital configuration) |
-| Test Case Execution Report | - Test back function with no previous moves to undo: <br> - Test back function with a previous move to undo: <br> - Test back function several times with several previous moves to undo: ✔ Passed |
+| Test Case Execution Report | - Test back function with no previous moves to undo: ✅ Passed <br> - Test back function with a previous move to undo: ✅ Passed <br> - Test back function several times with several previous moves to undo: ✅ Passed |
 
 
 ### Save and Exit/Quit
@@ -374,4 +374,4 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition | The game must have been started correctly |
 | Post-Condition | The game is saved and the user can leave and resume the game later. |
 | Test Scripts | **Test save:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Use `save` command and exit the game <br> + Try to log back in the game using `resume` command <br> + Verify that you are in the same state of when you saved the game <br> **Test exit:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Try to `exit` the game with the proper command <br> + Verify that if the last state of the game was not saved the game asks to save it <br> + Verify that if the game closes properly (either saving or not saving the game based on the choice made in the previous step) |
-| Test Case Execution Report | - Test save: ✔ Passed <br> - Test exit: ✔ Passed |
+| Test Case Execution Report | - Test save: ✅ Passed <br> - Test exit: ✅ Passed |

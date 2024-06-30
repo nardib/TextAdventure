@@ -122,11 +122,11 @@ public class Game {
 
         //if the player is hidden i have to unhide him or wait for the enemy to go in another room
         if (player.isHidden()) {
-            if (input.equals("unhide")) {
+            if (input.equalsIgnoreCase("unhide")) {
                 player.setHidden();
                 return player.getName() + " is no longer hidden";
             }
-            else if (input.equals("wait")) {
+            else if (input.equalsIgnoreCase("wait")) {
                 return player.getName() + " is still hidden";
             }
             throw new IllegalArgumentException(player.getName() + " is hidden, " + player.returnPronoun() + " can only \"wait\" or \"unhide\".");
