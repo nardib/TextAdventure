@@ -304,6 +304,9 @@ public class GameFrame {
         for (int i = 0; i < game.getGame().getPlayer().getHealth(); i++) {
             heartSymbols.append("♥");
         }
+        for (int i = game.getGame().getPlayer().getHealth();i<5;i++) {
+            heartSymbols.append("♡");
+        }
         playerHealthLabel.setText(heartSymbols.toString());
     }
 
