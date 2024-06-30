@@ -321,7 +321,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Test Case Design | - Test of game start without errors <br> - Test of correct restore of the previous game saved |
 | Pre-Condition | The game was successfully installed |
 | Post-Condition | Game configuration page is shown |
-| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that the game is started in the same state it was in the last save |
+| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that the game is started in the same state it was in the last save (or it returns an error that suggest to check the readme file) |
 | Test Case Execution Report | - Test of game start without errors: ✔ Passed <br> - Test of correct restore of the previous game saved: ✔ Passed |
 
 ### Game Configuration

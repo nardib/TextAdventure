@@ -132,7 +132,7 @@ public class GameManager {
             InputStream input = GameManager.class.getResourceAsStream(CONFIG_FILE);
             Properties prop = new Properties();
             if (input == null) {
-                throw new RuntimeException("Warning: unable to find 'config.properties' file in the classpath. Consult the README.md file for instructions.");
+                throw new RuntimeException("\nWarning: unable to find 'config.properties' file in the classpath. Consult the README.md file for instructions.");
             }
             prop.load(input);
             BUCKET_NAME = prop.getProperty("bucketName");
@@ -140,7 +140,7 @@ public class GameManager {
             REGION = Region.of(prop.getProperty("region"));
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Warning: unable to load properly 'config.properties' file in the classpath. Consult the README.md file for instructions.");
+            throw new RuntimeException("\nWarning: unable to load properly 'config.properties' file in the classpath. Consult the README.md file for instructions.");
         }
     }
 
@@ -179,7 +179,7 @@ public class GameManager {
             return jsonString; //ritorna l'oggetto string contente il JSON dell'oggetto Game
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error during serialization");
+            throw new RuntimeException("\nError during serialization, check the README.md file for instructions or check the error message.");
         }
     }
 
@@ -197,7 +197,7 @@ public class GameManager {
             return obj; //ritorna l'oggetto inizializzato
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error during deserialization");
+            throw new RuntimeException("\nError during deserialization, check the README.md file for instructions or check the error message.");
         }
     }
 
@@ -231,7 +231,7 @@ public class GameManager {
             Files.delete(tempFile);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error during upload! Check the README.md file for instructions or check the error message.");
+            throw new RuntimeException("\nError during upload! Check the README.md file for instructions or check the error message.");
         }
     }
 
@@ -267,9 +267,9 @@ public class GameManager {
             // Elimina il file temporaneo
             Files.delete(tempFile);
             return content;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error during download! Check the README.md file for instructions or check the error message.");
+            throw new RuntimeException("\nError during download! Check the README.md file for instructions or check the error message.");
         }
     }
 
@@ -423,7 +423,7 @@ public class GameManager {
                 try {
                     saveProgress(g);
                     saved = true;
-                    return "Game saved!";
+                    return "\n-------------------------- Input : " + move + " --------------------------\n\nGame saved!";
                 } catch (Exception e) {
                     return e.getMessage();
                 }

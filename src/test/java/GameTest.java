@@ -310,6 +310,7 @@ public class GameTest {
         Assert.assertEquals("The television turns on and shows the code \"1563\" on a pinpad", message);
 
         // i test an item container with no lock
+        g.setEnemyAttacks(true);
         g.getPlayer().increaseHealth(100);
         g.nextMove("cross south");
         g.nextMove("noRth");
