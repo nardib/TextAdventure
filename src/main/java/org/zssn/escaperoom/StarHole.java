@@ -35,12 +35,10 @@ public class StarHole extends Item {
      * Constructor for the StarHole class
      * 
      * @param name name of the starHole
-     * @param image image of the starHole
-     * @param currentRoom current room of the starHole
      * @param ID ID of the starHole
      */
-    public StarHole (String name, String image, int currentRoom, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+    public StarHole (String name, int ID) {
+        super(name, WEIGHT, PICKABLE);
         this.filled = false;
         this.ID = ID;
         usingMessage = "To to fill a star hole type 'use <star_hole_name>' facing the direction of the star hole having in the inventory the star with the same ID";
@@ -107,7 +105,7 @@ public class StarHole extends Item {
      * @return the cloned starHole
      */
     public StarHole clone() {
-        StarHole sh = new StarHole(this.name, this.icon, this.currentRoom, this.ID);
+        StarHole sh = new StarHole(this.name, this.ID);
         sh.filled = this.filled;
         return sh;
     }
@@ -122,7 +120,7 @@ public class StarHole extends Item {
     public boolean equals(Object other) {
         if (other instanceof StarHole) {
             StarHole starHole = (StarHole) other;
-            return this.ID == starHole.ID && this.name.equals(starHole.name) && this.currentRoom == starHole.currentRoom && this.icon.equals(starHole.icon) && this.filled == starHole.filled;
+            return this.ID == starHole.ID && this.name.equals(starHole.name) && this.filled == starHole.filled;
         }
         return false;
     }

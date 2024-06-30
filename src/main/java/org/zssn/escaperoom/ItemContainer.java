@@ -21,7 +21,7 @@ public class ItemContainer extends Item{
     private Item[] items;
 
     /**
-     * Index of the last element of the array
+     * Number of items in the container
      */
     private int ArrayIndexCount;
 
@@ -31,7 +31,7 @@ public class ItemContainer extends Item{
     private boolean locked;
 
     /**
-     * Lock of the container
+     * Type of lock of the container
      */
     private LockType lock;
 
@@ -49,14 +49,12 @@ public class ItemContainer extends Item{
      * Constructor for the CluesItem class
      * 
      * @param name name of the item
-     * @param image image of the item
-     * @param currentRoom current room of the item
      * @param items items in the container
      * @param lock lock of the container
      * @param ID ID of the lock
      */
-    public ItemContainer (String name, String image, int currentRoom, Item[] items, LockType lock, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+    public ItemContainer (String name, Item[] items, LockType lock, int ID) {
+        super(name, WEIGHT, PICKABLE);
 
         ArrayIndexCount = items.length;
         this.items = new Item[ArrayIndexCount];
@@ -104,8 +102,8 @@ public class ItemContainer extends Item{
     /**
      * Method to unlock the container with a key
      * 
-     * @param k object to unlock the container (Key or combination)
-     * @return true if the container was succesfully unlocked, flase instead
+     * @param k key to unlock the container
+     * @return true if the container was succesfully unlocked, false instead
      * 
      * @throws IllegalArgumentException if this container can't be unlocked with a key
      */
@@ -136,7 +134,7 @@ public class ItemContainer extends Item{
     }
 
     /**
-     * Method to set the using message of the container
+     * Method to set the using message of the container based on the items in it
      */
     public void setUsingMessage() {
         if (ArrayIndexCount == 0){
@@ -270,11 +268,11 @@ public class ItemContainer extends Item{
     @Override
     public ItemContainer clone() {
         if (ArrayIndexCount == 0)
-            return new ItemContainer(this.getName(), this.icon, this.currentRoom, new Item[]{}, this.lock, this.ID);
+            return new ItemContainer(this.getName(), new Item[]{}, this.lock, this.ID);
         Item[] items = new Item[ArrayIndexCount];
         for (int i = 0; i < ArrayIndexCount; i++)
             items[i] = this.items[i].clone();
-        return new ItemContainer(this.getName(), this.icon, this.currentRoom, items, this.lock, this.ID);
+        return new ItemContainer(this.getName(), items, this.lock, this.ID);
     }
 
     /**
@@ -293,10 +291,10 @@ public class ItemContainer extends Item{
         if (i.ArrayIndexCount != this.ArrayIndexCount)
             return false;
         if (ArrayIndexCount == 0)
-            return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.currentRoom == i.currentRoom && icon.equals(i.icon) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
+            return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
         for (int j = 0; j < ArrayIndexCount; j++)
             if (!i.items[j].equals(this.items[j]))
                 return false;
-        return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.currentRoom == i.currentRoom && icon.equals(i.icon) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
+        return i.lock == this.lock && i.ID == this.ID && this.getName().equals(i.getName()) && this.usingMessage.equals(i.usingMessage) && this.locked == i.locked;
     }
 }

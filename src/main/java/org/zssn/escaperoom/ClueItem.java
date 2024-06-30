@@ -26,12 +26,10 @@ public class ClueItem extends Item{
      * Constructor for the CluesItem class
      * 
      * @param name name of the item
-     * @param image image of the item given as the name of the file in the src/main/resources folder
-     * @param currentRoom current room of the item
      * @param usingMessage message to show when the item is used
      */
-    public ClueItem(String name, String image, int currentRoom, String usingMessage) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+    public ClueItem(String name, String usingMessage) {
+        super(name, WEIGHT, PICKABLE);
         this.usingMessage = usingMessage;
     }
 
@@ -43,7 +41,7 @@ public class ClueItem extends Item{
     @Override
     public ClueItem clone()
     {
-        return new ClueItem(name, icon, currentRoom, usingMessage);
+        return new ClueItem(name, usingMessage);
     }
 
     /**
@@ -58,6 +56,6 @@ public class ClueItem extends Item{
         if (!(other instanceof ClueItem || other == null))
             return false;
         ClueItem i = (ClueItem) other;
-        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.usingMessage.equals(i.usingMessage);
+        return this.name.equals(i.name) && this.usingMessage.equals(i.usingMessage);
     }
 }

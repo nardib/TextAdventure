@@ -23,16 +23,14 @@ public class HealingItem extends Item {
      * Constructor for the HealingItem
      * 
      * @param name name of the healing item
-     * @param image image of the healing item given as a name of the file in the src/main/resources folder
      * @param weight weight of the healing item
-     * @param currentRoom current room of the healing item
      * @param healthPoints health points that the healing item heals
      * 
      * @throws IllegalArgumentException if health points are less than 0
      */
-    public HealingItem(String name, String image, int weight, int currentRoom, int healthPoints)
+    public HealingItem(String name, int weight, int healthPoints)
     {
-        super(name, image, weight, currentRoom, PICKABLE);
+        super(name, weight, PICKABLE);
         if (healthPoints < 0)
             throw new IllegalArgumentException("Health points must be greater than or equal to 0");
         this.healingPoints = healthPoints;
@@ -47,7 +45,7 @@ public class HealingItem extends Item {
     @Override
     public HealingItem clone()
     {
-        return new HealingItem(name, icon, weight, currentRoom, healingPoints);
+        return new HealingItem(name, weight, healingPoints);
     }
 
     /** 
@@ -62,7 +60,7 @@ public class HealingItem extends Item {
         if (!(other instanceof HealingItem || other == null))
             return false;
         HealingItem i = (HealingItem) other;
-        return this.name.equals(i.name) && this.currentRoom == i.currentRoom && this.healingPoints == i.healingPoints && this.usingMessage.equals(i.usingMessage) && this.icon.equals(i.icon);
+        return this.name.equals(i.name) && this.healingPoints == i.healingPoints && this.usingMessage.equals(i.usingMessage);
     }
 
     /**

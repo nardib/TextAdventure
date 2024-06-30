@@ -24,12 +24,10 @@ public class HidingItem extends Item {
      * Constructor for the HidingItem
      * 
      * @param name name of the hiding item
-     * @param image image of the hiding item given as a name of the file in the src/main/resources folder
-     * @param currentRoom current room of the hiding item
     */
-    public HidingItem(String name, String image, int currentRoom)
+    public HidingItem(String name)
     {
-        super (name, image, WEIGHT, currentRoom, false);
+        super (name, WEIGHT, false);
         usingMessage = "You are now hidden in the " + name + "\nThe enemy now can't see you!\nEnter \"wait\" to wait for the enemy to change room or \"unhide\" to exit from the chest.";
     }
 
@@ -41,7 +39,7 @@ public class HidingItem extends Item {
     @Override
     public HidingItem clone()
     {
-        return new HidingItem(name, icon, currentRoom);
+        return new HidingItem(name);
     }
 
     /**
@@ -56,6 +54,6 @@ public class HidingItem extends Item {
         if (!(obj instanceof HidingItem || obj == null))
             return false;
         HidingItem other = (HidingItem) obj;
-        return name.equals(other.name) && currentRoom == other.currentRoom;
+        return name.equals(other.name);
     }
 }

@@ -35,12 +35,10 @@ public class HiderItem extends Item{
      * Constructor for the HiderItem class
      * 
      * @param name name of the hider item
-     * @param image image of the hider item
-     * @param currentRoom current room of the hider item
      * @param hiddenItem item hidden by the hider item
      */
-    public HiderItem (String name, String image, int currentRoom, Item hiddenItem) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+    public HiderItem (String name, Item hiddenItem) {
+        super(name, WEIGHT, PICKABLE);
         this.hiddenItem = hiddenItem;
         this.usingMessage = this.name + " was hiding a " + hiddenItem.getName();
         //when created, the item is hiding an element
@@ -100,7 +98,7 @@ public class HiderItem extends Item{
      */
     @Override
     public HiderItem clone() {
-        HiderItem h = new HiderItem(name, icon, currentRoom, hiddenItem.clone());
+        HiderItem h = new HiderItem(name, hiddenItem.clone());
         h.hiding = hiding;
         return h;
     }
@@ -116,6 +114,6 @@ public class HiderItem extends Item{
         if (!(other instanceof HiderItem || other == null))
             return false;
         HiderItem h = (HiderItem) other;
-        return this.name.equals(h.name) && this.currentRoom == h.currentRoom && this.hiding == h.hiding && this.hiddenItem.equals(h.hiddenItem);
+        return this.name.equals(h.name) && this.hiding == h.hiding && this.hiddenItem.equals(h.hiddenItem);
     }
 }

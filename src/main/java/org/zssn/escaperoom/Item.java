@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = StarHole.class, name = "star hole"),})
 
 /**
- * Class Item - Represents an item in the game. It has a name, an image, a weight, a current room, and a pickable state.
+ * Class Item - Represents an item in the game. It has a name, a weight, and a pickable state.
  */
 public class Item {
     /**
@@ -25,19 +25,9 @@ public class Item {
     protected String name;
 
     /**
-     * Icon of the Item
-     */
-    protected String icon;
-
-    /**
      * Weight of the Item
      */
     protected int weight;
-
-    /**
-     * Current room of the Item
-     */
-    protected int currentRoom;
 
     /**
      * Pickable state of the Item
@@ -58,17 +48,13 @@ public class Item {
      * Constructor for the Item
      * 
      * @param name name of the item
-     * @param image image of the item given as the name of the file in the src/main/resources folder
      * @param weight weight of the item
-     * @param currentRoom current room of the item
      * @param pickable pickable state of the item
      * @throws IllegalArgumentException if the weight is less than 0 or the room is not between 0 and 9
      */
-    public Item(String name, String image, int weight, int currentRoom, boolean pickable)
+    public Item(String name, int weight, boolean pickable)
     {
-        icon = image;
         setName(name);
-        setCurrentRoom(currentRoom);
         this.pickable = pickable;
 
         if(weight >= 0)
@@ -93,15 +79,6 @@ public class Item {
      */
     public int getWeight() {
         return weight;
-    }
-
-    /**
-     * Return the current room of the item
-     * 
-     * @return current room of the item
-     */
-    public int getCurrentRoom() {
-        return currentRoom;
     }
 
     /**
@@ -132,15 +109,6 @@ public class Item {
     }
 
     /**
-     * Set the icon of the item
-     * 
-     * @param icon icon of the item
-     */
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    /**
      * Set the weight of the item
      * 
      * @param weight weight of the item
@@ -151,20 +119,6 @@ public class Item {
             this.weight = weight;
         else
             throw new IllegalArgumentException("Weight must be greater than or equal to 0");
-    }
-
-    /**
-     * Set the current room of the item
-     * 
-     * @param currentRoom current room of the item
-     * @throws IllegalArgumentException if the room is not between 0 and 9
-     */
-    public void setCurrentRoom(int currentRoom) {
-        if(currentRoom >= 0 && currentRoom <= 9) {
-            this.currentRoom = currentRoom;
-            return;
-        }
-        throw new IllegalArgumentException("Room must be between 0 and 9");
     }
 
     /**
@@ -193,7 +147,7 @@ public class Item {
     @Override
     public Item clone()
     {
-        return new Item(name, icon, weight, currentRoom, pickable);
+        return new Item(name, weight, pickable);
     }
 
     /**
@@ -208,6 +162,6 @@ public class Item {
         if (!(obj instanceof Item || obj == null))
             return false;
         Item i = (Item) obj;
-        return name.equals(i.name) && icon.equals(i.icon) && weight == i.weight && currentRoom == i.currentRoom && pickable == i.pickable;
+        return name.equals(i.name) && weight == i.weight && pickable == i.pickable;
     }
 }

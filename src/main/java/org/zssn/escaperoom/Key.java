@@ -1,8 +1,7 @@
 package org.zssn.escaperoom;
 
-
 /**
- * Key class is a subclass of Item. It is used to unlock doors in the game.
+ * Key class is a subclass of Item. It is used to unlock the item containers in the game
  */
 public class Key extends Item {
     /**
@@ -30,13 +29,12 @@ public class Key extends Item {
      * 
      * @param name name of the key
      * @param id id of the key
-     * @param image image of the key given as a name of the file in the src/main/resources folder
-     * @param currentRoom current room of the key
+     * 
      * @throws IllegalArgumentException if the room is not between 0 and 9
      */
-    public Key(String name, int id, String image, int currentRoom)
+    public Key(String name, int id)
     {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+        super(name, WEIGHT, PICKABLE);
         this.ID = id;
         usingMessage = "To use the key, face the wall with the item container to unlock and use the item with 'use <itemContainer>'";
     }
@@ -68,7 +66,7 @@ public class Key extends Item {
     @Override
     public Key clone()
     {
-        return new Key(name, ID, icon, currentRoom);
+        return new Key(name, ID);
     }
 
     /**
@@ -83,6 +81,6 @@ public class Key extends Item {
         if (!(other instanceof Key || other == null))
             return false;
         Key k = (Key) other;
-        return this.name.equals(k.name) && this.ID == k.ID && this.currentRoom == k.currentRoom && this.usingMessage.equals(k.usingMessage) && this.icon.equals(k.icon);
+        return this.name.equals(k.name) && this.ID == k.ID && this.usingMessage.equals(k.usingMessage);
     }
 }

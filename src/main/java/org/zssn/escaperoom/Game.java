@@ -207,7 +207,6 @@ public class Game {
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's not pickable";
                         if (player.getInventoryWeight() + items[i].getWeight() > Player.MAX_WEIGHT)
                             return player.getName() + " can't take " + items[i].getName().toLowerCase() + ", it's too heavy";
-                        items[i].setCurrentRoom(0);
                         Item item = items[i].clone();
                         player.insertItem(item);
                         Wall w = map.getWall(player.getCurrentRoom(), player.getCurrentDirection());

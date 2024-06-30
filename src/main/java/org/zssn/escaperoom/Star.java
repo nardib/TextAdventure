@@ -1,11 +1,7 @@
 package org.zssn.escaperoom;
 
-
 /**
  * Star class that represents a star in the game that can be used to fill a star hole to complete the final puzzle
- 
- 
- 
  */
 public class Star extends Item {
     
@@ -33,12 +29,10 @@ public class Star extends Item {
      * Constructor for the Star class
      * 
      * @param name name of the star
-     * @param image image of the star
-     * @param currentRoom current room of the star
      * @param ID ID of the star
      */
-    public Star (String name, String image, int currentRoom, int ID) {
-        super(name, image, WEIGHT, currentRoom, PICKABLE);
+    public Star (String name, int ID) {
+        super(name, WEIGHT, PICKABLE);
         this.ID = ID;
         usingMessage = "To use the star to fill a star hole type 'use <star_hole_name>' facing the direction of the star hole";
     }
@@ -67,7 +61,7 @@ public class Star extends Item {
      * @return the cloned star
      */
     public Star clone() {
-        return new Star(this.name, this.icon, this.currentRoom, this.ID);
+        return new Star(this.name, this.ID);
     }
 
     /**
@@ -80,7 +74,7 @@ public class Star extends Item {
     public boolean equals(Object other) {
         if (other instanceof Star) {
             Star s = (Star) other;
-            return this.ID == s.ID && this.name.equals(s.name) && this.currentRoom == s.currentRoom && this.icon.equals(s.icon);
+            return this.ID == s.ID && this.name.equals(s.name);
         }
         return false;
     }

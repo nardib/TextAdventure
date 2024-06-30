@@ -6,30 +6,23 @@ public class ItemTest {
     //generic test for an item
     @Test
     public void GenericItemTest() {
-        var i = new Item("Item", "test.png", 1, 1, true);
+        var i = new Item("Item", 1, true);
         Assert.assertEquals("Item", i.getName());
         Assert.assertEquals(1, i.getWeight());
-        Assert.assertEquals(1, i.getCurrentRoom());
         Assert.assertEquals(true, i.isPickable());
 
         //i change the room of the item
-        i.setCurrentRoom(0);
-        Assert.assertEquals(0, i.getCurrentRoom());
         Assert.assertThrows(IllegalArgumentException.class, () -> {
-            i.setCurrentRoom(-1);
-        });
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
-            i.setCurrentRoom(10);
+            i.setWeight(-1);
         });
     }
 
     //test for a ClueItem
     @Test
     public void ClueItemTest() {
-        var c = new ClueItem("Clue", "test.png", 1, "You found a clue!");
+        var c = new ClueItem("Clue", "You found a clue!");
         Assert.assertEquals("Clue", c.getName());
         Assert.assertEquals(11, c.getWeight());
-        Assert.assertEquals(1, c.getCurrentRoom());
         Assert.assertEquals(false, c.isPickable());
         Assert.assertEquals("You found a clue!", c.getUsingMessage());
     }
@@ -37,10 +30,9 @@ public class ItemTest {
     //test for a Note item
     @Test
     public void NoteTest() {
-        var n = new Note("Note", "test.png", 2, "You found a note!");
+        var n = new Note("Note", "You found a note!");
         Assert.assertEquals("Note", n.getName());
         Assert.assertEquals(0, n.getWeight());
-        Assert.assertEquals(2, n.getCurrentRoom());
         Assert.assertEquals(true, n.isPickable());
         Assert.assertEquals("This note says: You found a note!", n.getUsingMessage());
     }
@@ -48,9 +40,9 @@ public class ItemTest {
     //test for a ItemContainer
     @Test
     public void ItemContainerTest() {
-        var n = new Note("Note", "test.png", 2, "You found a note!");
-        var c = new ClueItem("Clue", "test.png", 1, "You found a clue!");
-        final ItemContainer ic = new ItemContainer("safe", "test.png", 1, new Item[]{n, c}, LockType.NONE, 0);
+        var n = new Note("Note", "You found a note!");
+        var c = new ClueItem("Clue", "You found a clue!");
+        final ItemContainer ic = new ItemContainer("safe", new Item[]{n, c}, LockType.NONE, 0);
         Assert.assertFalse(ic.isLocked());
         Assert.assertEquals(ic.getLockType(), LockType.NONE);
         Assert.assertEquals(ic.getID(), 0);
@@ -82,9 +74,9 @@ public class ItemTest {
 
 
         //now i check the lock types different from NONE
-        Key k = new Key ("key", 1234, "test.png", 0);
-        Key k1 = new Key ("key", 1235, "test.png", 1);
-        var ic1 = new ItemContainer("safe", "test.png", 1, new Item[]{n, c}, LockType.COMBINATION, 1234);
+        Key k = new Key ("key", 1234);
+        Key k1 = new Key ("key", 1235);
+        var ic1 = new ItemContainer("safe", new Item[]{n, c}, LockType.COMBINATION, 1234);
         Assert.assertTrue(ic1.isLocked());
         Assert.assertEquals(ic1.getLockType(), LockType.COMBINATION);
         Assert.assertEquals(ic1.getID(), 1234);
@@ -98,7 +90,7 @@ public class ItemTest {
         Assert.assertTrue(ic1.unlock(1234));
         Assert.assertFalse(ic1.isLocked());
 
-        var ic2 = new ItemContainer("safe", "test.png", 1, new Item[]{n, c}, LockType.KEY, 1234);
+        var ic2 = new ItemContainer("safe", new Item[]{n, c}, LockType.KEY, 1234);
         Assert.assertTrue(ic2.isLocked());
         Assert.assertEquals(ic2.getLockType(), LockType.KEY);
         Assert.assertEquals(ic2.getID(), 1234);
@@ -116,11 +108,10 @@ public class ItemTest {
     //test for HiderItem
     @Test
     public void HiderItemTest () {
-        var i = new Item ("Item", "test.png", 1, 1, true);
-        var h = new HiderItem("Hider", "test.png", 1, i);
+        var i = new Item ("Item", 1, true);
+        var h = new HiderItem("Hider", i);
         Assert.assertEquals("Hider", h.getName());
         Assert.assertEquals(11, h.getWeight());
-        Assert.assertEquals(1, h.getCurrentRoom());
         Assert.assertEquals(false, h.isPickable());
         Assert.assertTrue(h.isHiding());
         Item hidden = h.reveal();
@@ -131,8 +122,8 @@ public class ItemTest {
     //test for Star and StarHole
     @Test
     public void StarTest () {
-        var s = new Star("Star", "test.png", 1, 1);
-        var sh = new StarHole("StarHole", "test.png", 1, 1);
+        var s = new Star("Star", 1);
+        var sh = new StarHole("StarHole", 1);
         Assert.assertFalse(sh.isFilled());
         sh.fill(s);
         Assert.assertTrue(sh.isFilled());
@@ -141,16 +132,16 @@ public class ItemTest {
     //test for deep clone
     @Test
     public void CloneTest() {
-        var i = new Item("Item", "test.png", 1, 1, true);
-        var c = new ClueItem("Clue", "test.png", 1, "You found a clue!");
-        var n = new Note("Note", "test.png", 2, "You found a note!");
-        ItemContainer ic = new ItemContainer("safe", "test.png", 1, new Item[]{n, c}, LockType.NONE, 0);
-        var h = new HiderItem("Hider", "test.png", 1, i);
-        var hiding = new HidingItem("Hiding", "test.png", 0);
-        var k = new Key ("key", 1234, "test.png", 0);
-        var heal = new HealingItem("Heal", "test.png", 1, 0, 2);
-        var s = new Star("Star", "test.png", 1, 1);
-        var sh = new StarHole("StarHole", "test.png", 1, 1);
+        var i = new Item("Item", 1, true);
+        var c = new ClueItem("Clue", "You found a clue!");
+        var n = new Note("Note", "You found a note!");
+        ItemContainer ic = new ItemContainer("safe", new Item[]{n, c}, LockType.NONE, 0);
+        var h = new HiderItem("Hider", i);
+        var hiding = new HidingItem("Hiding");
+        var k = new Key ("key", 1234);
+        var heal = new HealingItem("Heal", 1, 2);
+        var s = new Star("Star", 1);
+        var sh = new StarHole("StarHole", 1);
         var iClone = i.clone();
         var cClone = c.clone();
         var nClone = n.clone();

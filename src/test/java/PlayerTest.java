@@ -5,9 +5,9 @@ public class PlayerTest {
     @Test
     public void testEquality() {
         Player p = new Player("Filippo", "n");
-        var item1 = new Note("Note", "test.png", 1, "You found a note!");
-        var item2 = new Key("key", 1, "test.png", 1);
-        var item3 = new HealingItem("Heal", "test.png", 5, 0, 3);
+        var item1 = new Note("Note", "You found a note!");
+        var item2 = new Key("key", 1);
+        var item3 = new HealingItem("Heal", 5, 3);
         p.insertItem(item1);
         p.insertItem(item2);
         var p1 = p.clone();
@@ -21,10 +21,10 @@ public class PlayerTest {
 
     @Test
     public void testInventory() {
-        Key key = new Key("key", 1, "test.png", 1);
-        HealingItem hammer = new HealingItem("hammer", "test.png", 5, 1, 3);
-        HidingItem lock = new HidingItem("lock", "test.png", 1);
-        HealingItem potion = new HealingItem("potion", "test.png", 3, 1, 3);
+        Key key = new Key("key", 1);
+        HealingItem hammer = new HealingItem("hammer", 5, 3);
+        HidingItem lock = new HidingItem("lock");
+        HealingItem potion = new HealingItem("potion", 3, 3);
 
         Player p = new Player("Filippo", "n");
         p.insertItem(key);
@@ -87,7 +87,7 @@ public class PlayerTest {
     public void testHealth() {
         Player p = new Player("Filippo", "n");
         Enemy e = new Enemy("Enemy", "m");
-        Item i = new HealingItem("potion", "test.png", 3, 1, 2);
+        Item i = new HealingItem("potion", 3, 2);
         Assert.assertEquals(5, p.getHealth());
         p.decreaseHealth(e.DAMAGE);
         Assert.assertEquals(4, p.getHealth());
