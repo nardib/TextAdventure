@@ -291,10 +291,16 @@ public class Player extends Character{
         if (ArrayIndexCount == 0 && notesCount == 0)
             return "no items";
         String out = "\n";
-        for (int i = 0; i < ArrayIndexCount; i++)
-            out += "- " + inventory[i].getName() + "\n";
+        for (int i = 0; i < ArrayIndexCount; i++){
+            if (inventory[i] instanceof Key)
+            out += "🔑 " + inventory[i].getName() + "\n";
+            else if (inventory[i] instanceof HealingItem)
+            out += "🩹 " + inventory[i].getName() + "\n";
+            else if (inventory[i] instanceof Star)
+            out += "⭐ " + inventory[i].getName() + "\n";
+        }
         for (int i = 0; i < notesCount; i++)
-            out += "- " + notesInventory[i].getName() + "\n";
+            out += "🗒️ " + notesInventory[i].getName() + "\n";
         return out.substring(0, out.length()-1);
     }
 
