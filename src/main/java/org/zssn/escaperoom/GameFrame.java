@@ -220,6 +220,7 @@ public class GameFrame {
                         filledStarsLabel.setText("");
                         playerPositionLabel.setText("");
                         inventoryText.setText("");
+                        sidePanel.removeAll();
                     } 
                     inputField.setText("");
                 }
