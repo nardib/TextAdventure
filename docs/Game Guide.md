@@ -71,7 +71,7 @@ The game ends in a loss if the player's health drops to zero.
 
 ### Commands
 
-`Movement:`
+**`Movement:`**
 
 The prime commands are those use to manage movments. In order to win the game, the user will be asked to move along the various rooms, examining all the walls, and to do that the following commands must be used.
 
@@ -82,7 +82,7 @@ The prime commands are those use to manage movments. In order to win the game, t
 
 - cross DIRECTION: Move to the room in the specified direction (north, south, east, or west). If no direction is specified, move in the currently faced direction.
 
-`Interaction:`
+**`Interaction:`**
 
 The user will need to use some items and to interact with others though the following commans.
 
