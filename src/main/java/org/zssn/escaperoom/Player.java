@@ -289,7 +289,7 @@ public class Player extends Character{
      */
     public String printInventory(){
         if (ArrayIndexCount == 0 && notesCount == 0)
-            return "no items";
+        return "\nNo items yet";
         String out = "\n";
         for (int i = 0; i < ArrayIndexCount; i++){
             if (inventory[i] instanceof Key)
@@ -486,3 +486,4 @@ public class Player extends Character{
         return out;
     }
 }
+

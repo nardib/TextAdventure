@@ -10,13 +10,12 @@ import java.io.PrintStream;
 /**
  * GameFrame class. This class represents the frame of the game. It contains the main window of the game, the terminal, the input field.
  */
-public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
+public class GameFrame {
     
     /**
-     * Game object
+     * GameManager object
      */
     private GameManager game;
-
     /**
      * Array of images of the walls
      */
@@ -37,12 +36,18 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
      * JTextPane object for the terminal
      */
     private JTextPane terminal;
+    private JTextArea inventoryText;
+    private ImageIcon miniMapIcon;
+    private Image miniMapImage;
+    private JLabel miniMap;
+    private JScrollPane terminalScrollPane;
     /**
      * JTextField object for the input field
      */
+    
     JTextField inputField;
     /**
-     * JPanel object for the game informations
+     * JPanel object for the game information
      */
     JPanel statusPanel;
     /**
@@ -63,34 +68,41 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
      * Boolean for the wall configuration
      */
     private boolean wallConfigured = false;
-
+    /**
+     * Dimension of the miniMap
+     */
+    private int dimension=400;
+    /**
+     * Height of terminal
+     */
+    private int height=225;
     /**
      * Constructor of the GameFrame class
      */
     public GameFrame() {
         try {
-            game = new GameManager(/*this*/);
+            game = new GameManager();
         } catch (Exception e) {
             writeToTerminal(e.getMessage());
         }
 
+        // Initialize the main JFrame for the game, setting its title, close operation, icon image, and layout
         frame = new JFrame("TextAdventure");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setIconImage(new ImageIcon(getClass().getResource("/text-adventure-icon.png")).getImage());
         frame.setLayout(new BorderLayout());
-        /*frame.addMouseMotionListener(this);
-        frame.addMouseListener(this);*/
 
-        // Configura il pannello centrale
+        // Configure the center panel
         JPanel center = new JPanel();
         center.setBackground(new Color(0, 0, 0));
         center.setLayout(new BorderLayout());
 
-        // Crea un pannello per contenere l'immagine principale e la minimappa
+        // Create a panel to contain the main image and the minimap
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(new Color(0, 0, 0));
         imagePanel.setLayout(new BorderLayout());
 
+        // Initialize the JLabel for displaying graphics
         JLabel graphic = new JLabel();
         graphic.setFont(new Font("Monospaced", Font.PLAIN, 20));
         graphic.setHorizontalAlignment(SwingConstants.CENTER);
@@ -99,33 +111,59 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         imagePanel.add(graphic, BorderLayout.CENTER);
 
         
-        // Ridimensiona la minimappa
-        ImageIcon miniMapIcon = new ImageIcon(getClass().getResource("/MiniMapNero.png"));
-        Image miniMapImage = miniMapIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // Imposta le dimensioni desiderate (es. 200x200)
-        // Aggiungi la minimappa
-        JLabel miniMap = new JLabel(new ImageIcon(miniMapImage));
+        // Resize the minimap
+        miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap1.png"));
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
+        
+        // Add the minimap
+        miniMap = new JLabel(new ImageIcon(miniMapImage));
         miniMap.setFont(new Font("Monospaced", Font.PLAIN, 20));
         miniMap.setHorizontalAlignment(SwingConstants.CENTER);
         miniMap.setVerticalAlignment(SwingConstants.NORTH);
+
+        // Create a panel to hold the minimap and inventory
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(new BorderLayout());
+        sidePanel.setBackground(new Color(28, 28, 28));
+
+        // Create the inventory panel
+        JPanel inventoryPanel = new JPanel();
+        inventoryPanel.setBackground(new Color(28, 28, 28));
+        inventoryPanel.setLayout(new BorderLayout());
+
+        inventoryText = new JTextArea();
+        inventoryText.setEditable(false);
+        inventoryText.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        inventoryText.setBackground(new Color(28, 28, 28));
+        inventoryText.setForeground(Color.WHITE);
+        JScrollPane inventoryScrollPane = new JScrollPane(inventoryText);
+        inventoryPanel.add(inventoryScrollPane, BorderLayout.CENTER);
+        
+        // Set initial inventory text
+        updateInventoryText(inventoryText);
+
+        // Add the side panel to the main center panel
+        center.add(sidePanel, BorderLayout.EAST);
         center.add(imagePanel, BorderLayout.CENTER);
 
-        // Configura il terminale e lo scorrimento
+        // Configure the terminal and scrolling
         terminal = new JTextPane();
         terminal.setEditable(false);
-        terminal.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        terminal.setFont(new Font("Monospaced", Font.PLAIN, 15));
         terminal.setBackground(new Color(28, 28, 28));
         terminal.setForeground(Color.WHITE);
         writeToTerminal("Welcome to the Escape Room!\nIf you want to start a new game, please type 'New Game'.\nIf you want to load a previous game, please type 'Resume'.");
-        JScrollPane terminalScrollPane = new JScrollPane(terminal);
-        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), 225)); // Altezza del terminale a 225
-        // Pannello per terminal e input
+        terminalScrollPane = new JScrollPane(terminal);
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height)); // Set terminal height to 225
+
+        // Panel for terminal and input
         JPanel downPanel = new JPanel();
         downPanel.setLayout(new BorderLayout());
         downPanel.add(terminalScrollPane, BorderLayout.CENTER);
 
-        // Crea il campo di testo per l'input dell'utente
+        // Create the text field for user input
         inputField = new JTextField();
-        inputField.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        inputField.setFont(new Font("Monospaced", Font.PLAIN, 15));
         inputField.setBackground(new Color(28, 28, 28));
         inputField.setForeground(Color.WHITE);
         inputField.setCaretColor(Color.WHITE);
@@ -134,22 +172,26 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
                     writeToTerminal(game.nextMove(mex));
-                    if (game.getGame() != null && !wallConfigured) {
-                        // Carica le immagini dei muri
+                    if (game.getGame() != null && !wallConfigured) { 
                         clearTerminal();
                         writeToTerminal("Game configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!");
+                        // Load the wall images
                         for (int i = 0; i < 36; i++) {
                             Images[i] = (Image) Room.Walls[i].returnCombinedImage();
                         }
-                        imagePanel.add(miniMap, BorderLayout.EAST); // Aggiungi la minimappa a destra
-
                         wallConfigured = true;
+                        // Add the minimap to the side panel
+                        sidePanel.add(miniMap, BorderLayout.NORTH);
+                        // Add the inventory panel below the minimap
+                        sidePanel.add(inventoryPanel, BorderLayout.CENTER);
                     }
+                    // Update the graphic icon, player health label, star label, and player position label if the game is active
                     if (game.getGame() != null){
                         graphic.setIcon(new ImageIcon(Images[(game.getGame().getPlayer().getCurrentRoom() - 1) * 4 + game.getGame().getPlayer().getCurrentDirection().ordinal()]));
                         updatePlayerHealthLabel();
                         updateStarLabel();
                         updatePlayerPositionLabel();
+                        updateInventoryText(inventoryText);
                     }
                     else {
                         if (game.isGameWon())
@@ -161,6 +203,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
                         playerHealthLabel.setText("");
                         filledStarsLabel.setText("");
                         playerPositionLabel.setText("");
+                        inventoryText.setText("");
                     } 
                     inputField.setText("");
                 }
@@ -171,13 +214,13 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
-        // Configura il pannello delle informazioni
+        // Configure the information panel
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(28, 28, 28));
         topPanel.setLayout(new BorderLayout());
         topPanel.setPreferredSize(new Dimension(0, 45));
 
-        // Pannello sinistro per la salute del giocatore
+        // Left panel for player health
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.setPreferredSize(new Dimension(250, 45));
         leftPanel.setBackground(new Color(28, 28, 28));
@@ -186,13 +229,12 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         playerHealthLabel.setForeground(Color.RED);
         playerHealthLabel.setText("");
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START; // align to left
-        gbc.weightx = 1.0; // take up all available space
+        gbc.anchor = GridBagConstraints.LINE_START; // Align to left
+        gbc.weightx = 1.0; // Take up all available space
         leftPanel.add(playerHealthLabel, gbc);
 
-        // Pannello centrale per le stelle raccolte
+        // Center panel for collected stars
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        //centerPanel.setPreferredSize(new Dimension(frame.getWidth()/3, 45));
         centerPanel.setBackground(new Color(28, 28, 28));
         filledStarsLabel = new JLabel();
         filledStarsLabel.setFont(new Font("Monospaced", Font.PLAIN, 35));
@@ -200,7 +242,7 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         filledStarsLabel.setText("");
         centerPanel.add(filledStarsLabel);
 
-       // Pannello destro per la posizione del giocatore
+        // Right panel for player position
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setPreferredSize(new Dimension(250, 45));
         rightPanel.setBackground(new Color(28, 28, 28));
@@ -209,30 +251,29 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         playerPositionLabel.setForeground(Color.WHITE);
         playerPositionLabel.setText("");
         gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_END; // align to right
-        gbc.weightx = 1.0; // take up all available space
+        gbc.anchor = GridBagConstraints.LINE_END; // Align to right
+        gbc.weightx = 1.0; // Take up all available space
         rightPanel.add(playerPositionLabel, gbc);
 
-        // Aggiungi i pannelli al pannello superiore
+        // Add the panels to the top panel
         topPanel.add(leftPanel, BorderLayout.WEST);
         topPanel.add(centerPanel, BorderLayout.CENTER);
         topPanel.add(rightPanel, BorderLayout.EAST);
 
         frame.add(topPanel, BorderLayout.PAGE_START);
 
-        // Listener per il ridimensionamento della finestra
+        // Listener for window resizing
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 int h = frame.getHeight();
                 int w = frame.getWidth();
                 double grapSize = w / 25;
                 graphic.setFont(new Font("Monospaced", Font.PLAIN, (int) grapSize));
-                //terminalScrollPane.setPreferredSize(new Dimension(w, 225));
                 center.setPreferredSize(new Dimension(w, h - 140));
             }   
         });
 
-        // Configura i key bindings per la finestra
+        // Configure key bindings for the window
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "toggleFullscreen");
         frame.getRootPane().getActionMap().put("toggleFullscreen", new AbstractAction() {
@@ -274,6 +315,9 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         for (int i = 0; i < game.getGame().getPlayer().getHealth(); i++) {
             heartSymbols.append("♥");
         }
+        for (int i = game.getGame().getPlayer().getHealth();i<5;i++) {
+            heartSymbols.append("♡");
+        }
         playerHealthLabel.setText(heartSymbols.toString());
     }
 
@@ -298,6 +342,14 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         playerPositionLabel.setText(game.getGame().getMap().getRoom(game.getGame().getPlayer().getCurrentRoom()).getName() + ", " + game.getGame().getPlayer().getCurrentDirection().toString());
     }
 
+    /**
+     * Update inventary label
+     */
+    private void updateInventoryText(JTextArea inventoryText) {
+        if (game != null && game.getGame() != null)
+            inventoryText.setText("INVENTORY:" + game.getGame().getPlayer().printInventory() + "\n\nThe total weight of the items in is  " + game.getGame().getPlayer().getInventoryWeight() + "/10");
+    }
+    
     /**
      * Toggle the fullscreen mode
      */
@@ -327,7 +379,15 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         float size = font.getSize() + 1.0f;
         terminal.setFont(font.deriveFont(size));
         inputField.setFont(font.deriveFont(size));
-
+        inventoryText.setFont(font.deriveFont(size));
+        dimension +=20;
+        height +=10;
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
+        miniMap.setIcon(new ImageIcon(miniMapImage));
+        miniMap.revalidate();
+        miniMap.repaint();
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height));
+        terminalScrollPane.revalidate();
     }
 
     /**
@@ -338,6 +398,15 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
         float size = font.getSize() - 1.0f;
         terminal.setFont(font.deriveFont(size));
         inputField.setFont(font.deriveFont(size));
+        inventoryText.setFont(font.deriveFont(size));
+        dimension -=20;
+        height -=10;
+        miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
+        miniMap.setIcon(new ImageIcon(miniMapImage));
+        miniMap.revalidate();
+        miniMap.repaint();
+        terminalScrollPane.setPreferredSize(new Dimension(frame.getWidth(), height));
+        terminalScrollPane.revalidate();
     }
 
     /**
@@ -370,20 +439,4 @@ public class GameFrame /*implements MouseMotionListener, MouseListener*/ {
             e.printStackTrace();
         }
     }
-
-    /*
-    // Listener del mouse
-    public void mouseDragged(MouseEvent e) {}
-    public void mouseMoved(MouseEvent e) {
-        PointerInfo a = MouseInfo.getPointerInfo();
-        Point b = a.getLocation();
-        x = (int) b.getX();
-        y = (int) b.getY();
-    }
-    public void mouseClicked(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
-    */
 }

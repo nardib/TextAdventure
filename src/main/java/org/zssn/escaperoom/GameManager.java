@@ -5,14 +5,18 @@ import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Class that manages the game and the saving and loading of the game status from the S3 bucket
@@ -48,6 +52,11 @@ public class GameManager {
      * Tells if the game is being configured
      */
     private boolean configuring;
+
+    /**
+     * Tells if the game is being loaded from the S3 bucket
+     */
+    private boolean loading;
 
     /**
      * The turn the game is being configured
@@ -115,6 +124,7 @@ public class GameManager {
     public GameManager() {
         g = null;
         configuring = false;
+        loading = false;
         count = 0;
         gameOn = false;
         gameWon = false;
@@ -136,7 +146,10 @@ public class GameManager {
             }
             prop.load(input);
             BUCKET_NAME = prop.getProperty("bucketName");
-            KEY_NAME = prop.getProperty("keyName");
+            if (prop.getProperty("keyName").equals(""))
+                KEY_NAME = null;
+            else
+                KEY_NAME = prop.getProperty("keyName");
             REGION = Region.of(prop.getProperty("region"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -274,6 +287,33 @@ public class GameManager {
     }
 
     /**
+     * Returns a string containing the names of all files in the specified S3 bucket.
+     * 
+     * @return A string with all file names concatenated, separated by a specified delimiter.
+     */
+    public String listBucketFilesAsString() {
+        try {
+            S3Client s3 = S3Client.builder()
+                    .region(REGION)
+                    .credentialsProvider(ProfileCredentialsProvider.create())
+                    .build();
+
+            ListObjectsRequest listObjects = ListObjectsRequest.builder().bucket(BUCKET_NAME).build();
+            List<S3Object> objects = s3.listObjects(listObjects).contents();
+
+            // Concatenate file names using a newline character as a delimiter
+            String fileNames = objects.stream()
+                                    .map(S3Object::key)
+                                    .collect(Collectors.joining("\n"));
+
+            return fileNames.isEmpty() ? "The bucket is empty." : fileNames;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error listing bucket files. Check the error message or the README.md file for instructions.");
+        }
+    }
+
+    /**
      * Method that returns the game object
      * 
      * @return the game object
@@ -295,7 +335,11 @@ public class GameManager {
         // Check if the user wants to save the progress before quitting
         if (askingToSave) {
             if (move.equalsIgnoreCase("yes") || move.equalsIgnoreCase("y")) {
-                saveProgress(g);
+                try {
+                    saveProgress(g);
+                } catch (Exception e) {
+                    return e.getMessage() + "\nTry again or type 'no' to quit without saving.";
+                }
                 System.exit(0);
             }
             else if (move.equalsIgnoreCase("no") || move.equalsIgnoreCase("n")) {
@@ -306,21 +350,53 @@ public class GameManager {
 
         // Check if the user wants to exit the game
         if (move.equals("exit") || move.equals("quit")) {
-            if (saved || gameLost || gameWon || !gameOn) {
+            if (saved || gameLost || gameWon || !gameOn || KEY_NAME == null) {
                 System.exit(0);
             }
             askingToSave = true;
             return "\nYou have not saved the progress. Do you want to save it before quitting? (yes/no)";
         }
         
+        // Check if the user wants to load a game from the S3 bucket
+        if (loading) {
+            try {
+                KEY_NAME = move;
+                g = resumeProgress();
+                loading = false;
+                gameOn = true;
+                saved = true;
+                playerName = g.getPlayer().getName();
+                enemyName = g.getEnemy().getName();
+                enemyAttacks = g.getEnemyAttacks();
+                return "\nGame loaded!\n" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "\nError during resuming the name! Please try another saving name or check the README.md file for instructions.";
+            }
+        }
+
         // Check if the user wants to configure the game
         if (configuring) {
             if (count == 0) {
+                if (move.equals("0")) {
+                    count++;
+                    return "Ok, i will not save the game.\n\nEnter the name for the player: ";
+                }
+                else if (move.equals("1")) {
+                    KEY_NAME = "game-state.json";
+                    count++;
+                    return "Ok, the name of this game is: " + KEY_NAME + "\n\nEnter the name for the player: ";
+                }
+                KEY_NAME = move + ".json";
+                count++;
+                return "Ok, the name of this game is: " + KEY_NAME + "\n\nEnter the name for the player: ";
+            }
+            if (count == 1) {
                 playerName = move;
                 count++;
                 return "Name set to " + playerName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
-            else if (count == 1) {
+            else if (count == 2) {
                 if (move.equals("1"))
                     playerGender = "male";
                 else if (move.equals("2"))
@@ -332,7 +408,7 @@ public class GameManager {
                 count++;
                 return "Gender set to " + playerGender + "\n\nEnter 'true' (1) if the enemy attacks the player, 'false' (0) otherwise.";
             }
-            else if (count == 2) {
+            else if (count == 3) {
                 if (move.equalsIgnoreCase("true") || move.equalsIgnoreCase("1") || move.equalsIgnoreCase("t"))
                     enemyAttacks = true;
                 else if (move.equalsIgnoreCase("false") || move.equalsIgnoreCase("0") || move.equalsIgnoreCase("f")){
@@ -349,7 +425,7 @@ public class GameManager {
                 count++;
                 return "\nEnter the name for the enemy (type 0 to use the default configuraton): ";
             }
-            else if (count == 3) {
+            else if (count == 4) {
                 if (move.equals("0")) {
                     count += 2;
                     return "Ok, your enemy is " + enemyName + "\n\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
@@ -358,7 +434,7 @@ public class GameManager {
                 count++;
                 return "Name set to " + enemyName +"!\n\nEnter the gender for the player:\n1.Male\n2.Female\n3.Neutral";
             }
-            else if (count == 4) {
+            else if (count == 5) {
                 if (move.equals("1"))
                     enemyGender = "m";
                 else if (move.equals("2"))
@@ -371,7 +447,7 @@ public class GameManager {
                 return "\nChoose the difficulty level:\n1.Easy\n2.Medium\n3.Hard";
             }
             
-            else if (count == 5) {
+            else if (count == 6) {
                 if (move.equals("1"))
                     movesBeforeEnemy = 5;
                 else if (move.equals("2"))
@@ -390,12 +466,17 @@ public class GameManager {
 
         // Check if the game is running
         else if (gameLost || gameWon)
-            return "Game over! You can now quit the game using the 'exit' or 'quit' command";
+            return "\nGame over! You can now quit the game using the 'exit' or 'quit' command";
 
         // Check if the game is not started
         else if (!gameOn) {
             if (move.equalsIgnoreCase("resume")) {
                 try {
+                    if (KEY_NAME == null) {
+                        loading = true;
+                        return "\nPlease insert the name of the file you want to resume (included the extension):\n" + listBucketFilesAsString();
+                    }
+                    
                     g = resumeProgress();
                     gameOn = true;
                     saved = true;
@@ -412,7 +493,10 @@ public class GameManager {
             {
                 configuring = true;
                 saved = false;
-                return "\nEnter the name for the player:";
+                if (KEY_NAME == null)
+                    return "\nIf you want to configure a name for this game, please enter a (valid) name for the save file (type 0 if you don't want to save the game, type 1 for a defualt name): ";
+                count = 1;
+                return "\nEnter a name for the player: ";
             }
             return "\nGame not started. Enter 'new game' to start a new game or 'resume' to resume a previous game.";
         }
@@ -421,6 +505,8 @@ public class GameManager {
         else {
             if (move.equalsIgnoreCase("save")) {
                 try {
+                    if (KEY_NAME == null)
+                        return "\n-------------------------- Input : " + move + " --------------------------\n\nThis game can't be saved!";
                     saveProgress(g);
                     saved = true;
                     return "\n-------------------------- Input : " + move + " --------------------------\n\nGame saved!";
