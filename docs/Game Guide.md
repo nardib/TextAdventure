@@ -102,7 +102,7 @@ It is also possible to reverse the moves made, and to save and load the status o
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-### Winn & Loss
+### Win & Loss
 
 Solve all riddles, use all objects, and complete the puzzles to unlock the exit door.
 Fill the central room with stars obtained from the nine rooms to unlock the exit.
