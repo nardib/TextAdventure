@@ -2,30 +2,30 @@
 
 ### Domain Model
 
-![Domain Model](docs/uml/DomainModel.png)
+![Domain Model](uml/DomainModel.png)
 
 ### Design Class Model
 
-![Design Class Model](docs/uml/DesignClassModel.png)
+![Design Class Model](uml/DesignClassModel.png)
 
 ### System Sequence Diagram
 
-![System Sequence Diagram](docs/uml/SystemSequenceDiagram.png)
+![System Sequence Diagram](uml/SystemSequenceDiagram.png)
 
 ### Internal Sequence Diagrams
 
 #### Game Configuration Sequence Diagram
 
-![Game Configuration Sequence Diagram](docs/uml/GameConfigurationInternalSequenceDiagram.png)
+![Game Configuration Sequence Diagram](uml/GameConfigurationInternalSequenceDiagram.png)
 
 #### Command Sequence Diagram
 
-![Command Sequence Diagram](docs/uml/CommandInternalSequenceDiagram.png)
+![Command Sequence Diagram](uml/CommandInternalSequenceDiagram.png)
 
 #### Undo Sequence Diagram
 
-![Undo Sequence Diagram](docs/uml/UndoInternalSequenceDiagram.png)
+![Undo Sequence Diagram](uml/UndoInternalSequenceDiagram.png)
 
 #### Save Sequence Diagram
 
-![Save Sequence Diagram](docs/uml/SaveInternalSequenceDiagram.png)
+![Save Sequence Diagram](uml/SaveInternalSequenceDiagram.png)
