@@ -89,7 +89,7 @@ We have tested the project with JDK 17 (and above), so we suggest using this ver
 java --version
 ```
 
-### Libraris Used
+### Libraries Used
 
 During the development of this game, we used the following libraries:
 
