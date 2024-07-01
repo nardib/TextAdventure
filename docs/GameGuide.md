@@ -1,24 +1,28 @@
 # Game Manual: Text Adventure Escape Room
 
-Welcome to the Text Adventure Escape Room! This game is a thrilling text-based adventure with an easy and clean graphical user interface (GUI), featuring a resizable screen and illustrative images to enhance your experience. Prepare to solve puzzles, outwit an enemy, and escape the room before time runs out. This manual will guide you through the gameplay, commands, and mechanics of the game.
+Welcome to the Text Adventure Escape Room! This game is a thrilling text-based adventure with an easy and clean graphical user interface (GUI), featuring a resizable screen and illustrative images to enhance your experience. Prepare to solve puzzles, outwit an enemy, and escape the room before they find you. This manual will guide you through the gameplay, commands, and mechanics of the game.
 
 ### Table of Contents:
+
 - Starting the Game
 - Game Interface
 - Gameplay Mechanics
 - Commands
 - Winning and Losing
 - Project
+- Execution Environments and Constraints
+- Libraries Used
 - Compile & Execute
 - Testing
-- Save & Load usage
+- Save & Load Usage
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 ### New Game: Start a fresh adventure
 
-Since the beginning, the game can be customized by allowing you to choose your character's and enemy name and the gender. To make the game challenging the user is free to select the difficulty level, choosing between **EASY**, **MEDIUM** or **HARD**. This will directly affect the behavior of the enemy, as later explaned. In addition you can also choose to play without the enemy, by tiping false in response to the third selection.
+Since the beginning, the game can be customized by allowing you to choose your character's and enemy's name and gender. To make the game challenging, the user is free to select the difficulty level, choosing between **EASY**, **MEDIUM**, or **HARD**. This will directly affect the behavior of the enemy, as explained later. Additionally, you can choose to play without the enemy by typing "false" in response to the third selection.
 
-Because of the possible length of a single match, Save and Resume actions are implemented through AWS S3 Bucket service. In order to make a correct use of the saving and resume function you need to set your own Bucket.
+Due to the potential length of a single match, Save and Resume actions are implemented through the AWS S3 Bucket service. To correctly utilize the saving and resume function, you need to set up your own Bucket.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -26,15 +30,11 @@ Because of the possible length of a single match, Save and Resume actions are im
 
 The game interface consists of several key elements.
 
-At first the user can see the main image box displaying one image at time and providing a great graphic experience to the user. 
-It will show at first the start screen image with the title of the game **ESCAPE ROOM**. After starting to play, the image box will be responsible for displaying the images of the wall you are looking at, and the win screen. Or the lose one.
+Firstly, the user can see the main image box displaying one image at a time, providing a great graphic experience. It will initially show the start screen image with the title of the game **ESCAPE ROOM**. After starting to play, the image box will display the images of the wall you are looking at, as well as the win screen or the lose screen.
 
-On the bottom side of the window there is a terminal-like text field, displaying the executed commands and the relative outputs. 
-Under it, a text field-area to write and execute the appropriete commands, required for interacting with the game. 
-Also, the user can use F1 to zoom the HUD out, F2 to zoom in or F11 to trigger fullscreen mode.
+On the bottom side of the window, there is a terminal-like text field that displays the executed commands and their respective outputs. Below it, there is a input field area where you can write and execute the appropriate commands required for interacting with the game. Additionally, the user can use F1 to zoom the HUD out, F2 to zoom in, or F11 to trigger fullscreen mode.
 
-Moving to the far right two elements are present. On the top there is a static map showing the formation of the map, the disposition of the rooms and the passages connecting one room to each other. Each passage is open, but not all walls have doors!
-Under the map, anther text area is responsible for displaying the collected notes, items containing riddles or clues and that do not occupy inventory space.
+Moving to the far right, there are two elements. At the top, there is a static map showing the layout of the rooms and the passages connecting them. Each passage is open, but not all walls have doors! Below the map, there is another text area that displays the collected items and notes. The notes do not occupy inventory space.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -42,27 +42,27 @@ Under the map, anther text area is responsible for displaying the collected note
 
 ##### Map
 
-The game map consists of 9 rooms, each with a variable number of doors (1 to 4), connecting to other rooms through door always enabled.
+The game map consists of 9 rooms, each with a variable number of doors (1 to 4), connecting to other rooms through doors that are always enabled.
 You start in the central room, which is also the final room where the game ends after solving all puzzles and challenges.
-Each room contains several items to interact with. Some are pickable, others are just usable as you are facing the same wall they are.
-Each pickable item has a specific weight, and because of the limited carrying capacity of the player, the user need to carefully manage the inventory space.
-In order to free some space, the user can only use the item in the inventory, so that it disappears.
-The maximum weight capacity in 10 Kg, and even though most of the objects have a average weight of only 1 Kg, some items, like bandages, will consume 2 Kg of capacity.
+Each room contains several items to interact with. Some are pickable, while others are only usable when you are facing the same wall they are on.
+Each pickable item has a specific weight, and due to the limited carrying capacity of the player, you need to carefully manage your inventory space.
+To free up space, you can only use items in your inventory, causing them to disappear.
+The maximum weight capacity is 10 Kg, and although most objects have an average weight of only 1 Kg, some items, like bandages, will consume 2 Kg of capacity.
 
 ##### Player Health and Progress
 
 The player starts with 5 health points, displayed as full red hearts in the top-left corner.
-The player's progress towards the final puzzle is shown as stars in the top center. The final puzzle involves collecting all the 10 stars from each of the nine rooms and to place them in the relative holes in the central room.
-If the user finds himself in the same room with the enemy, every other command, not involving the change of the room, will allow the enemy to perform an attack, with the consequence of a 1 health point decrease. Once the player finds himself with 0 hearts (no longer red), the game is over with loss.
+The player's progress towards the final puzzle is shown as stars in the top center. The final puzzle involves collecting all 10 stars from each of the nine rooms and placing them in the corresponding holes in the central room.
+If the player finds themselves in the same room as the enemy, any command that doesn't involve changing rooms will allow the enemy to perform an attack, resulting in a decrease of 1 health point. Once the player's hearts reach 0 (no longer red), the game is over with a loss.
 
 ##### Enemy Behavior
 
 The enemy is a non-player character (NPC) that randomly moves through the rooms, seeking to inflict damage on the player.
 Difficulty settings affect enemy movement:
 
-`Easy`: Enemy moves every 5 player actions.
-`Medium`: Enemy moves every 3 player actions.
-`Hard`: Enemy moves with each player action.
+- `Easy`: The enemy moves every 5 player actions.
+- `Medium`: The enemy moves every 3 player actions.
+- `Hard`: The enemy moves with each player action.
 
 If the player and enemy are in the same room, the enemy inflicts 1 damage point per hit.
 The game ends in a loss if the player's health drops to zero.
@@ -71,40 +71,39 @@ The game ends in a loss if the player's health drops to zero.
 
 ### Commands
 
-**`Movement:`**
+**Movement:**
+The primary commands are used to manage movements. To win the game, the user must move along the various rooms and examine all the walls; to do that, it is necessary to use the following commands:
 
-The prime commands are those use to manage movments. In order to win the game, the user will be asked to move along the various rooms, examining all the walls, and to do that the following commands must be used.
+- `north` or `n`: Face the north wall.
+- `south` or `s`: Face the south wall.
+- `east` or `e`: Face the east wall.
+- `west` or `w`: Face the west wall.
 
-- north or n: Face the north wall.
-- south or s: Face the south wall.
-- east or e: Face the east wall.
-- west or w: Face the west wall.
+- `cross DIRECTION`: Move to the room in the specified direction (north, south, east, or west). If no direction is specified, move in the currently faced direction.
 
-- cross DIRECTION: Move to the room in the specified direction (north, south, east, or west). If no direction is specified, move in the currently faced direction.
+**Interaction:**
 
-**`Interaction:`**
+The user needs to use items and interact with others using the following commands:
 
-The user will need to use some items and to interact with others though the following commans.
+- `look`: Inspect the wall for items.
+- `inventory`: Display the list of items in your inventory.
+- `take ITEM`: Pick up a specific item in the room (if it is pickable).
+- `use ITEM`: Use an item from your inventory or the room. The item will disappear after use.
 
-- look: Inspect the wall for items.
-- inventory: Display the list of items in your inventory.
-- take ITEM: Pick up a specific item in the room (if it is pickable).
-- use ITEM: Use an item from your inventory or the room. The item will disappear after use.
+- `status`: Show player health, inventory, and puzzle completion status.
+- `help`: Display a short description of commands.
 
-- status: Show player health, inventory, and puzzle completion status.
-- help: Display a short description of commands.
+It is also possible to reverse moves made and save and load the status of the current match:
 
-It is also possible to reverse the moves made, and to save and load the status of the current match.
-
-- undo or back: Revert to the last move.
-- save: Save the current game state.
-- quit or exit: Close the game window. You may be prompted to save your game.
+- `undo` or `back`: Revert to the last move.
+- `save`: Save the current game state.
+- `quit` or `exit`: Close the game window. You may be prompted to save your game.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Win & Loss
 
-Solve all riddles, use all objects, and complete the puzzles to unlock the exit door.
+Solve all riddles, use all items, and complete the puzzles to unlock the exit door.
 Fill the central room with stars obtained from the nine rooms to unlock the exit.
 
 If the player's health drops to zero due to enemy attacks, the game ends in a loss.
@@ -112,7 +111,7 @@ Good luck, and enjoy your adventure! May you solve all puzzles and escape before
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-### Project
+## Project
 
 | Name | Version | Description |
 | --- | --- | --- |
@@ -121,6 +120,30 @@ Good luck, and enjoy your adventure! May you solve all puzzles and escape before
 | Jackson | 2.17.1 | Framework for converting objects into JSON stringifying them, and to convert back in the original shape through get and set methods using the ObjectMapper class |
 | aws-sdk-for-java | 2.26.7 | Framework from the AWS SDK for accessing AWS Services Including S3 Bucket |
 | Logback Classic Module | 1.5.6 | Used for monitoring the use of the AWS services and possibly intercept |
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+### Execution Environments and Constraints
+
+The entire project was developed using Java, so it can be executed on any machine with a correctly installed JVM (either Windows, Linux or MacOS).
+
+We have tested the project with JDK 17 (and above), so we suggest using this version, otherwise we don't guarantee that the game will work properly. To check the version of Java installed on your machine use this command in your OS's terminal:
+
+```bash
+java --version
+```
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+### Libraries Used
+
+During the development of this game, we used the following libraries:
+
+- **JUnit** as a testing framework, to ensure that all the main functionalities of the game work properly with specific tests for the main classes.
+
+- **Jackson** to serialize the game state in a string format and to deserialize a string back into a game object. This was used to implement a save and load functionality, allowing the user to continue the game later by saving his current progress.
+
+- **Amazon SDK for Java** to upload and download game states in an AWS S3 Bucket, enabling the user to save multiple states of more games online with his personal AWS credentials.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
