@@ -127,7 +127,7 @@ public class GameFrame {
 
         
         // Resize the minimap
-        miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap1.png"));
+        miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap.png"));
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
         
         // Add the minimap
