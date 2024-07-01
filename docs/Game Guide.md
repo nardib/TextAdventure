@@ -16,9 +16,9 @@ Welcome to the Text Adventure Escape Room! This game is a thrilling text-based a
 
 ### New Game: Start a fresh adventure
 
-Since the beginning, the game can be customized by allowing you to choose your character's and enemy name and the gender. To make the game challenging the user is free to select the difficulty level, choosing between **EASY**, **MEDIUM** or **HARD**. This will directly affect the beaviour of the enemy, as later explaned. In addition you can also choose to play without the enemy, by tiping false in response to the third selection.
+Since the beginning, the game can be customized by allowing you to choose your character's and enemy name and the gender. To make the game challenging the user is free to select the difficulty level, choosing between **EASY**, **MEDIUM** or **HARD**. This will directly affect the behavior of the enemy, as later explaned. In addition you can also choose to play without the enemy, by tiping false in response to the third selection.
 
-Because of the possible lenght of a single match, Save and Resume actions are implemented through AWS S3 Bucket service. In orther to make a correct use of the saving and resume function you need to set your own Bucket.
+Because of the possible length of a single match, Save and Resume actions are implemented through AWS S3 Bucket service. In order to make a correct use of the saving and resume function you need to set your own Bucket.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ Because of the possible lenght of a single match, Save and Resume actions are im
 The game interface consists of several key elements.
 
 At first the user can see the main image box displaying one image at time and providing a great graphic experience to the user. 
-It will show at first the start screen image with the title of the game **ESCAPE ROOM**. After starting to play, the image box will be resplonsable for displaying the images of the wall you are looking at, and the win screen. Or the lose one.
+It will show at first the start screen image with the title of the game **ESCAPE ROOM**. After starting to play, the image box will be responsible for displaying the images of the wall you are looking at, and the win screen. Or the lose one.
 
 On the bottom side of the window there is a terminal-like text field, displaying the executed commands and the relative outputs. 
-Under it, a text field-area to write and execute the appropriete commands, required for interracting with the game. 
-Also, the user can use F1 to zoom the HUD out, F2 to zoom in or F11 to trigger fullscreed mode.
+Under it, a text field-area to write and execute the appropriete commands, required for interacting with the game. 
+Also, the user can use F1 to zoom the HUD out, F2 to zoom in or F11 to trigger fullscreen mode.
 
-Moving to the far right two elements are present. On the top there is a static map showing the formation of the map, the disposal of the rooms and the passages connecting one room to each other. Each passage is open, but not all walls have doors!
-Under the map, anther text area is responsible for diplaying the collected notes, items containing riddles or clues and that do not occupay inventory space.
+Moving to the far right two elements are present. On the top there is a static map showing the formation of the map, the disposition of the rooms and the passages connecting one room to each other. Each passage is open, but not all walls have doors!
+Under the map, anther text area is responsible for displaying the collected notes, items containing riddles or clues and that do not occupy inventory space.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,10 +44,10 @@ Under the map, anther text area is responsible for diplaying the collected notes
 
 The game map consists of 9 rooms, each with a variable number of doors (1 to 4), connecting to other rooms through door always enabled.
 You start in the central room, which is also the final room where the game ends after solving all puzzles and challenges.
-Each room contains several items to interract with. Some are pickable, others are just usable as you are facing the same wall they are.
-Each pickable item has a specific weight, and because of the limited carrying capabilities of the player, the user need to carfully manage the inventory space.
+Each room contains several items to interact with. Some are pickable, others are just usable as you are facing the same wall they are.
+Each pickable item has a specific weight, and because of the limited carrying capacity of the player, the user need to carefully manage the inventory space.
 In order to free some space, the user can only use the item in the inventory, so that it disappears.
-The maximum weight capability in 10 Kg, and even though most of the objects have a avarage weight of only 1 Kg, some items, like bandages, will consume 2 Kg of capability.
+The maximum weight capacity in 10 Kg, and even though most of the objects have a average weight of only 1 Kg, some items, like bandages, will consume 2 Kg of capacity.
 
 ##### Player Health and Progress
 
@@ -73,7 +73,7 @@ The game ends in a loss if the player's health drops to zero.
 
 `Movement:`
 
-The prime commands are those use to manage movments. In orther to win the game, the user will be asked to move along the various rooms, examinating all the walls, and to do that the following commands must be used.
+The prime commands are those use to manage movments. In order to win the game, the user will be asked to move along the various rooms, examining all the walls, and to do that the following commands must be used.
 
 - north or n: Face the north wall.
 - south or s: Face the south wall.
@@ -84,7 +84,7 @@ The prime commands are those use to manage movments. In orther to win the game, 
 
 `Interaction:`
 
-The user will need to use some items and to interract with others though the following commans.
+The user will need to use some items and to interact with others though the following commans.
 
 - look: Inspect the wall for items.
 - inventory: Display the list of items in your inventory.
