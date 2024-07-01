@@ -101,7 +101,6 @@
 
     class GameFrame {
         -game : GameManager
-        -wallcount : int
         -images : Image[]
         -isFullscreen : boolean
         -gd : GraphicsDevice
@@ -115,7 +114,6 @@
         -inputField : JTextField
         -playerPositionLabel : JLabel
         -playerHealthLabel : JLabel
-        -statusPanel : JPanel
         -filledStarsLabel : JLabel
         -wallConfigured : boolean
         -dimension : int
