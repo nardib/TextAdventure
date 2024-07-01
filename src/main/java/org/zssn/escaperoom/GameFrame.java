@@ -1,11 +1,9 @@
 package org.zssn.escaperoom;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.PrintStream;
 
 /**
  * GameFrame class. This class represents the frame of the game. It contains the main window of the game, the terminal, the input field.
@@ -61,10 +59,6 @@ public class GameFrame {
      */
     
     private JTextField inputField;
-    /**
-     * JPanel object for the game information
-     */
-    private JPanel statusPanel;
     /**
      * JLabel object for the position of the player
      */
@@ -125,7 +119,6 @@ public class GameFrame {
         graphic.setIcon(new ImageIcon(getClass().getResource("/DefaultScreen.jpg")));
         imagePanel.add(graphic, BorderLayout.CENTER);
 
-        
         // Resize the minimap
         miniMapIcon = new ImageIcon(getClass().getResource("/MiniMap.png"));
         miniMapImage = miniMapIcon.getImage().getScaledInstance(dimension, dimension, Image.SCALE_SMOOTH);
@@ -226,8 +219,8 @@ public class GameFrame {
                 }
             }
         });
+        // Add the downPanel on the frame
         downPanel.add(inputField, BorderLayout.SOUTH);
-
         center.add(downPanel, BorderLayout.PAGE_END);
         frame.add(center, BorderLayout.CENTER);
 
@@ -276,7 +269,6 @@ public class GameFrame {
         topPanel.add(leftPanel, BorderLayout.WEST);
         topPanel.add(centerPanel, BorderLayout.CENTER);
         topPanel.add(rightPanel, BorderLayout.EAST);
-
         frame.add(topPanel, BorderLayout.PAGE_START);
 
         // Listener for window resizing
