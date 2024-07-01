@@ -368,7 +368,7 @@ public class GameManager {
                 playerName = g.getPlayer().getName();
                 enemyName = g.getEnemy().getName();
                 enemyAttacks = g.getEnemyAttacks();
-                return "\nGame loaded!\n" + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
+                return "Game loaded!\n\nHere's a little recap: " + g.nextMove("status").substring(("\n-------------------------- Input : status --------------------------\n").length());
             } catch (Exception e) {
                 e.printStackTrace();
                 return "\nError during resuming the name! Please try another saving name or check the README.md file for instructions.";
@@ -460,6 +460,7 @@ public class GameManager {
                 configuring = false;
                 count = 0;
                 gameOn = true;
+                return "Game configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!";
             }
             return "Error during configuration!";
         }
@@ -525,7 +526,7 @@ public class GameManager {
             else if (g.checkLost()) {
                 g = null;
                 gameLost = true;
-                return "\n-------------------------- Input : " + move + " --------------------------\n\n" + playerName + "looks at " + enemyName + " with a terrified look in his eyes. " + playerName + " knows that any hopes of survival end here... " + enemyName + " starts to relentlessly stab " + playerName + "..." + "\nGame Over! " + enemyName + " killed " + playerName + "!\nYou can now quit the game using the 'exit' or 'quit' command";
+                return "\n-------------------------- Input : " + move + " --------------------------\n\n" + playerName + " looks at " + enemyName + " with a terrified look in his eyes. " + playerName + " knows that any hopes of survival end here... " + enemyName + " starts to relentlessly stab " + playerName + "..." + "\nGame Over! " + enemyName + " killed " + playerName + "!\nYou can now quit the game using the 'exit' or 'quit' command";
             }
             return result;
         }

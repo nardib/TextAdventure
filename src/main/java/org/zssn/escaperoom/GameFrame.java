@@ -186,10 +186,11 @@ public class GameFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String mex = inputField.getText();
-                    writeToTerminal(game.nextMove(mex));
-                    if (game.getGame() != null && !wallConfigured) { 
+                    String msg = game.nextMove(mex);
+                    writeToTerminal(msg);
+                    if (game.getGame() != null && !wallConfigured) {
                         clearTerminal();
-                        writeToTerminal("Game configured! Enter 'help' to see the list of commands.\nTo win the game you have to find all the stars in the map and fill the holes in the central room with them.\nGood luck!");
+                        writeToTerminal(msg);
                         // Load the wall images
                         for (int i = 0; i < 36; i++) {
                             Images[i] = (Image) Room.Walls[i].returnCombinedImage();

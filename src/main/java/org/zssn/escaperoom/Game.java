@@ -385,7 +385,7 @@ public class Game {
                             return itemContainer.getUsingMessage();
                         else {
                             for (int j = 0; j < itemContainer.getItemsLength(); j++) {
-                                if (!enemyAttacks && items[i] instanceof HealingItem)
+                                if (!enemyAttacks && itemContainer.getItem(j) instanceof HealingItem)
                                     return "The enemy doesn't attack, " + player.getName() + " doesn't need to use the " + items[i].getName().toLowerCase();
                                 if (itemContainer.getItem(j).getWeight() + player.getInventoryWeight() > Player.MAX_WEIGHT)
                                     return player.getName() + " can't take the item, it's too heavy";
