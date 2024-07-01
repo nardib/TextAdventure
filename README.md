@@ -2,14 +2,14 @@
 
 ## Project for "Elementi di Ingegneria del Software"
 
-- [lorenzo.nardin@studenti.unipd.it](mailto:lorenzo.nardin@studenti.unipd.it)
-- [elia.sandrin@studenti.unipd.it](mailto:elia.sandrin@studenti.unipd.it)
-- [marco.spolverato.1@studenti.unipd.it](mailto:marco.spolverato.1@studenti.unipd.it)
-- [alessio.zanco@studenti.unipd.it](mailto:alessio.zanco@studenti.unipd.it)
+- [lorenzo.nardin@studenti.unipd.it](mailto:lorenzo.nardin@studenti.unipd.it) : matr. 2066609
+- [elia.sandrin@studenti.unipd.it](mailto:elia.sandrin@studenti.unipd.it) : matr. 2041856
+- [marco.spolverato.1@studenti.unipd.it](mailto:marco.spolverato.1@studenti.unipd.it) : matr. 2032069
+- [alessio.zanco@studenti.unipd.it](mailto:alessio.zanco@studenti.unipd.it) : matr. 2066596
 
 ## Game Manual
 
-The game is a text adventure with a easy and clean graphic user interface (GUI) provided with a screen, resizable, showing images to improve the user experience. Pressing F1 zooms the screen out, F2 zooms in and F11 selects full screen mode. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the image shown in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, locks, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
+The game is a text adventure with a easy and clean graphic user interface (GUI) provided with a resizable screen, showing images to improve the user experience. Pressing F1 zooms the HUD out, F2 zooms the HUD in and F11 triggers fullscreen mode. The player is in an escape room with an enemy, and he has to get out before being killed. You can insert the commands in a text field, and you can see the results of the action made in a text area, but also in the GUI, which illustrate the wall you are looking at and the items you can interact with (e.g. keys, chests, bandages, etc.). The enemy makes a move every # moves the player makes. The moves include:
 
 - changing the wall you are facing
 - changing room (based on the doors placed in the room)
@@ -18,54 +18,56 @@ The game is a text adventure with a easy and clean graphic user interface (GUI) 
 
 ### **Map, Rooms & Items**
 
-The game is played in a 9 rooms map of fixed design and each room has a variable number of objects (up to 8 items) and doors (from 1 to 4), always enabled, connecting to other rooms.
+The game is played in a 9 rooms map of fixed design and each room has a variable number of objects and doors (from 1 to 4), always enabled, connecting to other rooms.
 The main room from whitch the game begins is also the final room where the game ends after having solved all the riddles and quiz consisting of various challenges, from finding the right item to using logic and memory.
 
 Each item has its own weight (expressed in Kg) and the player can carry a maximum amount of weight (10 Kg).
-Almost all the items weight 1 Kg, but some others, like the bandages have a heavier weight.
-Also, once used, the item disappears, and by the time there's no way of throwing the items, in order to free some space the player has to use them in the storage, forcing the player to carfully manage the inventory.
+Almost all the items weigh 1 Kg, but some others, like bandages, are heavier.
+Also, once used, the item disappears, and since there's no way of throwing the items away, in order to free some space the player has to use them in the storage, forcing the player to carefully manage the inventory.
 
 ### **Player and commands**
 
 At the beginning of the game, the user can choose whether to play a new game or to import a saved match. In case the player chooses to play a new match he will be asked to choose a name, to select the gender and to choose the difficulty level of the match (easy, medium or hard).
-In addition, the user can decide if the enemy will be effectively able to inflict damage or to be a passive character.
-In orter to interact with the game, the player as to use the command line implemented in the GUI executing specific commands:
+In addition, the user can decide if the enemy will be effectively able to inflict damage or not to be present at all.
+In order to interact with the game, the player has to use the input field implemented in the GUI executing specific commands:
 
 - `north` or `n` : command used to change the facing direction to north wall of the room
 - `south` or `s` : command used to change the facing direction to south wall of the room
 - `east` or `e` : command used to change the facing direction to east wall of the room
 - `west` or `w` : command used to change the facing direction to west wall of the room
 
-- `croos DIRECTION` : command used to change the room so that you cross the door to go to the relative north room. Only available if door is present in the direction wall. Instead of DIRECTION the player will write the direction north, south, east or west
+- `cross DIRECTION` : command used to change the room so that you cross the door to go to the room in the specified direction. Only available if door is present in the faced wall. Instead of DIRECTION the player will write the direction north, south, east or west, or if the parameter is omitted it will cross in the faced direction (if possibile)
 
 - `look` : command used to inspect the wall, looking for items
 
-- `inventory` _ command used to display a list of the item in the inventory
+- `inventory` : command used to display a list of the items in the inventory
 
-- `take ITEM` : command used to interract with a specific item in the room. After keeping the item, it will appear in your inventory freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage
+- `take ITEM` : command used to interact with a specific item in the room. After keeping the item, it will appear in your inventory occupying an amount of carriable weight equivalent to the weight of the taken item. Only executable on pickable items
 
-- `use ITEM` : command used to interract with a specific item in your inventory. After using the item, it will disapear freeing an ammount of carriable weight equivalent to the weight of the item just used. Only executable on item existing in the player storage
+- `use ITEM` : command used to interact with a specific item in your inventory or in the room. After using the item, it will disappear freeing an amount of carriable weight equivalent to the weight of the item just used (if the item was in the inventory)
+
+- `status` : returns a description of the state of the player: this includes player health, inventory and the completion status of the final puzzle
 
 - `help` : command used to get a short description of commands
 
-- `undo`/`back` : command used for backing the status to the last move
+- `undo`/`back` : command used for reverting the status to the last move
 
 - `save` : used to save the status of the game
 
-- `quit`/`exit` : used to close the game window
+- `quit`/`exit` : used to close the game window; may prompt a save option
 
 ### Enemy
 
-The enemy is a NPC randomly moving in the rooms of the maps, seeking for the player, with the scope to kill him by inflicting damage.
-According to the difficulty choosen at the start of the game the enemy will perform 1 move every 5 actions by the user in **EASY** mode, 1 move every 3 actions in **MEDIUM** mode and 1 move every user action in **DIFFICULT** mode.
-
+The enemy is a NPC randomly moving in the rooms of the map, seeking the player, with the purpose of killing him by inflicting damage.
+According to the difficulty chosen at the start of the game the enemy will perform 1 move every 5 actions of the user in **EASY** mode, 1 move every 3 actions in **MEDIUM** mode and 1 move for each user action in **HARD** mode.
 
 ### Purpose of the game
 
-As in the real-life escape-room the purpose of this game is to solve all the riddles, use all the objects and complete the puzzles to unlock the exit door and gain freedom. The player must also survive to the enemy looking who will randomly move each time the player makes a move.
-When both the player and the enemy are in the same room, the enemy will start inflicting some damage to the player, who's provided with 5 hearts of health points. Each hit provides 1 damage point. Health points are displayed on the top-left corner in the shape of 5 hearts while in the top center there are 10 stars showing the progress made.
-If the player's health drops to zero point, the game ends with loss.
-The player can also find and use some special healing items like bandages and painkillers to restore some health points.
+As in a real-life escape room the purpose of this game is to solve all the riddles, use all the objects and complete the puzzles to unlock the exit door and gain freedom. The player must also survive the enemy looking for them who will randomly move each time the player makes # moves.
+When both the player and the enemy are in the same room, the enemy will start inflicting some damage to the player, who's provided with 5 health points. Each hit deals 1 damage point. Health points are displayed on the top-left corner in the shape of 5 hearts while in the top center there are 10 stars showing the progress made towards the final puzzle.
+The final puzzle consists in filling the central room with stars, which are obtained throughout  the nine rooms, to unlock the exit.
+If the player's health drops to zero, the game ends with loss.
+The player can also find and use some special healing items like bandages and pills to restore some health points.
 
 ## Project
 
@@ -81,7 +83,7 @@ The player can also find and use some special healing items like bandages and pa
 
 The entire project was developed using Java, so it can be executed on any machine with a correctly installed JVM (either Windows, Linux or MacOS).
 
-We have tested the project with JDK 17 (and above), so we suggest using this version, otherwise we don't guarantee that the game will work properly. To check the version of version of Java installed on your machine use this command in your OS terminal:
+We have tested the project with JDK 17 (and above), so we suggest using this version, otherwise we don't guarantee that the game will work properly. To check the version of Java installed on your machine use this command in your OS's terminal:
 
 ```bash
 java --version
@@ -133,7 +135,7 @@ Now you can play the game with the `text-adventure-x.x.x.jar` file in the `bin` 
 java -jar bin/text.adventure-x.x.x.jar
 ```
 
-Remember to change `x-x-x` with the current version of the game
+Remember to change `x-x-x` with the current version of the game.
 
 **NOTE**: the execution of all the Maven commands requires a `pom.xml` file, which is in the root directory, so make sure to execute the commands that starts with `mvn` there.
 
@@ -184,21 +186,6 @@ mvn site
 This command also generates the javadoc documentation in `target/site/apidocs`
 
 You can then find the report in `target/site/surefire-report.html`.
-
-#### Additional Notes
-
-If you want to delete all the file generted by Maven in the `target` folder you can use:
-
-```bash
-mvn clean
-```
-
-With Maven you can also insert more aguments after the `mvn` keyword, e.g.:
-
-```bash
-mvn clean compile package
-mvn compile test exec:java
-```
 
 ### Save and Load Usage
 
@@ -367,7 +354,7 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 | Pre-Condition |  User has started the game with "new game" command. |
 | Post-Condition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
 | Test Scripts | **Test a configuration and check if the name and pronoun are set correctly and displayed during the game:** <br> + Use "new game" command in the main menu <br> + Compile the required fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
-| Test Case Execution Report | - Test a configuration and check if the name and pronoun are set correctly and displayed during the game: ✅ Passed  |
+| Test Case Execution Report | - Test a configuration and check if the name and pronoun are set correctly and displayed during the game: ✅ Passed |
 
 ### Commands
 
