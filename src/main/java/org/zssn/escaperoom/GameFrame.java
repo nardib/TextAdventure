@@ -314,11 +314,6 @@ public class GameFrame {
             }
         });
 
-        // Reindirizza System.out e System.err alla JTextPane
-        //PrintStream printStream = new PrintStream(new CustomOutputStream(terminal));
-        //System.setOut(printStream);
-        //System.setErr(printStream);
-
         frame.setVisible(true);
         toggleFullscreen();
     }
