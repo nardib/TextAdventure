@@ -42,7 +42,7 @@ public class Player extends Character{
     /**
      * Max number of notes in the map
      */
-    private final static int MAX_NOTES = 10;
+    public final static int MAX_NOTES = 10;
 
     /**
      * The direction the player is facing

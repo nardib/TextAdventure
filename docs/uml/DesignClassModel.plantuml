@@ -51,6 +51,7 @@
         -isGameOn : boolean
         -count : int
         -filledStarHoles : int
+        -starHols : boolean[]
 
         +GameMemento()
         +getPlayer()
@@ -59,6 +60,7 @@
         +getisGameOn()
         +getCount()
         +getFilledStarHoles()
+        +getStarHoles()
     }
 
     class GameCaretaker{
@@ -98,20 +100,35 @@
     }
 
     class GameFrame {
-        -game : Game
+        -game : GameManager
         -wallcount : int
         -images : Image[]
         -isFullscreen : boolean
-        - gd : GraphicsDevice
+        -gd : GraphicsDevice
         -frame : JFrame
         -terminal : JTextPane
-        inputField : JTextField
-        buttonPanel : JPanel
-        gameStatusLabel : JLabel
-        playerHealthLabel : JLabel
+        -inventoryText : JTextArea
+        -miniMapIcon : ImageIcon
+        -minimapImage : Image
+        -miniMap : JLabel
+        -terminalScrollPane : JScrollPane
+        -inputField : JTextField
+        -playerPositionLabel : JLabel
+        -playerHealthLabel : JLabel
+        -statusPanel : JPanel
+        -filledStarsLabel : JLabel
+        -wallConfigured : boolean
+        -dimension : int
+        -height : int
+
         +GameFrame()
         -updatePlayerHealthLabel()
+        -updateStarLabel()
+        -updatePlayerPositionLabel()
+        -updateInventoryText()
         -toggleFullscreen()
+        -zoom()
+        -unzoom()
         -writeToTerminal()
         -clearTerminal()
     }
@@ -130,7 +147,6 @@
         
         +Game()
         +nextMove()
-        +isGameOver()
         +isGameOn()
         +setGameOn()
         +getPlayer()
@@ -155,11 +171,12 @@
         +checkWin()
         +checkLost()
         +returnItemsInWall()
-        -saveCurrentState()
+        +saveCurrentState()
         -playerTurn()
         -enemyTurn()
         -capitalizeFirstLetter()
         -printLook()
+        -printStatus()
     }
 
     class Main {
@@ -168,25 +185,18 @@
 
     class Item{
         #name : String
-        #icon : String
         #weight : int
         #pickable : boolean
-        #currentRoom : int
         #usingMessage : String
 
         +Item()
-        +getIcon()
         +getWeight()
         +isPickable()
-        +getCurrentRoom()
         +getName()
         +getUsingMessage()
-        +setCurrentRoom()
         +setName()
         +setUsingMessage()
-        +setIcon()
         +setWeight()
-        +setCurrentRoom()
         +setPickable()
         +clone()
         +equals()
@@ -238,13 +248,6 @@
         +equals()
     }
 
-    class CustomOutputStream{
-        -textPane : JTextPane
-        
-        +CustomOutputStream()
-        +write()
-    }
-
     class HidingItem{
         +HidingItem()
         +clone()
@@ -252,7 +255,7 @@
     }
 
     class HealingItem{
-        +healingPoints : int
+        -healingPoints : int
 
         +HealingItem()
         +clone()
@@ -278,13 +281,12 @@
     }
 
     class Map {
-        -DoorWall : Wall[]
-        -PlainWall : Wall[]
         -rooms : Room[]
 
         +Map()
         +getRoom()
         +clone()
+        +equals()
         +getWall()
         +setWall()
         +getRooms()
@@ -346,16 +348,13 @@
     {
         -wall : BufferedImage
         -hasDoor : boolean
-        -itemsImages : HashMap
         -combined : BufferedImage
         -items : Item[]
-        -lastItem : int
+        -getItemsLength : int
         
         +Wall()
-        +addItemImages()
-        +hasDoor()
-        +removeItemImage()
         +returnCombinedImage()
+        +hasDoor()
         +setDoor()
         +getItem()
         +getItemsLength()
@@ -367,7 +366,6 @@
         +clone()
         +equals()
         -deepCopy()
-        -drawItems()
     }
 
     class Star {
@@ -400,6 +398,7 @@
         -REGION : Region
         -g : Game   
         -configuring : boolean
+        -loading : boolean 
         -count : int
         -playerName : String
         -playerGender : String
@@ -420,6 +419,7 @@
         +deserialize()
         +upload()
         +download()
+        +listBucketFilesAsString()
         +getGame()
         +nextMove()
         +isGameWon()
@@ -454,6 +454,5 @@
     GameManager "1" --o "1" GameFrame : creates
     GameManager "1" o-- "1" Game : manages
     GameFrame "1" <|-- "1" Main : creates
-    CustomOutputStream --* GameFrame
 
 @enduml

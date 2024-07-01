@@ -10,9 +10,12 @@ participant Player
 participant Enemy
 
 activate GameFrame
+GameFrame --> User : Asks if the player wants to save the game
+User -> GameFrame : provides a name for the game to be saved or not
+activate GameManager
+GameFrame -> GameManager : nextMove(<name>)
 GameFrame --> User: Asks for a name and a gender for the player
 User -> GameFrame : provides the asked parameters
-activate GameManager
 GameFrame -> GameManager : nextMove(<name>)
 GameFrame -> GameManager : nextMove(<gender>)
 

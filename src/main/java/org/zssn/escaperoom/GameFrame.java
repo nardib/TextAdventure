@@ -36,24 +36,39 @@ public class GameFrame {
      * JTextPane object for the terminal
      */
     private JTextPane terminal;
+    /**
+     * JTextArea object for the inventory
+     */
     private JTextArea inventoryText;
+    /**
+     * ImageIcon object for the minimap
+     */
     private ImageIcon miniMapIcon;
+    /**
+     * Image object for the minimap
+     */
     private Image miniMapImage;
+    /**
+     * JLabel object for the minimap
+     */
     private JLabel miniMap;
+    /**
+     * JScrollPane object for the terminal
+     */
     private JScrollPane terminalScrollPane;
     /**
      * JTextField object for the input field
      */
     
-    JTextField inputField;
+    private JTextField inputField;
     /**
      * JPanel object for the game information
      */
-    JPanel statusPanel;
+    private JPanel statusPanel;
     /**
      * JLabel object for the position of the player
      */
-    JLabel playerPositionLabel;
+    private JLabel playerPositionLabel;
     /**
      * JLabel object for the player health
      */

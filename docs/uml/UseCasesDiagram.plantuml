@@ -3,7 +3,7 @@
 title Use Cases Diagram
 
 (Start: starts the game) as (start)
-(Game Configuration: user select the name and the gender of the player, the enemy and other settings) as (config)
+(Game Configuration: user select the name and the gender for the player, the enemy and other settings) as (config)
 (Command: user intetract with the game) as (command)
 (Win: user wins the game completing the final puzzle) as (win)
 (Undo: revert the last move) as (undo)
