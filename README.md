@@ -231,60 +231,21 @@ If you leave the `file-name.json` field void, the game will automatically ask du
 
 #### Memento
 
-The Memento design pattern is a behavioral design pattern that is commonly used to implement the "undo" functionality in applications. In the context of the Game class, the Memento pattern is utilized to save and restore the state of the game.
-
-Within the Game class, there are two inner classes: GameMemento and GameCaretaker. The GameMemento class is responsible for capturing a snapshot of the game's state at a specific point in time. It stores the necessary information to restore the game to that particular state.
-
-On the other hand, the GameCaretaker class is responsible for managing multiple GameMemento objects. It keeps track of all the snapshots taken throughout the game and provides a way to retrieve the most recent snapshot when needed.
-
-The Game class itself acts as the originator in this pattern. It generates the GameMemento objects when necessary, allowing the game state to be saved. It also provides methods to restore the game state by utilizing the information stored in the GameMemento objects.
-
-By implementing the Memento design pattern, the Game class enables the "undo" functionality, allowing players to revert the game state to a previous point in time. This can be useful in situations where players make mistakes or want to explore different paths within the game.
+The Memento design pattern is used in the Game class to implement the "undo" functionality. It consists of two inner classes: GameMemento and GameCaretaker. GameMemento captures snapshots of the game's state, while GameCaretaker manages these snapshots. The Game class acts as the originator, generating and restoring game states using the stored information. This pattern allows players to revert to previous game states, enabling them to correct mistakes or explore different paths.
 
 ### GRASP
 
-#### Information Expert
-
-The Game class, following the Information Expert pattern, is responsible for managing the information and interactions between the Player, Enemy, and Map objects in the game. It acts as a central hub, coordinating the actions and behaviors of these entities.
-
-As an expert in game management, the Game class keeps track of the current state of the game, including the player's location, the enemy's movements, and the layout of the map. It ensures that the player and enemy are in the correct rooms and handles the logic for moving between rooms.
-
-Additionally, the Game class, with its expertise in inventory management, handles the player's inventory and the interaction with objects in the game. It allows the player to pick up items, use them, and manage their inventory weight. It also tracks the player's health and manages the enemy's attacks, inflicting damage when they are in the same room.
-
-By leveraging its knowledge and expertise, the Game class creates a cohesive and immersive gaming experience. It ensures that the player can navigate the game world, solve puzzles, and ultimately achieve the goal of escaping the room.
-
-
 #### High Cohesion
 
-Each class in the project has been designed with a single, well-defined responsibility, following the principles of high cohesion. This means that each class focuses on a specific task or functionality, ensuring that it has a clear purpose and does not have unnecessary dependencies on other classes.
-
-By adopting a black-box mindset, the project maintains a high level of independence and distinction between classes. This allows for easier maintenance and modification of individual classes without affecting the overall system. Each class can be developed, tested, and modified independently, promoting code reusability and flexibility.
-
-The high cohesion pattern ensures that classes are self-contained and encapsulated, reducing the risk of unintended side effects and making the codebase more modular. This modular structure enables easier debugging, troubleshooting, and enhancement of specific functionalities without impacting the entire system.
-
-Overall, the project's adherence to the high cohesion pattern promotes clean and maintainable code, making it easier to understand, extend, and collaborate on the project in the future.
+The project follows the principles of high cohesion, with each class designed to have a single, well-defined responsibility. This promotes modular and independent development, allowing for easier maintenance and modification of individual classes without impacting the overall system. The codebase is self-contained and encapsulated, reducing the risk of unintended side effects and enabling easier debugging and enhancement of specific functionalities. Overall, the project's adherence to high cohesion results in clean and maintainable code that is easier to understand, extend, and collaborate on in the future.
 
 #### Low Copuling
 
-The project follows the low coupling pattern by minimizing the dependencies and interactions between the Game class, Player class, Enemy class, and Map class. The relationships between these classes are limited to method calls, ensuring loose coupling and promoting modularity.
-
-By reducing the direct dependencies between classes, the project achieves greater flexibility and maintainability. Changes made to one class are less likely to have a cascading effect on other classes, allowing for easier modifications and updates. This also promotes code reusability, as individual classes can be used independently in other projects without bringing unnecessary dependencies.
-
-The low coupling pattern enhances the project's overall stability and scalability. It allows for easier testing and debugging, as each class can be isolated and tested in isolation. Additionally, it facilitates future enhancements and extensions, as new classes can be added or existing classes can be modified without disrupting the entire system.
-
-Overall, the low coupling pattern in the project promotes a modular and flexible design, enabling easier development, maintenance, and evolution of the software.
+The project demonstrates the implementation of the low coupling pattern, which minimizes dependencies and interactions between classes. By reducing direct dependencies, the project achieves flexibility, maintainability, and code reusability. The pattern promotes modularity, allowing for easier modifications and updates without cascading effects. It enhances stability, scalability, and testing, enabling isolated testing and future enhancements. Overall, the low coupling pattern facilitates a modular and flexible design, promoting easier development, maintenance, and evolution of the software.
 
 #### Creator
 
-The Game class in this project utilizes the Creator design pattern to create instances of the Player, Enemy, and Map classes. By employing this pattern, the responsibility of object creation is delegated to the Game class, which acts as the creator.
-
-The Creator design pattern promotes loose coupling and encapsulation by abstracting the process of object creation. It allows the Game class to create instances of the Player, Enemy, and Map classes without exposing the details of their construction to the client code.
-
-By centralizing the creation logic within the Game class, it becomes easier to manage and modify the creation process. If there are any changes or variations in the way objects are created, the Game class can handle them without affecting the client code.
-
-Additionally, the Creator design pattern enhances code reusability and flexibility. The Game class can create different types of players, enemies, and maps by implementing different creation methods or using different parameters. This allows for easy extension and customization of the game without modifying the existing codebase.
-
-Overall, the use of the Creator design pattern in this project promotes modular and maintainable code, separating the object creation logic from the client code and providing a flexible and scalable architecture.
+The Game class in this project utilizes the Creator design pattern to create instances of the Player, Enemy, and Map classes. This pattern promotes loose coupling and encapsulation by abstracting the object creation process. By centralizing the creation logic within the Game class, it becomes easier to manage and modify the creation process. The Creator design pattern enhances code reusability and flexibility, allowing for easy extension and customization of the game. Overall, it provides a modular and maintainable architecture.
 
 ## Specifications
 
@@ -294,8 +255,8 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 | --- | --- |
 | Brief description | User can start the game. |
 | Actor | User |
-| Basic flow | User presses `Start` button or `Load Game` button. |
-| Alternative flow | If there are no saved game, it returns an error |
+| Basic flow | User type `New Game` command or `Resume` command. |
+| Alternative flow | If there is no saved game or the configuration of the s3 bucket is not done correctly, it returns an error |
 | Precondition | The game was succesfully installed. |
 | Postcondition | Game configuration page is shown. |
 | Extensions points | - |
@@ -304,7 +265,7 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 | --- | --- |
 | Brief description | User can choose the name and gender of the player and the enemy, and other setting like the difficulty level. |
 | Actor | User |
-| Basic flow | User writes the name and select the gender and the other settings between the available options. |
+| Basic flow | User writes the name and select the gender and the other settings from the available options. |
 | Alternative flow | No errors because pre-selected values are provided by default. |
 | Precondition | User has started the game with "new game" command. |
 | Postcondition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
@@ -314,21 +275,21 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 | --- | --- |
 | Brief description | User can play the game interacting through the command shell. |
 | Actor | User |
-| Basic flow | User interacts with the game, moving between the rooms, collecting objects in order to win the game solving the final puzzle. |
-| Alternative flow | • The player is either killed by the enemy = LOSS or the player as solved the game = WIN • |
+| Basic flow | User interacts with the game, moving between the rooms, collecting objects in order to win the game by solving the final puzzle. |
+| Alternative flow | The player is either killed by the enemy = LOSS or the player has solved the game = WIN |
 | Precondition | Game must be correctly started and with a valid configuration. |
-| Postcondition | GUI updates after every move and the objects are modified following the given command. |
+| Postcondition | GUI updates after every move and the items are modified following the given command. |
 | Extensions points | The enemy also makes a move every time the player does one (or more) |
 
 | Use case | Win |
 | --- | --- |
 | Brief description | User wins the game. |
 | Actor | User |
-| Basic flow | User unlocks the door in the room where all started. |
+| Basic flow | User complete the puzzle in the central room. |
 | Alternative flow | The player is killed. |
 | Precondition | The player must have used all the items and must have visited all the rooms. |
 | Postcondition | The enemy disapears and a win screen is shown. |
-| Extensions points | If the player was killed, then he has lost the game. |
+| Extensions points | If the player was killed, then they have lost the game. |
 
 | Use case | Back |
 | --- | --- |
@@ -345,8 +306,8 @@ Overall, the use of the Creator design pattern in this project promotes modular 
 | Brief description | User saves the state of the game and can resume the game later. |
 | Actor | User |
 | Basic flow | User types `save` and then the game can be closed via `exit` command. |
-| Alternative flow | The game was already saved, so it can't be saved twice. The last progress of the game was not saved, so the game asks if the user wants to save the state of leave the game without saving. |
-| Precondition | The user must have done at least one move. |
+| Alternative flow | The last progress of the game was not saved, so the game asks the user if he wants to save the state of leave the game without saving. |
+| Precondition | The game must have been started correctly. |
 | Postcondition | The game is saved and the user can leave and resume the game later. |
 | Extensions points | - |
 
@@ -388,70 +349,66 @@ All the system tests were executed on Windows 10, Windows 11 and Fedora 40
 
 ### Start
 
-| Summary | The game starts with the player in the correct position |
+| Summary | The game starts and let the player configure a new game or restore a previous one. |
 | --- | --- |
-| Test Case Design | - Test of game start without errors <br> - Test of correct initial configuration |
+| Test Case Design | - Test of game start without errors <br> - Test of correct restore of the previous game saved |
 | Pre-Condition | The game was successfully installed |
 | Post-Condition | Game configuration page is shown |
-| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command in the main screen <br> + Verify that is shown the game configuration screen without errors <br> **Test of correct intial configuration:** <br> + Use "New Game" on the main screen <br> + Configure the player <br> + Verify that the game is started in the defualt position |
-| Test Case Execution Report | - Test of game start without errors: <br> - Test of correct initial configuration: |
+| Test Scripts | **Test of game start without errors:** <br> + Use "New Game" command on the main screen <br> + Verify that the game configuration screen is shown without errors <br> **Test of correct intial configuration:** <br> + Use "Resume" command on the main screen <br> + Verify that it shows a list of previous savings (if the `config.property` file and the credentials where set up correctly) <br> + Verify that the selected game starts in the same state it was in the last save |
+| Test Case Execution Report | - Test of game start without errors: ✅ Passed <br> - Test of correct restore of the previous game saved: ✅ Passed |
 
 ### Game Configuration
 
-| Summary | After using "New Game" command in the main menu you configure the Player and Enemy with a proper name and gender and set the other setting. |
+| Summary | After using "New Game" command in the main menu the user configure the Player and Enemy with a proper name and gender and set the other setting. |
 | --- | --- |
-| Test Case Design | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game; check also if the other settings are setted corrected. |
+| Test Case Design | - Test a configuration and check if the name and pronoun are set correctly and displayed during the game; check also if the other settings are set corrected. |
 | Pre-Condition |  User has started the game with "new game" command. |
 | Post-Condition | The game begins in its essence and the player finds itself in the first room, which is also the room where the game will end. |
-| Test Scripts | **Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:** <br> + Click on `New Game` button <br> + Compile the requested fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
-| Test Case Execution Report | - Test a configuration and check if the name and pronoun are setted correctly and displayed during the game:  |
-
+| Test Scripts | **Test a configuration and check if the name and pronoun are set correctly and displayed during the game:** <br> + Use "new game" command in the main menu <br> + Compile the required fields to configure the game <br> + Check during the game if the name and gender are displayed correctly |
+| Test Case Execution Report | - Test a configuration and check if the name and pronoun are set correctly and displayed during the game: ✅ Passed  |
 
 ### Commands
 
 | Summary | Given a specific command the game returns an output that matches with the inserted input |
 | --- | --- |
-| Test Case Design | - Test of all the commands for moving the player <br> - Test for all the commands to interact with the items in the map <br> - Test for invalid commands |
+| Test Case Design | - Test of all the commands for moving the player <br> - Test for all the commands to interact with the items on the map <br> - Test for invalid commands |
 | Pre-Condition | Game must be correctly started and with a valid configuration. |
-| Post-Condition | GUI updates after every move and the objects are modified following the given command. |
-| Test Scripts | **Test of all the commands for moving the player:** <br> + Start a new game and select a valid configuration <br> + Move the player in the map changing the facing direction and the room making him cross the doors <br> + Verify that the player can cross only the walls with a door and the GUI is updated showing the current room and facing direction <br> **Test for all the commands to interact with the items in the map:** <br> + Start a new game and select a valid configuration <br> + Interact with all the items in a proper way according to the type of object <br> + Verify that all the items work as intended and there are errors that show the correct usage of the item when the commands are not used properly <br> **Test for invalid commands:** <br> + Start a new game and select a valid configuration <br> + Test a bunch of invalid commands <br> + Verify that after each invalid command an error message is displayed to show the correct usage of the command or it suggests to type `help` to get a list of valid commands |
-| Test Case Execution Report | - Test of all the commands for moving the player: <br> - Test for all the commands to interact with the items in the map: <br> - Test for invalid commands: |
-
+| Post-Condition | GUI updates after every move and the items are modified following the given command. |
+| Test Scripts | **Test of all the commands for moving the player:** <br> + Start a new game and select a valid configuration <br> + Move the player on the map changing the facing direction and the room making them cross the doors <br> + Verify that the player can cross only the walls with a door and the GUI is updated showing the current room and facing direction <br> **Test for all the commands to interact with the items in the map:** <br> + Start a new game and select a valid configuration <br> + Interact with all the items in a proper way according to the type of object <br> + Verify that all the items work as intended and there are no errors, and show the correct usage of the item when the commands are not used properly <br> **Test for invalid commands:** <br> + Start a new game and select a valid configuration <br> + Test a bunch of invalid commands <br> + Verify that after each invalid command an error message is displayed to show the correct usage of the command or it suggests to type `help` to get a list of valid commands |
+| Test Case Execution Report | - Test of all the commands for moving the player: ✅ Passed <br> - Test for all the commands to interact with the items in the map: ✅ Passed <br> - Test for invalid commands: ✅ Passed |
 
 ### Win
 
 | Summary | After having solved the final puzzle the game shows the win screen |
 | --- | --- |
-| Test Case Design | - Test win |
+| Test Case Design | - Test win <br> - Test lose |
 | Pre-Condition | The player must have used all the items and must have visited all the rooms. |
 | Post-Condition | The enemy dissapears and a win screen is shown. |
-| Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play all the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can go back to the main menu |
-| Test Case Execution Report | - Test win: |
+| Test Scripts | **Test win:** <br> + Start the game with a valid configuration <br> + Play through the game and collect all the items for the final puzzle <br> + Complete the final puzzle <br> + Verify that after having completed the final puzzle a win screen is shown and you can close the game <br> **Test lose:** <br> + Start the game with a valid configuration <br> + Move to the same room as the enemy <br> + Let the enemy attack you until your health points drop to zero <br> + Verify that the game end and the lose screen is shown and you can close the game |
+| Test Case Execution Report | - Test win: ✅ Passed <br> - Test lose : ✅ Passed |
 
 
 ### Back
 
-| Summary | When inserted `back` (or `undo`) as command the game returns in the previous state |
+| Summary | When inserted `back` (or `undo`) as command the game returns to the previous state |
 | --- | --- |
 | Test Case Design | - Test back function with no previous moves to undo <br> - Test back function with a previous move to undo <br> - Test back function several times with several previous moves to undo |
 | Pre-Condition | The user must have done at least one move. |
 | Post-Condition | The game is restored one move back. |
-| Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Do at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Do a ceratain number of moves <br> + Use `back` command several time <br> + Verify that after each `back` the game is restored to its previous state until the first move (inital configuration) |
-| Test Case Execution Report | - Test back function with no previous moves to undo: <br> - Test back function with a previous move to undo: <br> - Test back function several times with several previous moves to undo: |
+| Test Scripts | **Test back function with no previous moves to undo:** <br> + Start the game with a valid configuration <br> + Use `back` command <br> + Verify that a message that says that there are no previous moves to undo is shown and the state of the game doesn't change <br> **Test back function with a previous move to undo:** <br> + Start the game with a correct configuration <br> + Make at least one move to restore <br> + Use `back` command <br> + Verify that the previous move is restored and displayed correctly <br> **Test back function several times with several previous moves to undo:** <br> + Start the game with a valid configuration <br> + Make a ceratain number of moves <br> + Use `back` command several times <br> + Verify that after each `back` the game is restored to its previous state until the first move (inital configuration) |
+| Test Case Execution Report | - Test back function with no previous moves to undo: ✅ Passed <br> - Test back function with a previous move to undo: ✅ Passed <br> - Test back function several times with several previous moves to undo: ✅ Passed |
 
 
 ### Save and Exit/Quit
 
-| Summary | When inserting `save` ad command the game saves its actual state and when pressing `exit` it returns to the main menu or use `quit` to close the entire window |
+| Summary | When `save` command is inserted the game saves its actual state and when pressing `exit` it closes the game and asks to save the game first if the last state was not saved |
 | --- | --- |
 | Test Case Design | - Test save <br> - Test exit |
-| Pre-Condition | The user must have done at least one move. |
+| Pre-Condition | The game must have been started correctly |
 | Post-Condition | The game is saved and the user can leave and resume the game later. |
-| Test Scripts | **Test save:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Use `save` command and exit the game <br> + Try to log back in the game <br> + Verify that you are in the same state of when you saved the game <br> **Test exit:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Try to `exit` the game with the proper command <br> + Verify that the game goes back to the main screen after having asked if you want to save the game (if the current state was not already saved) |
-| Test Case Execution Report | - Test save: <br> - Test exit: |
+| Test Scripts | **Test save:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Use `save` command and exit the game <br> + Try to log back in the game using `resume` command <br> + Verify that you are in the same state of when you saved the game <br> **Test exit:** <br> + Start a new game with a valid configuration <br> + Do some moves in the game <br> + Try to `exit` the game with the proper command <br> + Verify that if the last state of the game was not saved the game asks to save it <br> + Verify that if the game closes properly (either saving or not saving the game based on the choice made in the previous step) |
+| Test Case Execution Report | - Test save: ✅ Passed <br> - Test exit: ✅ Passed |
 
 ## Credits
 
-Image generation was done thanks to Leonardo.AI generative artificial intelligence.
-Grammar and English spelling error checking was also partially done with ChatGPT AI.
-Suggestions on how to manage S3 bucket saves were obtained through Copilot Windows AI.
+Image generation was done thanks to [Leonardo.AI](https://leonardo.ai/) generative artificial intelligence tool. As a result, the images shown in the game may not be 100% accurate with the map and the description of the items that can be used.
