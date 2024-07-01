@@ -359,7 +359,7 @@ public class GameFrame {
      */
     private void updateInventoryText(JTextArea inventoryText) {
         if (game != null && game.getGame() != null)
-            inventoryText.setText("INVENTORY:" + game.getGame().getPlayer().printInventory() + "\n\nThe total weight of the items in is  " + game.getGame().getPlayer().getInventoryWeight() + "/10");
+            inventoryText.setText("INVENTORY:" + game.getGame().getPlayer().printInventory() + "\n\nThe total weight of the items is  " + game.getGame().getPlayer().getInventoryWeight() + "/10");
     }
     
     /**
